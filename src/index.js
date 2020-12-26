@@ -1,7 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 function Cell(props) {
   return (
     <button className="cell" onClick={props.onClick}>
@@ -39,8 +42,12 @@ class Board extends React.Component {
     const status = 'Next player: X' + (this.state.xIsNext ? 'X' : 'O');
 
     return (
-      <div>
-        <div className="status">{status}</div>
+
+        <Row>
+          <Col>1 of 3</Col>
+          <Col>2 of 3</Col>
+          <Col>
+
         <div className="board-row">
           {this.renderCell(0)}
           {this.renderCell(1)}
@@ -195,9 +202,8 @@ class Board extends React.Component {
           {this.renderCell(108)}
           {this.renderCell(109)}            
         </div>
-
-
-      </div>
+      </Col>
+        </Row> 
     );
   }
 }
@@ -205,16 +211,17 @@ class Board extends React.Component {
 class Simulator extends React.Component {
   render() {
     return (
-      <div className="game">
-        <div className="game-board">
+      <Container>
+      <Row>
+      Test
+      </Row>
           <Board />
-        </div>
         <div className="game-info">
           <div>{/* status */}</div>
           <ol>{/* TODO */}</ol>
         </div>
-      </div>
-    );
+      </Container>    
+      );
   }
 }
 
