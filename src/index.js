@@ -11,6 +11,7 @@ function Cell(props) {
 }
 
 class Board extends React.Component {
+  //comment
   constructor(props){
     super(props);
     this.state= {
