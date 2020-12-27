@@ -12,7 +12,13 @@ function Cell(props) {
     </button>
   );
 }
-
+function Products(props){
+  return(
+    <ul>
+    <li> I love you </li>
+    </ul>
+  );
+}
 class Board extends React.Component {
   //comment
      /*fixId(id) {
@@ -72,7 +78,7 @@ class Board extends React.Component {
     return (
         <Row>
           <Col>1 of 3</Col>
-          <Col>2 of 3</Col>
+          <Col><Products /></Col>
           <Col>
 
         <div className="board-row">
