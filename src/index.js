@@ -15,14 +15,23 @@ function Cell(props) {
 
 class Board extends React.Component {
   //comment
-  constructor(props){
+     /*fixId(id) {
+       return id - 1;
+     }*/
+  constructor(props) {
+
     super(props);
+
+   
+    
+    
     this.state= {
       cells: Array(110).fill(null),
       xIsNext: true,
 
     };
   }
+
     handleClick(i) {
       const cells = this.state.cells.slice();
       cells[i] = this.state.xIsNext ? 'X' : 'O';
@@ -39,10 +48,28 @@ class Board extends React.Component {
   }
 
   render() {
+        const products = [
+          ['Pepsi', 'P', 'Left', '10', '10', '2', '4', '1'],
+          ['Browni', 'P', 'Right', '12', '6', '2', '3', '2'],
+          ['Jucy', 'P', 'Left', '6.2', '9.3', '1', '4', '1'],
+          ['Milk', 'M', 'Right', '6.6', '5', '1', '2', '2'],
+          ['Islak Mendil', 'I', 'Left', '9.5', '25', '2', '10', '3'],
+          ['Tooth Paste', 'T', 'Left', '20', '3.6', '3', '2', '3'],
+          ['Cafe Crown', 'C', 'Right', '7', '10.5', '1', '5', '4'],
+          ['Gofret', 'G', 'Left', '18', '3.5', '3', '2.4', '1'],
+          ['Çıkolata', 'Ç', 'Left', '13', '9.2', '2', '4', '3'],
+          ['Domates Salçası', 'D', 'Right', '10', '10', '2', '4', '4'],
+          ['Ülker Laviva', 'Ü', 'Left', '15', '2.6', '3', '2', '1'],
+          ['Coka Cola', 'K', 'Left', '5.8', '5.8', '1', '3', '1']
+        ];
+    let order1 = [12, 1, 3, 7, 10, 11, 4, 5, 6, 8];
+    let orderStorted = [];
+    order1.forEach(function(item){
+      orderStorted.push(item-1);
+    });
     const status = 'Next player: X' + (this.state.xIsNext ? 'X' : 'O');
 
     return (
-
         <Row>
           <Col>1 of 3</Col>
           <Col>2 of 3</Col>
@@ -224,7 +251,6 @@ class Simulator extends React.Component {
       );
   }
 }
-
 // ========================================
 
 ReactDOM.render(
