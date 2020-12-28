@@ -15,7 +15,140 @@ class Board extends React.Component {
 
     constructor(props) {
         super(props);
-
+        let products = [
+            {
+                id: 1,
+                name: 'Pepsi',
+                symbol: 'P',
+                dir: 'left',
+                width: 10,
+                depth: 10,
+                beltCount: 2,
+                cellsDepth: 4,
+                unitNo: 1
+            },
+            {
+                id: 2,
+                name: 'Browni',
+                symbol: 'B',
+                dir: 'right',
+                width: 12,
+                depth: 6,
+                beltCount: 2,
+                cellsDepth: 3,
+                unitNo: 2
+            },
+            {
+                id: 3,
+                name: 'Jucy',
+                symbol: 'J',
+                dir: 'right',
+                width: 6.2,
+                depth: 9.3,
+                beltCount: 1,
+                cellsDepth: 4,
+                unitNo: 1
+            },
+            {
+                id: 4,
+                name: 'Milk',
+                symbol: 'M',
+                dir: 'right',
+                width: 6.6,
+                depth: 5,
+                beltCount: 1,
+                cellsDepth: 2,
+                unitNo: 2
+            },
+            {
+                id: 5,
+                name: 'Islak Mendil',
+                symbol: 'I',
+                dir: 'left',
+                width: 9.5,
+                depth: 25,
+                beltCount: 2,
+                cellsDepth: 10,
+                unitNo: 3
+            },
+            {
+                id: 6,
+                name: 'Tooth Paste',
+                symbol: 'T',
+                dir: 'left',
+                width: 20,
+                depth: 3.6,
+                beltCount: 3,
+                cellsDepth: 2,
+                unitNo: 3
+            },
+            {
+                id: 7,
+                name: 'Cafe Crown',
+                symbol: 'C',
+                dir: 'right',
+                width: 7,
+                depth: 10.5,
+                beltCount: 1,
+                cellsDepth: 5,
+                unitNo: 4
+            },
+            {
+                id: 8,
+                name: 'Gofret',
+                symbol: 'G',
+                dir: 'left',
+                width: 18,
+                depth: 3.5,
+                beltCount: 3,
+                cellsDepth: 2,
+                unitNo: 1
+            },
+            {
+                id: 9,
+                name: 'Çıkolata',
+                symbol: 'Ç',
+                dir: 'left',
+                width: 13,
+                depth: 9.2,
+                beltCount: 2,
+                cellsDepth: 4,
+                unitNo: 3
+            },
+            {
+                id: 10,
+                name: 'Domates Salçası',
+                symbol: 'D',
+                dir: 'right',
+                width: 10,
+                depth: 10,
+                beltCount: 2,
+                cellsDepth: 4,
+                unitNo: 4
+            },
+            {
+                id: 11,
+                name: 'Ülker Laviva',
+                symbol: 'Ü',
+                dir: 'left',
+                width: 15,
+                depth: 2.6,
+                beltCount: 3,
+                cellsDepth: 2,
+                unitNo: 1
+            },
+            {
+                id: 12,
+                name: 'Coka Cola',
+                symbol: 'K',
+                dir: 'left',
+                width: 5.8,
+                depth: 5.8,
+                beltCount: 1,
+                cellsDepth: 3,
+                unitNo: 1
+            },
+        ];
         let order1 = [
             { id: 12, quantity: 1 },
             { id: 1, quantity: 2 },
@@ -27,147 +160,32 @@ class Board extends React.Component {
             { id: 8, quantity: 1 },
             { id: 3, quantity: 1 },
             { id: 11, quantity: 1 },
-
-
         ];
+        console.log('pure order is : ', order1);
+        let orderStorted = [];
+        order1.forEach(function (item) {
+            orderStorted.push([item.id - 1, item.quantity]);
+        });
+        console.log('SOrted', orderStorted);
+        let order2 = [];
+        let that = products;
+        orderStorted.forEach((product) => {
+            let id = product[0];
+            let quantity = product[1];
+            let name = that[id];
+            let productName = name.name;
+            let beltCount = name.beltCount;
+            let cellsDepth = name.cellsDepth;
+            let symobl = name.symbol;
+            //console.log('ProductID ', id, 'quan', quantity, 'name', name.name);
+
+            order2.push({ id, quantity, name, productName, symobl, beltCount, cellsDepth })
+        });        
         this.state = {
             cells: Array(110).fill(null),
             xIsNext: true,
-            products: [
-                {
-                    id: 1,
-                    name: 'Pepsi',
-                    symbol: 'P',
-                    dir: 'left',
-                    width: 10,
-                    depth: 10,
-                    beltCount: 2,
-                    cellsDepth: 4,
-                    unitNo: 1
-                },
-                {
-                    id: 2,
-                    name: 'Browni',
-                    symbol: 'B',
-                    dir: 'right',
-                    width: 12,
-                    depth: 6,
-                    beltCount: 2,
-                    cellsDepth: 3,
-                    unitNo: 2
-                },
-                {
-                    id: 3,
-                    name: 'Jucy',
-                    symbol: 'J',
-                    dir: 'right',
-                    width: 6.2,
-                    depth: 9.3,
-                    beltCount: 1,
-                    cellsDepth: 4,
-                    unitNo: 1
-                },
-                {
-                    id: 4,
-                    name: 'Milk',
-                    symbol: 'M',
-                    dir: 'right',
-                    width: 6.6,
-                    depth: 5,
-                    beltCount: 1,
-                    cellsDepth: 2,
-                    unitNo: 2
-                },
-                {
-                    id: 5,
-                    name: 'Islak Mendil',
-                    symbol: 'I',
-                    dir: 'left',
-                    width: 9.5,
-                    depth: 25,
-                    beltCount: 2,
-                    cellsDepth: 10,
-                    unitNo: 3
-                },
-                {
-                    id: 6,
-                    name: 'Tooth Paste',
-                    symbol: 'T',
-                    dir: 'left',
-                    width: 20,
-                    depth: 3.6,
-                    beltCount: 3,
-                    cellsDepth: 2,
-                    unitNo: 3
-                },
-                {
-                    id: 7,
-                    name: 'Cafe Crown',
-                    symbol: 'C',
-                    dir: 'right',
-                    width: 7,
-                    depth: 10.5,
-                    beltCount: 1,
-                    cellsDepth: 5,
-                    unitNo: 4
-                },
-                {
-                    id: 8,
-                    name: 'Gofret',
-                    symbol: 'G',
-                    dir: 'left',
-                    width: 18,
-                    depth: 3.5,
-                    beltCount: 3,
-                    cellsDepth: 2,
-                    unitNo: 1
-                },
-                {
-                    id: 9,
-                    name: 'Çıkolata',
-                    symbol: 'Ç',
-                    dir: 'left',
-                    width: 13,
-                    depth: 9.2,
-                    beltCount: 2,
-                    cellsDepth: 4,
-                    unitNo: 3
-                },
-                {
-                    id: 10,
-                    name: 'Domates Salçası',
-                    symbol: 'D',
-                    dir: 'right',
-                    width: 10,
-                    depth: 10,
-                    beltCount: 2,
-                    cellsDepth: 4,
-                    unitNo: 4
-                },
-                {
-                    id: 11,
-                    name: 'Ülker Laviva',
-                    symbol: 'Ü',
-                    dir: 'left',
-                    width: 15,
-                    depth: 2.6,
-                    beltCount: 3,
-                    cellsDepth: 2,
-                    unitNo: 1
-                },
-                {
-                    id: 12,
-                    name: 'Coka Cola',
-                    symbol: 'K',
-                    dir: 'left',
-                    width: 5.8,
-                    depth: 5.8,
-                    beltCount: 1,
-                    cellsDepth: 3,
-                    unitNo: 1
-                },
-            ],
-            order: order1
+            products: products,
+            order: order2
         };
 
 
@@ -195,28 +213,9 @@ class Board extends React.Component {
         });
     }*/
     render() {
-        console.log('pure order is : ',this.state.order);
-        let orderStorted = [];
-        this.state.order.forEach(function (item) {
-            orderStorted.push([item.id - 1, item.quantity]);
-        });
-        console.log('SOrted', orderStorted);
-        let order2 = [];
-        let that = this.state.products;
-        orderStorted.forEach((product) => {
-            let id = product[0];
-            let quantity = product[1];
-            let name = that[id];
-            let productName = name.name;
-            let beltCount = name.beltCount;
-            let cellsDepth = name.cellsDepth;
-            let symobl = name.symbol;
-            //console.log('ProductID ', id, 'quan', quantity, 'name', name.name);
 
-            order2.push({ id, quantity, name, productName, symobl, beltCount, cellsDepth})
-        });
 
-        console.log('I am sending this', order2);
+        console.log('I am sending this', this.state.order);
         return (
             <Row>
                 <Col> 
@@ -225,7 +224,7 @@ class Board extends React.Component {
                 </Col>
                 <Col>
                     <h2>Order</h2>
-                    <Order order={order2} products={this.state.products} />
+                    <Order order={this.state.order} products={this.state.products} />
                 </Col>
                 
                 <Col>
