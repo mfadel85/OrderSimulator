@@ -15,23 +15,20 @@ class Board extends React.Component {
 
     constructor(props) {
         super(props);
+
         let order1 = [
-            {id:12, quantity:1 },
-            {id:1,quantity:2},
-            { id:3,quantity:1},
+            { id: 12, quantity: 1 },
+            { id: 1, quantity: 2 },
+            { id: 3, quantity: 1 },
             { id: 7, quantity: 1 },
             { id: 10, quantity: 1 },
             { id: 11, quantity: 1 },
             { id: 4, quantity: 1 },
             { id: 5, quantity: 1 },
             { id: 6, quantity: 1 },
-            { id: 8, quantity: 1 },            
+            { id: 8, quantity: 1 },
 
         ];
-        let orderStorted = [];
-        order1.forEach(function (item) {
-            orderStorted.push(item - 1);
-        });
         this.state = {
             cells: Array(110).fill(null),
             xIsNext: true,
@@ -171,16 +168,15 @@ class Board extends React.Component {
             ],
             order: order1
         };
-        this.sort(order1);
-      
+
+
+        /*this.setState ((order)=> ({
+            order: order2
+        }));*/
+        //this.sort(order1);
     }
 
     handleClick(i) {
-        const cells = this.state.cells.slice();
-        cells[i] = this.state.xIsNext ? 'X' : 'O';
-        this.setState({
-            cells: cells,
-        });
     }
     renderCell(i) {
         return <Cell
@@ -198,6 +194,27 @@ class Board extends React.Component {
         });
     }
     render() {
+        let orderStorted = [];
+        this.state.order.forEach(function (item) {
+            console.log('item',item);
+            orderStorted.push([item.id - 1, item.quantity]);
+        });
+        console.log('SOrted', orderStorted);
+        let order2 = [];
+        let that = this.state.products;
+        orderStorted.forEach((product) => {
+            let id = product[0];
+            let quantity = product[1];
+            let name = that[id];
+            console.log('ProductID ', id, 'quan', quantity, 'name', name.name);
+
+            order2.push({ product, quantity, name })
+        });
+        console.log('order2 is ', order2);
+        /*this.setState((order)=>({
+            order:order2
+        }));*/
+        console.log('I am sending this', order2);
         return (
             <Row>
                 <Col> 
@@ -206,7 +223,7 @@ class Board extends React.Component {
                 </Col>
                 <Col>
                     <h2>Order</h2>
-                    <Order order={this.state.order} />
+                    <Order order={order2}  />
                 </Col>
                 
                 <Col>
