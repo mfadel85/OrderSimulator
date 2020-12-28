@@ -1,11 +1,23 @@
 import React from 'react';
 
 class Order extends React.Component {
-    state = {
-        order : this.props.order,
-        products: this.props.products
+    constructor(props) {
+        super(props);
+        this.state = {   
+            order : this.props.order,
+            products: this.props.products
+        }
+        console.log('productts',this.state.products);
+        console.log('order', this.state.order)
+
     }
     sortOrder(order){
+        /// order by bent count
+        let products = this.state.products;
+        let sortedOrder = [];
+        order.forEach(function(item){
+            console.log("item",item);
+        });
         return order;
     }
     render() {

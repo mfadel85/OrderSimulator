@@ -196,7 +196,6 @@ class Board extends React.Component {
     render() {
         let orderStorted = [];
         this.state.order.forEach(function (item) {
-            console.log('item',item);
             orderStorted.push([item.id - 1, item.quantity]);
         });
         console.log('SOrted', orderStorted);
@@ -206,7 +205,7 @@ class Board extends React.Component {
             let id = product[0];
             let quantity = product[1];
             let name = that[id];
-            console.log('ProductID ', id, 'quan', quantity, 'name', name.name);
+            //console.log('ProductID ', id, 'quan', quantity, 'name', name.name);
 
             order2.push({ product, quantity, name })
         });
@@ -223,7 +222,7 @@ class Board extends React.Component {
                 </Col>
                 <Col>
                     <h2>Order</h2>
-                    <Order order={order2}  />
+                    <Order order={order2} products={this.state.products} />
                 </Col>
                 
                 <Col>
