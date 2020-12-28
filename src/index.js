@@ -24,6 +24,7 @@ class Board extends React.Component {
      /*fixId(id) {
        return id - 1;
      }*/
+     //test
   constructor(props) {
 
     super(props);
