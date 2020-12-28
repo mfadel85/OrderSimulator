@@ -17,6 +17,8 @@ class Order extends React.Component {
         let sortedOrder = [];
         order.forEach(function(item){
             console.log("item",item);
+            console.log('Name', products[item.name.id - 1].name);
+            console.log('Belt Count',products[item.name.id-1].beltCount);
         });
         return order;
     }
