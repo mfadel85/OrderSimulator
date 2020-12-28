@@ -15,7 +15,19 @@ class Board extends React.Component {
 
     constructor(props) {
         super(props);
-        let order1 = [12, 1, 3, 7, 10, 11, 4, 5, 6, 8];
+        let order1 = [
+            {id:12, quantity:1 },
+            {id:1,quantity:2},
+            { id:3,quantity:1},
+            { id: 7, quantity: 1 },
+            { id: 10, quantity: 1 },
+            { id: 11, quantity: 1 },
+            { id: 4, quantity: 1 },
+            { id: 5, quantity: 1 },
+            { id: 6, quantity: 1 },
+            { id: 8, quantity: 1 },            
+
+        ];
         let orderStorted = [];
         order1.forEach(function (item) {
             orderStorted.push(item - 1);
@@ -159,7 +171,7 @@ class Board extends React.Component {
             ],
             order: order1
         };
-
+        this.sort(order1);
       
     }
 
@@ -176,7 +188,15 @@ class Board extends React.Component {
             onClick={() => this.handleClick(i)}
         />;
     }
+    sort(orders){
+        let products = this.state.products;
+        console.log(orders);
+        let orderSorted = [];
+        orders.map((product)=> {
+            console.log('product belt count  : ',this.state.products[product.id-1].beltCount);
 
+        });
+    }
     render() {
         return (
             <Row>

@@ -7,7 +7,7 @@ class Order extends React.Component {
     }
     render() {
         return this.props.order.map((product) => (
-            <h5 key={product} > { product}</h5>
+            <h5 key={product.id} > { product.id}</h5>
         ));
     }
 }
