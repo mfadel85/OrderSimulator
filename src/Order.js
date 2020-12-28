@@ -5,8 +5,13 @@ class Order extends React.Component {
         order : this.props.order,
         products: this.props.products
     }
+    sortOrder(order){
+        return order;
+    }
     render() {
-        return this.props.order.map((product) => (
+        let orderSorted = this.props.order;
+        let finalOrder = this.sortOrder(orderSorted);
+        return finalOrder.map((product) => (
             <h5 key={product.name.id} > { product.name.name} { product.quantity} pcs</h5>
         ))
     };
