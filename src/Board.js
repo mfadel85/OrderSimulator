@@ -181,8 +181,9 @@ class Board extends React.Component {
 
             order2.push({ id, quantity, name, productName, symobl, beltCount, cellsDepth })
         });        
+        let cells = Array(110).fill(1); 
         this.state = {
-            cells: Array(110).fill(null),
+            cells: cells,
             xIsNext: true,
             products: products,
             order: order2
@@ -210,7 +211,7 @@ class Board extends React.Component {
                     <Products products={ this.state.products } />
                 </Col>
                 <Col>
-                    <h2>Order</h2>
+                    <h2>Order Sorted</h2>
                     <Order order={this.state.order} products={this.state.products} />
                 </Col>
                 
