@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Products from './products.js';
+import Order from './Order.js';
+
 import Cell from './Cell.js';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -10,13 +12,14 @@ import Col from 'react-bootstrap/Col';
 
 
 class Board extends React.Component {
-    //comment
-    /*fixId(id) {
-      return id - 1;
-    }*/
-    //test
+
     constructor(props) {
         super(props);
+        let order1 = [12, 1, 3, 7, 10, 11, 4, 5, 6, 8];
+        let orderStorted = [];
+        order1.forEach(function (item) {
+            orderStorted.push(item - 1);
+        });
         this.state = {
             cells: Array(110).fill(null),
             xIsNext: true,
@@ -153,8 +156,11 @@ class Board extends React.Component {
                     cellsDepth: 3,
                     unitNo: 1
                 },
-            ]
+            ],
+            order: order1
         };
+
+      
     }
 
     handleClick(i) {
@@ -172,19 +178,17 @@ class Board extends React.Component {
     }
 
     render() {
-
-        let order1 = [12, 1, 3, 7, 10, 11, 4, 5, 6, 8];
-        let orderStorted = [];
-        order1.forEach(function (item) {
-            orderStorted.push(item - 1);
-        });
         return (
             <Row>
                 <Col> 
-                    <h1>Products </h1>
+                    <h2>Products </h2>
                     <Products products={ this.state.products } />
                 </Col>
-                <Col>1 of 3</Col>
+                <Col>
+                    <h2>Order</h2>
+                    <Order order={this.state.order} />
+                </Col>
+                
                 <Col>
 
                     <div className="board-row">
