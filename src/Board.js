@@ -188,11 +188,6 @@ class Board extends React.Component {
             order: order2
         };
 
-
-        /*this.setState ((order)=> ({
-            order: order2
-        }));*/
-        //this.sort(order1);
     }
 
     handleClick(i) {
@@ -203,15 +198,7 @@ class Board extends React.Component {
             onClick={() => this.handleClick(i)}
         />;
     }
-    /*sort(orders){
-        let products = this.state.products;
-        console.log(orders);
-        let orderSorted = [];
-        orders.map((product)=> {
-            console.log('product belt count  : ',this.state.products[product.id-1].beltCount);
 
-        });
-    }*/
     render() {
 
 
