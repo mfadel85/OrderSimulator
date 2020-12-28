@@ -182,6 +182,7 @@ class Board extends React.Component {
             order2.push({ id, quantity, name, productName, symobl, beltCount, cellsDepth })
         });        
         let cells = Array(110).fill(1); 
+        cells = this.fillBoard(order2,cells);
         this.state = {
             cells: cells,
             xIsNext: true,
@@ -190,7 +191,10 @@ class Board extends React.Component {
         };
 
     }
-
+    fillBoard(order2,cells){
+        cells[1]=3;
+        return cells;
+    }
     handleClick(i) {
     }
     renderCell(i) {
