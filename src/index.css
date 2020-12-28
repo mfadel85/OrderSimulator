@@ -24,13 +24,13 @@ ul {
     float: left;
     font-size: 12px;
     font-weight: 100;
-    line-height: 18px;
-    height: 18px;
+    line-height: 13px;
+    height: 12px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 34px;
+    width: 70px;
 }
 
 .cell:focus {
