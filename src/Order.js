@@ -7,18 +7,13 @@ class Order extends React.Component {
             order : this.props.order,
             products: this.props.products
         }
-        console.log('productts',this.state.products);
-        console.log('order', this.state.order)
-
     }
     sortOrder(order){
         /// order by bent count
-        let products = this.state.products;
+        //let products = this.state.products;
         let sortedOrder = [];
         order.forEach(function(item){
             console.log("item",item);
-            console.log('Name', products[item.name.id - 1].name);
-            console.log('Belt Count',products[item.name.id-1].beltCount);
         });
         return order;
     }

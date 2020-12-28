@@ -205,9 +205,13 @@ class Board extends React.Component {
             let id = product[0];
             let quantity = product[1];
             let name = that[id];
+            let productName = name.name;
+            let beltCount = name.beltCount;
+            let cellsDepth = name.cellsDepth;
+            let symobl = name.symbol;
             //console.log('ProductID ', id, 'quan', quantity, 'name', name.name);
 
-            order2.push({ product, quantity, name })
+            order2.push({ id, quantity, name, productName, symobl, beltCount, cellsDepth})
         });
         console.log('order2 is ', order2);
         /*this.setState((order)=>({
