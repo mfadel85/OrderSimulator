@@ -19,14 +19,15 @@ class Board extends React.Component {
         let order1 = [
             { id: 12, quantity: 1 },
             { id: 1, quantity: 2 },
-            { id: 3, quantity: 1 },
             { id: 7, quantity: 1 },
             { id: 10, quantity: 1 },
-            { id: 11, quantity: 1 },
             { id: 4, quantity: 1 },
             { id: 5, quantity: 1 },
             { id: 6, quantity: 1 },
             { id: 8, quantity: 1 },
+            { id: 3, quantity: 1 },
+            { id: 11, quantity: 1 },
+
 
         ];
         this.state = {
@@ -184,7 +185,7 @@ class Board extends React.Component {
             onClick={() => this.handleClick(i)}
         />;
     }
-    sort(orders){
+    /*sort(orders){
         let products = this.state.products;
         console.log(orders);
         let orderSorted = [];
@@ -192,8 +193,9 @@ class Board extends React.Component {
             console.log('product belt count  : ',this.state.products[product.id-1].beltCount);
 
         });
-    }
+    }*/
     render() {
+        console.log('pure order is : ',this.state.order);
         let orderStorted = [];
         this.state.order.forEach(function (item) {
             orderStorted.push([item.id - 1, item.quantity]);
@@ -213,10 +215,7 @@ class Board extends React.Component {
 
             order2.push({ id, quantity, name, productName, symobl, beltCount, cellsDepth})
         });
-        console.log('order2 is ', order2);
-        /*this.setState((order)=>({
-            order:order2
-        }));*/
+
         console.log('I am sending this', order2);
         return (
             <Row>
