@@ -192,6 +192,14 @@ class Board extends React.Component {
 
     }
     fillBoard(order2,cells){
+        // index for each line
+        // index for each column
+        // based on bent cound conditions
+        // continue from the last place
+        // calculate if we need more than one patch
+        order2.forEach(function(item){
+            console.log('item',item);
+        });
         cells[1]=3;
         return cells;
     }
