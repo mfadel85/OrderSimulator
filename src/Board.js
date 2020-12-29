@@ -46,20 +46,9 @@ class Board extends React.Component {
     fillBoard(order2,cells){
         console.log('The order is : ',order2)
         let startIndex = 0;
-        let c0Index = 0;
-        let c1Index = 0;
-        let c2Index = 0;
-        let c3Index = 0;
-        let c4Index = 0;
-        // index for each line
-        // based on belt count conditions
-        // continue from the last place
-        // calculate if we need more than one patch
         let that = this;
         order2.forEach(function(item){
-            console.log("before",startIndex);
-            startIndex = that.modifyIndex(startIndex);
-            console.log("after", startIndex);
+
             if (startIndex + item.beltCount > 5)
                 startIndex = 0;
             that.shiftCells(item.beltCount, item.cellsDepth, 'left', startIndex, item.symobl, cells);
@@ -101,11 +90,7 @@ class Board extends React.Component {
         console.log('swap count', count);
         //console.log('after', cells);
     }
-    modifyIndex(index, beltCount) {
-        if(index+beltCount > 3)
-           index = 0;
-        return index;
-    }
+
     renderCell(i) {
         return <Cell
             value={this.state.cells[i]}
