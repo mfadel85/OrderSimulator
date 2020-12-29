@@ -65,8 +65,15 @@ class Board extends React.Component {
         });
         return cells;
     }
-    fillCellsFromRight(startingPoint,beltCount,cellDepth,cells){
-        console.log(startingPoint, beltCount, cellDepth);
+    fillCellsFromRight(startingPoint,beltCount,cellDepth,cells,symbol){
+        console.log('Right Product: ',startingPoint, beltCount, cellDepth);
+        for(let i=0; i<cellDepth;i++){
+            for(let j=0;j<beltCount;j++){
+                let index = i * 5+j;
+                cells[startingPoint + index] = symbol;
+            }
+            
+        }
         let startPoint = startingPoint +5;
         return cells;
     }
@@ -89,30 +96,30 @@ class Board extends React.Component {
         }
         else if (direction === 'right') {
             console.log('right side');
-            for (let i = 0; i < cellDepth; i++) {
-                console.log('i',i);
-                for(let j =21;j>0;j--){
-                    console.log('j', j);
-
-                    for(let k=0;k<beltCount;k++){
-
+            //for (let i = 0; i < cellDepth; i++) {
+                let i= 0;
+                for(let j =21;j>=0;j--){
+                    //for(let k=0;k<beltCount;k++){
+                        let k=0
                         let startingPoint = startIndex + (j * cellsInRow);
                         let lastEmptyCell = -1;
                         let index = startIndex + (j*cellsInRow) +k;
-                        console.log('index', index, 'startingPoint', startingPoint, 'last empty cell', lastEmptyCell);
+                        console.log('cell index', cells[index],'i', i, 'j', j,'index', index, 'startingPoint', startingPoint, 'last empty cell', lastEmptyCell);
 
                         // handle the case of an empty belt completely
                         // check if there is enough space
-                        if (cells[index] === '' )
-                            lastEmptyCell = index;
-                        else if(cells[index] !== '' || startingPoint <5){
-                            cells = this.fillCellsFromRight(startingPoint,beltCount,cellDepth,cells);
+                        console.log();
+                        if (cells[index] === null && startingPoint < 5)
+                            cells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth, cells,symbol);
+
+                        else if (cells[index] !== null || startingPoint <5){
+                            cells = this.fillCellsFromRight(startingPoint,beltCount,cellDepth,cells,symbol);
                             break;
                         }
-                    }
+                   // }
                 }
 
-            }
+            //}
         }
         console.log('swap count', count);
         //console.log('after', cells);
