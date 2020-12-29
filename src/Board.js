@@ -106,12 +106,18 @@ class Board extends React.Component {
                         let index = startIndex + (j*cellsInRow) +k;
                         console.log('cell index', cells[index],'i', i, 'j', j,'index', index, 'startingPoint', startingPoint, 'last empty cell', lastEmptyCell);
                         // if beltCount is more than one check all the cells and then decide
-                        if (cells[index] === null && startingPoint < 5)
+                        let valid = true;
+                        for(let m =0; m < beltCount; m++){
+                            if (cells[index+m] === null)
+                                valid = true;
+                            else {
+                                valid = false;
+                                break;
+                            } 
+                        }
+                        if ( valid && startingPoint < 5)
                             cells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth, cells,symbol);
-                        else if (cells[index] !== null || startingPoint <5){
-                            if(beltCount>1){
-
-                            }
+                        else if (!valid || startingPoint <5){                            
                             startingPoint = startingPoint +5;
                             cells = this.fillCellsFromRight(startingPoint,beltCount,cellDepth,cells,symbol);
                             break;
