@@ -41,20 +41,22 @@ class Board extends React.Component {
         cells = this.fillBoard(this.state.order, cells);
     }
     handleOneProduct(item,cells,startIndex){
+
         if (startIndex + item.beltCount > 5 || item.beltCount > 3)
             startIndex = 0;
         if (item.beltCount === 3)
             startIndex = 2;
         if (item.beltCount === 2 && startIndex % 2 === 1)
             startIndex = startIndex + 1;
+        let dir = item.name.dir;
+        //console.log('item', item,'dir',dir);
 
-        this.shiftCells(item.beltCount, item.cellsDepth, 'left', startIndex, item.symobl, cells);
+        this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl, cells);
         startIndex = startIndex + item.beltCount;
-        console.log('item', item);
         return startIndex;
     }
     fillBoard(order2,cells){
-        console.log('The order is : ',order2)
+        //console.log('The order is : ',order2)
         let startIndex = 0;
         let that = this;
         order2.forEach(function(item){ 
@@ -64,12 +66,12 @@ class Board extends React.Component {
         return cells;
     }
     fillCellsFromRight(startingPoint,beltCount,cellDepth,cells){
+        console.log(startingPoint, beltCount, cellDepth);
         let startPoint = startingPoint +5;
         return cells;
-
     }
     shiftCells(beltCount, cellDepth, direction, startIndex, symbol, cells) {
-        console.log('symbol', symbol);
+        //console.log('symbol', symbol);
         const cellsInRow = 5;
         let count = 0;
         if (direction === 'left') {
@@ -86,12 +88,19 @@ class Board extends React.Component {
             }
         }
         else if (direction === 'right') {
+            console.log('right side');
             for (let i = 0; i < cellDepth; i++) {
-                for(let j =21;j<0;j--){
+                console.log('i',i);
+                for(let j =21;j>0;j--){
+                    console.log('j', j);
+
                     for(let k=0;k<beltCount;k++){
+
                         let startingPoint = startIndex + (j * cellsInRow);
                         let lastEmptyCell = -1;
                         let index = startIndex + (j*cellsInRow) +k;
+                        console.log('index', index, 'startingPoint', startingPoint, 'last empty cell', lastEmptyCell);
+
                         // handle the case of an empty belt completely
                         // check if there is enough space
                         if (cells[index] === '' )
