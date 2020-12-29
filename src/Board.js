@@ -42,40 +42,44 @@ class Board extends React.Component {
         };         
         cells = this.fillBoard(this.state.order, cells);
     }
+    handleOneProduct(item,cells,startIndex){
+        if (startIndex + item.beltCount > 5 || item.beltCount > 3)
+            startIndex = 0;
+        if (item.beltCount == 3)
+            startIndex = 2;
+        if (item.beltCount == 2 && startIndex % 2 == 1)
+            startIndex = startIndex + 1;
 
+        this.shiftCells(item.beltCount, item.cellsDepth, 'left', startIndex, item.symobl, cells);
+        startIndex = startIndex + item.beltCount;
+        console.log('item', item);
+        return startIndex;
+    }
     fillBoard(order2,cells){
         console.log('The order is : ',order2)
         let startIndex = 0;
         let that = this;
-        order2.forEach(function(item){
-
-            if (startIndex + item.beltCount > 5)
-                startIndex = 0;
-            that.shiftCells(item.beltCount, item.cellsDepth, 'left', startIndex, item.symobl, cells);
-            startIndex = startIndex + item.beltCount;
-            console.log('item',item);
+        order2.forEach(function(item){ 
+            for(let m = 0;m<item.quantity;m++)
+                startIndex = that.handleOneProduct(item,cells,startIndex);
         });
         return cells;
     }
+    fillCellsFromRight(startingPoint,beltCount,cellDepth,cells){
+        let startPoint = startingPoint +5;
+        return cells;
 
+    }
     shiftCells(beltCount, cellDepth, direction, startIndex, symbol, cells) {
         console.log('symbol', symbol);
-        //console.log('before', cells);
         const cellsInRow = 5;
-        // shift all the cells left
         let count = 0;
         if (direction == 'left') {
             for (let i = 0; i < cellDepth; i++) {
                 //let i=0;
                 for (let j = 21; j > 0; j--) {
                     for (let k = 0; k < beltCount; k++) {
-
-                        let index = startIndex + (j * cellsInRow) + k;
-                        //console.log('cell contnets: ', cells[index], 'index is ', index, 'i', i, 'j', j, 'k', k); 
-                        //console.log('index is ', index, 'i', i, 'j', j, 'k', k);
-                        if (cells[index] != null) {
-                            //console.log('index is ', index, 'i', i, 'j', j, 'k', k); 
-                        }
+                        let index = startIndex + (j * cellsInRow) + k;                       
                         count = count + 1;
                         cells[index] = cells[index - 5];
                         cells[index - 5] = symbol;
@@ -85,6 +89,22 @@ class Board extends React.Component {
         }
         else if (direction == 'right') {
             for (let i = 0; i < cellDepth; i++) {
+                for(let j =21;j<0;j--){
+                    for(let k=0;k<beltCount;k++){
+                        let startingPoint = startIndex + (j * cellsInRow);
+                        let lastEmptyCell = -1;
+                        let index = startIndex + (j*cellsInRow) +k;
+                        // handle the case of an empty belt completely
+                        // check if there is enough space
+                        if(cells[index] == '' )
+                            lastEmptyCell = index;
+                        else if(cells[index] !='' || startingPoint <5){
+                            cells = this.fillCellsFromRight(startingPoint,beltCount,cellDepth,cells);
+                            break;
+                        }
+                    }
+                }
+
             }
         }
         console.log('swap count', count);
