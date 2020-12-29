@@ -182,6 +182,7 @@ class Board extends React.Component {
             order2.push({ id, quantity, name, productName, symobl, beltCount, cellsDepth })
         });        
         let cells = Array(110).fill(1); 
+        cells[1] =5;
         cells = this.fillBoard(order2,cells);
         this.state = {
             cells: cells,
@@ -191,8 +192,25 @@ class Board extends React.Component {
         };
 
     }
-    shiftCells(beltCount,cellCount,direction,startIndex){
-
+    shiftCells(beltCount,cellDepth,direction,startIndex,symbol,cells){
+        console.log('before',cells);
+        const cellsInRow = 5;
+        // shift all the cells left
+        if (direction == 'left'){
+            for (let i = 0; i < cellDepth; i++) {
+                for(let j =31; j > 0; j--){
+                    for(let k =0;k<beltCount;k++){
+                        let index = startIndex + i + (j * cellsInRow) + k;
+                        cells[index]= cells[index-5];
+                        cells[index - 5]= symbol;
+                    }
+                }
+            }
+        }
+        this.setState({
+            cells:cells
+        });
+        console.log('after',cells);
     }
     fillBoard(order2,cells){
         let startIndex = 0;
@@ -201,7 +219,7 @@ class Board extends React.Component {
         let c2Index = 0;
         let c3Index = 0;
         let c4Index = 0;
-        
+        this.shiftCells(2,2,'left',1,'P',cells)
         // index for each line
         // based on belt count conditions
         // continue from the last place
@@ -210,7 +228,7 @@ class Board extends React.Component {
             
             //console.log('item',item);
         });
-        cells[1]=3;
+        //cells[1]=3;
         return cells;
     }
     handleClick(i) {
