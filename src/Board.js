@@ -5,14 +5,14 @@ import Cell from './Cell.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { allProducts,lovelyOrder } from './data.js';
+import { allProducts, lovelyOrder, terminator } from './data.js';
 
 class Board extends React.Component {
 
     constructor(props) {
         super(props);
         let products = allProducts;
-        let order1 = lovelyOrder;
+        let order1 = terminator;
         console.log('pure order is : ', order1);
         let orderStorted = [];
         order1.forEach(function (item) {
