@@ -45,10 +45,6 @@ class Board extends React.Component {
 
     fillBoard(order2,cells){
         console.log('The order is : ',order2)
-        cells[1] = 3;
-        cells[2] = 3;
-        cells[6] = 3;
-        cells[7] = 3;
         let startIndex = 0;
         let c0Index = 0;
         let c1Index = 0;
