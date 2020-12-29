@@ -41,7 +41,7 @@ class Board extends React.Component {
         cells = this.fillBoard(this.state.order, cells);
     }
     handleOneProduct(item,cells,startIndex){
-
+        // check the situation of the cells to decide which startIndex
         if (startIndex + item.beltCount > 5 || item.beltCount > 3)
             startIndex = 0;
         if (item.beltCount === 3)
@@ -105,14 +105,14 @@ class Board extends React.Component {
                         let lastEmptyCell = -1;
                         let index = startIndex + (j*cellsInRow) +k;
                         console.log('cell index', cells[index],'i', i, 'j', j,'index', index, 'startingPoint', startingPoint, 'last empty cell', lastEmptyCell);
-
-                        // handle the case of an empty belt completely
-                        // check if there is enough space
-                        console.log();
+                        // if beltCount is more than one check all the cells and then decide
                         if (cells[index] === null && startingPoint < 5)
                             cells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth, cells,symbol);
-
                         else if (cells[index] !== null || startingPoint <5){
+                            if(beltCount>1){
+
+                            }
+                            startingPoint = startingPoint +5;
                             cells = this.fillCellsFromRight(startingPoint,beltCount,cellDepth,cells,symbol);
                             break;
                         }

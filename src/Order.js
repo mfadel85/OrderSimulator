@@ -18,7 +18,7 @@ class Order extends React.Component {
 
     render() {
         return this.props.order.map((product) => (
-            <h5 key={product.name.id} > { product.name.name} - { product.quantity} pcs - { product.name.dir}</h5>
+            <h5 key={product.name.id} > { product.name.name}  - { product.quantity} pcs - { product.name.dir}  - { product.name.beltCount} </h5>
         ))
     };
 }
