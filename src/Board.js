@@ -191,14 +191,24 @@ class Board extends React.Component {
         };
 
     }
+    shiftCells(beltCount,cellCount,direction,startIndex){
+
+    }
     fillBoard(order2,cells){
+        let startIndex = 0;
+        let c0Index = 0;
+        let c1Index = 0;
+        let c2Index = 0;
+        let c3Index = 0;
+        let c4Index = 0;
+        
         // index for each line
-        // index for each column
-        // based on bent cound conditions
+        // based on belt count conditions
         // continue from the last place
         // calculate if we need more than one patch
         order2.forEach(function(item){
-            console.log('item',item);
+            
+            //console.log('item',item);
         });
         cells[1]=3;
         return cells;
