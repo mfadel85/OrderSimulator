@@ -9,158 +9,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
+import { allProducts, mainOrder } from './data.js';
 
 class Board extends React.Component {
 
     constructor(props) {
         super(props);
-        let products = [
-            {
-                id: 1,
-                name: 'Pepsi',
-                symbol: 'P',
-                dir: 'left',
-                width: 10,
-                depth: 10,
-                beltCount: 2,
-                cellsDepth: 4,
-                unitNo: 1
-            },
-            {
-                id: 2,
-                name: 'Browni',
-                symbol: 'B',
-                dir: 'right',
-                width: 12,
-                depth: 6,
-                beltCount: 2,
-                cellsDepth: 3,
-                unitNo: 2
-            },
-            {
-                id: 3,
-                name: 'Jucy',
-                symbol: 'J',
-                dir: 'right',
-                width: 6.2,
-                depth: 9.3,
-                beltCount: 1,
-                cellsDepth: 4,
-                unitNo: 1
-            },
-            {
-                id: 4,
-                name: 'Milk',
-                symbol: 'M',
-                dir: 'right',
-                width: 6.6,
-                depth: 5,
-                beltCount: 1,
-                cellsDepth: 2,
-                unitNo: 2
-            },
-            {
-                id: 5,
-                name: 'Islak Mendil',
-                symbol: 'I',
-                dir: 'left',
-                width: 9.5,
-                depth: 25,
-                beltCount: 2,
-                cellsDepth: 10,
-                unitNo: 3
-            },
-            {
-                id: 6,
-                name: 'Tooth Paste',
-                symbol: 'T',
-                dir: 'left',
-                width: 20,
-                depth: 3.6,
-                beltCount: 3,
-                cellsDepth: 2,
-                unitNo: 3
-            },
-            {
-                id: 7,
-                name: 'Cafe Crown',
-                symbol: 'C',
-                dir: 'right',
-                width: 7,
-                depth: 10.5,
-                beltCount: 1,
-                cellsDepth: 5,
-                unitNo: 4
-            },
-            {
-                id: 8,
-                name: 'Gofret',
-                symbol: 'G',
-                dir: 'left',
-                width: 18,
-                depth: 3.5,
-                beltCount: 3,
-                cellsDepth: 2,
-                unitNo: 1
-            },
-            {
-                id: 9,
-                name: 'Çıkolata',
-                symbol: 'Ç',
-                dir: 'left',
-                width: 13,
-                depth: 9.2,
-                beltCount: 2,
-                cellsDepth: 4,
-                unitNo: 3
-            },
-            {
-                id: 10,
-                name: 'Domates Salçası',
-                symbol: 'D',
-                dir: 'right',
-                width: 10,
-                depth: 10,
-                beltCount: 2,
-                cellsDepth: 4,
-                unitNo: 4
-            },
-            {
-                id: 11,
-                name: 'Ülker Laviva',
-                symbol: 'Ü',
-                dir: 'left',
-                width: 15,
-                depth: 2.6,
-                beltCount: 3,
-                cellsDepth: 2,
-                unitNo: 1
-            },
-            {
-                id: 12,
-                name: 'Coka Cola',
-                symbol: 'K',
-                dir: 'left',
-                width: 5.8,
-                depth: 5.8,
-                beltCount: 1,
-                cellsDepth: 3,
-                unitNo: 1
-            },
-        ];
-        let order1 = [
-            { id: 12, quantity: 1 },
-            { id: 1, quantity: 2 },
-            { id: 7, quantity: 1 },
-            { id: 10, quantity: 1 },
-            { id: 4, quantity: 1 },
-            { id: 5, quantity: 1 },
-            { id: 6, quantity: 1 },
-            { id: 8, quantity: 1 },
-            { id: 3, quantity: 1 },
-            { id: 11, quantity: 1 },
-        ];
+        let products = allProducts;
+        let order1 =mainOrder;
         console.log('pure order is : ', order1);
         let orderStorted = [];
         order1.forEach(function (item) {
@@ -177,49 +33,21 @@ class Board extends React.Component {
             let beltCount = name.beltCount;
             let cellsDepth = name.cellsDepth;
             let symobl = name.symbol;
-            //console.log('ProductID ', id, 'quan', quantity, 'name', name.name);
-
             order2.push({ id, quantity, name, productName, symobl, beltCount, cellsDepth })
         });        
         let cells = Array(110).fill(null); 
-        //cells[1] =5;
-        cells = this.fillBoard(order2,cells);
         this.state = {
             cells: cells,
             xIsNext: true,
             products: products,
             order: order2
-        };
+        };         
+        cells = this.fillBoard(order2, cells);
+    }
 
-    }
-    shiftCells(beltCount,cellDepth,direction,startIndex,symbol,cells){
-        console.log('before',cells);
-        const cellsInRow = 5;
-        // shift all the cells left
-        if (direction == 'left'){
-            for (let i = 0; i < cellDepth; i++) {
-                let i=0;
-                for(let j =21; j > 0; j--){
-                    for(let k =0;k<beltCount;k++){
-                        
-                        let index = startIndex + i + (j * cellsInRow) + k;
-                        console.log('cell contnets: ', cells[index], 'index is ', index, 'i', i, 'j', j, 'k', k); 
-                        //console.log('index is ', index, 'i', i, 'j', j, 'k', k);
-                        if(cells[index]!= null){
-                            console.log('index is ', index, 'i', i, 'j', j, 'k', k); 
-                        }
-                        cells[index]= cells[index-5];
-                        cells[index - 5]= symbol;
-                    }
-                }
-            }
-        }
-        this.setState({
-            cells:cells
-        });
-        console.log('after',cells);
-    }
+
     fillBoard(order2,cells){
+        console.log('The order is : ',order2)
         cells[1] = 3;
         cells[2] = 3;
         cells[6] = 3;
@@ -230,18 +58,64 @@ class Board extends React.Component {
         let c2Index = 0;
         let c3Index = 0;
         let c4Index = 0;
-        this.shiftCells(2,2,'left',1,'P',cells)
         // index for each line
         // based on belt count conditions
         // continue from the last place
         // calculate if we need more than one patch
+        let that = this;
         order2.forEach(function(item){
+            startIndex = that.modifyIndex(startIndex);
+            that.shiftCells(item.beltCount, item.cellsDepth, 'left', startIndex, item.symobl, cells);
+            startIndex = startIndex + item.beltCount;
             
-            //console.log('item',item);
+
+            console.log('item',item);
         });
         
 
         return cells;
+    }
+    shiftCells(beltCount, cellDepth, direction, startIndex, symbol, cells) {
+        console.log('symbol', symbol);
+
+        console.log('before', cells);
+        const cellsInRow = 5;
+        // shift all the cells left
+        let count = 0;
+        if (direction == 'left') {
+            for (let i = 0; i < cellDepth; i++) {
+                //let i=0;
+                for (let j = 21; j > 0; j--) {
+                    for (let k = 0; k < beltCount; k++) {
+
+                        let index = startIndex + (j * cellsInRow) + k;
+                        //console.log('cell contnets: ', cells[index], 'index is ', index, 'i', i, 'j', j, 'k', k); 
+                        //console.log('index is ', index, 'i', i, 'j', j, 'k', k);
+                        if (cells[index] != null) {
+                            //console.log('index is ', index, 'i', i, 'j', j, 'k', k); 
+                        }
+                        count = count + 1;
+                        cells[index] = cells[index - 5];
+                        cells[index - 5] = symbol;
+                    }
+                }
+            }
+        }
+        else if (direction == 'right') {
+            for (let i = 0; i < cellDepth; i++) {
+            }
+        }
+        console.log('swap count', count);
+        console.log('after', cells);
+    }
+    modifyIndex(index, beltCount) {
+        if (index > 4 && beltCount == 1)
+            index = 0;
+        if (index > 3 && beltCount == 2)
+            index = 0;
+        if (index > 2 && beltCount == 3)
+            index = 0;
+        return index;
     }
     handleClick(i) {
     }
@@ -251,11 +125,17 @@ class Board extends React.Component {
             onClick={() => this.handleClick(i)}
         />;
     }
-
+    wait(ms) {
+        var start = new Date().getTime();
+        var end = start;
+        while (end < start + ms) {
+            end = new Date().getTime();
+        }
+    }
     render() {
 
 
-        console.log('I am sending this', this.state.order);
+        //console.log('I am sending this', this.state.order);
         return (
             <Row>
                 <Col> 
