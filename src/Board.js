@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Container from 'react-bootstrap/Container';
 import Products from './products.js';
 import Order from './Order.js';
-
 import Cell from './Cell.js';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { allProducts, mainOrder } from './data.js';
@@ -29,7 +27,7 @@ class Board extends React.Component {
             let id = product[0];
             let quantity = product[1];
             let name = that[id];
-            let productName = name.name;
+            let  productName= name.name;
             let beltCount = name.beltCount;
             let cellsDepth = name.cellsDepth;
             let symobl = name.symbol;
@@ -42,9 +40,8 @@ class Board extends React.Component {
             products: products,
             order: order2
         };         
-        cells = this.fillBoard(order2, cells);
+        cells = this.fillBoard(this.state.order, cells);
     }
-
 
     fillBoard(order2,cells){
         console.log('The order is : ',order2)
@@ -67,18 +64,14 @@ class Board extends React.Component {
             startIndex = that.modifyIndex(startIndex);
             that.shiftCells(item.beltCount, item.cellsDepth, 'left', startIndex, item.symobl, cells);
             startIndex = startIndex + item.beltCount;
-            
-
             console.log('item',item);
         });
-        
-
         return cells;
     }
+
     shiftCells(beltCount, cellDepth, direction, startIndex, symbol, cells) {
         console.log('symbol', symbol);
-
-        console.log('before', cells);
+        //console.log('before', cells);
         const cellsInRow = 5;
         // shift all the cells left
         let count = 0;
@@ -106,7 +99,7 @@ class Board extends React.Component {
             }
         }
         console.log('swap count', count);
-        console.log('after', cells);
+        //console.log('after', cells);
     }
     modifyIndex(index, beltCount) {
         if (index > 4 && beltCount == 1)
@@ -117,25 +110,15 @@ class Board extends React.Component {
             index = 0;
         return index;
     }
-    handleClick(i) {
-    }
     renderCell(i) {
         return <Cell
             value={this.state.cells[i]}
-            onClick={() => this.handleClick(i)}
         />;
     }
-    wait(ms) {
-        var start = new Date().getTime();
-        var end = start;
-        while (end < start + ms) {
-            end = new Date().getTime();
-        }
-    }
+
+
     render() {
-
-
-        //console.log('I am sending this', this.state.order);
+        console.log('I am being rendered');
         return (
             <Row>
                 <Col> 
@@ -148,7 +131,6 @@ class Board extends React.Component {
                 </Col>
                 
                 <Col>
-
                     <div className="board-row">
                         {this.renderCell(0)}
                         {this.renderCell(1)}
