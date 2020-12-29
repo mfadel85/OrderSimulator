@@ -1,13 +1,11 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import Container from 'react-bootstrap/Container';
 import Products from './products.js';
 import Order from './Order.js';
 import Cell from './Cell.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { allProducts, mainOrder,lovelyOrder } from './data.js';
+import { allProducts,lovelyOrder } from './data.js';
 
 class Board extends React.Component {
 
@@ -45,9 +43,9 @@ class Board extends React.Component {
     handleOneProduct(item,cells,startIndex){
         if (startIndex + item.beltCount > 5 || item.beltCount > 3)
             startIndex = 0;
-        if (item.beltCount == 3)
+        if (item.beltCount === 3)
             startIndex = 2;
-        if (item.beltCount == 2 && startIndex % 2 == 1)
+        if (item.beltCount === 2 && startIndex % 2 === 1)
             startIndex = startIndex + 1;
 
         this.shiftCells(item.beltCount, item.cellsDepth, 'left', startIndex, item.symobl, cells);
@@ -74,7 +72,7 @@ class Board extends React.Component {
         console.log('symbol', symbol);
         const cellsInRow = 5;
         let count = 0;
-        if (direction == 'left') {
+        if (direction === 'left') {
             for (let i = 0; i < cellDepth; i++) {
                 //let i=0;
                 for (let j = 21; j > 0; j--) {
@@ -87,7 +85,7 @@ class Board extends React.Component {
                 }
             }
         }
-        else if (direction == 'right') {
+        else if (direction === 'right') {
             for (let i = 0; i < cellDepth; i++) {
                 for(let j =21;j<0;j--){
                     for(let k=0;k<beltCount;k++){
@@ -96,9 +94,9 @@ class Board extends React.Component {
                         let index = startIndex + (j*cellsInRow) +k;
                         // handle the case of an empty belt completely
                         // check if there is enough space
-                        if(cells[index] == '' )
+                        if (cells[index] === '' )
                             lastEmptyCell = index;
-                        else if(cells[index] !='' || startingPoint <5){
+                        else if(cells[index] !== '' || startingPoint <5){
                             cells = this.fillCellsFromRight(startingPoint,beltCount,cellDepth,cells);
                             break;
                         }

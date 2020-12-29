@@ -15,15 +15,8 @@ class Order extends React.Component {
         else 
             return 1;
     }
-    sortOrder(order){
-        //console.log('Before?  ', this.props.order);
-        let sortedOrder = order.sort(function(a, b){  return  a.beltCount - b.beltCount});
-        //console.log('is this sorted?  ', order);
-        return order;
-    }
+
     render() {
-        let orderSorted = this.props.order;
-        let finalOrder = this.sortOrder(orderSorted);
         return this.props.order.map((product) => (
             <h5 key={product.name.id} > { product.name.name} { product.quantity} pcs</h5>
         ))
