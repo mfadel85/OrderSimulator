@@ -7,14 +7,14 @@ import Cell from './Cell.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { allProducts, mainOrder } from './data.js';
+import { allProducts, mainOrder,lovelyOrder } from './data.js';
 
 class Board extends React.Component {
 
     constructor(props) {
         super(props);
         let products = allProducts;
-        let order1 =mainOrder;
+        let order1 = lovelyOrder;
         console.log('pure order is : ', order1);
         let orderStorted = [];
         order1.forEach(function (item) {
@@ -61,7 +61,11 @@ class Board extends React.Component {
         // calculate if we need more than one patch
         let that = this;
         order2.forEach(function(item){
+            console.log("before",startIndex);
             startIndex = that.modifyIndex(startIndex);
+            console.log("after", startIndex);
+            if (startIndex + item.beltCount > 5)
+                startIndex = 0;
             that.shiftCells(item.beltCount, item.cellsDepth, 'left', startIndex, item.symobl, cells);
             startIndex = startIndex + item.beltCount;
             console.log('item',item);
@@ -102,12 +106,8 @@ class Board extends React.Component {
         //console.log('after', cells);
     }
     modifyIndex(index, beltCount) {
-        if (index > 4 && beltCount == 1)
-            index = 0;
-        if (index > 3 && beltCount == 2)
-            index = 0;
-        if (index > 2 && beltCount == 3)
-            index = 0;
+        if(index+beltCount > 3)
+           index = 0;
         return index;
     }
     renderCell(i) {
