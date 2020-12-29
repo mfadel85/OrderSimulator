@@ -145,7 +145,7 @@ class Board extends React.Component {
                     <Order order={this.state.order} products={this.state.products} />
                 </Col>
                 
-                <Col>
+                <Col xs={6}>
                     <div className="board-row">
                         {this.renderCell(0)}
                         {this.renderCell(1)}
