@@ -60,11 +60,7 @@ class Board extends React.Component {
         //let currentcells = this.state.cells.slice();
         let currentcells = [...this.state.cells];
         console.log('History now ', this.state.history);
-        this.setState({
-            cells: cells,
-            history: [...this.state.history, { cells: currentcells }, { cells: cells }]
-        });
-        console.log('History after now ', this.state.history);
+
 
         if (startIndex + item.beltCount > this.state.cellsInRow || item.beltCount > 3)
             startIndex = 0;
@@ -77,27 +73,23 @@ class Board extends React.Component {
         let dir = item.name.dir;
         this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl, cells);
         startIndex = startIndex + item.beltCount;
+        this.setState({
+            cells: cells,
+            history: [...this.state.history, { cells: currentcells }, { cells: cells }]
+        });
+        console.log('History after now ', this.state.history);
         return [startIndex,cells];
     }
 
     fillBoard(){
+        // this is to refactored soon!!
+        let result = [0,[]];// startIndex to 
         let startIndex = 0;
         let that = this;
         this.state.order.forEach(function(item){ 
             for(let m = 0;m<item.quantity;m++)
             {
-               /* const serefsizler = that.state.cells.slice();
-                that.setState({
-                    cells: that.state.cells,
-                    history: [...that.state.history, { cells: serefsizler }]
-                });*/
-                //let index = that.modifyIndex(startIndex,item.beltCount);
-                const result = that.handleOneProduct(item, that.state.cells, startIndex);
-                startIndex = result[0];
-                /*that.setState({
-                    cells: that.state.cells,
-                    history: [...that.state.history, { cells: result[1] } ]
-                });*/
+                result = that.handleOneProduct(item, that.state.cells, result[0]);
             }
                 
         });
