@@ -78,7 +78,7 @@ class Board extends React.Component {
         for(let i=0; i<cellDepth;i++){
             for(let j=0;j<beltCount;j++){
                 let index = i * 5+j;
-                cells[startingPoint + index] = symbol;
+                cells[startingPoint + index] = symbol+": Right";
             }
             
         }
@@ -97,7 +97,7 @@ class Board extends React.Component {
                         let index = startIndex + (j * cellsInRow) + k;                       
                         count = count + 1;
                         cells[index] = cells[index - 5];
-                        cells[index - 5] = symbol;
+                        cells[index - 5] ="Left "+ symbol ;
                     }
                 }
             }
