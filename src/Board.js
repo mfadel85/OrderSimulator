@@ -28,8 +28,8 @@ class Board extends React.Component {
             let  productName= name.name;
             let beltCount = name.beltCount;
             let cellsDepth = name.cellsDepth;
-            let symobl = name.symbol;
-            order2.push({ id, quantity, name, productName, symobl, beltCount, cellsDepth })
+            let symbol = name.symbol;
+            order2.push({ id, quantity, name, productName, symbol, beltCount, cellsDepth })
         });     
 
         let cells = Array(110).fill(null); 
@@ -71,7 +71,7 @@ class Board extends React.Component {
         console.log('startIndex is ', startIndex);
 
         let dir = item.name.dir;
-        this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl,item);
+        this.shiftCells(item.beltCount,  dir, startIndex, item.symbol,item);
         startIndex = startIndex + item.beltCount;
         this.setState({
             cells: this.state.cells,
@@ -102,10 +102,8 @@ class Board extends React.Component {
         for(let i=0; i<item.cellsDepth;i++)
             for(let j=0;j<item.beltCount;j++){
                 let index = i * this.state.cellsInRow+j;
-                currentCells[startingPoint + index] = item.symobl+": Right";
+                currentCells[startingPoint + index] = item.symbol+": Right";
             }
-            
-        
         let startPoint = startingPoint +5;
         return currentCells;
     }
@@ -124,7 +122,7 @@ class Board extends React.Component {
         return index;
     }
 
-    shiftCells(beltCount, cellDepth, direction, startIndex, symbol,item) {
+    shiftCells(beltCount,  direction, startIndex, symbol,item) {
         let currentCells = this.state.cells;
         const cellsInRow = this.state.cellsInRow;
         let count = 0;
@@ -135,7 +133,7 @@ class Board extends React.Component {
                         let index = startIndex + (j * cellsInRow) + k;                       
                         count = count + 1;
                         currentCells[index] = currentCells[index - cellsInRow];
-                        currentCells[index - cellsInRow] ="Left "+ symbol ;
+                        currentCells[index - cellsInRow] = "Left " + item.symbol ;
                     } 
         else if (direction === 'right') {
             console.log('right side');
