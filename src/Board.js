@@ -21,6 +21,7 @@ class Board extends React.Component {
         console.log('SOrted', orderStorted);
         let order2 = [];
         let that = products;
+        // order to be set dynamically
         orderStorted.forEach((product) => {
             let id = product[0];
             let quantity = product[1];
@@ -73,27 +74,25 @@ class Board extends React.Component {
         startIndex = startIndex + item.beltCount;
         this.setState({
             cells: this.state.cells,
+            index:startIndex,
             history: [...this.state.history, { cells: currentcells }, { cells: this.state.cells }]
         });
         console.log('History after now ', this.state.history);
-        return [startIndex, this.state.cells];
+        return startIndex;
     }
 
     fillBoard(){
+        //window.location.reload();
         // this is to refactored soon!!
-        let result = [0,[]];// startIndex to 
         let startIndex = 0;
         let that = this;
         this.state.order.forEach(function(item){ 
             for(let m = 0;m<item.quantity;m++)
             {
-                result = that.handleOneProduct(item,  result[0]);
+                startIndex = that.handleOneProduct(item, startIndex);
             }
-                
         });
         console.log('History after now ', this.state.history);
-
-
     }
     fillCellsFromRight(startingPoint,item){
         let currentCells = this.state.cells;
