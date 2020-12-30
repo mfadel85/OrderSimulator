@@ -56,7 +56,7 @@ class Board extends React.Component {
             //console.log('Result: Name',a.name.name,a.beltCount - b.beltCount)
             return a.beltCount - b.beltCount;         
     }
-    handleOneProduct(item,cells,startIndex){
+    handleOneProduct(item,startIndex){
         //let currentcells = this.state.cells.slice();
         let currentcells = [...this.state.cells];
         console.log('History now ', this.state.history);
@@ -71,14 +71,14 @@ class Board extends React.Component {
         console.log('startIndex is ', startIndex);
 
         let dir = item.name.dir;
-        this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl, cells);
+        this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl, this.state.cells);
         startIndex = startIndex + item.beltCount;
         this.setState({
-            cells: cells,
-            history: [...this.state.history, { cells: currentcells }, { cells: cells }]
+            cells: this.state.cells,
+            history: [...this.state.history, { cells: currentcells }, { cells: this.state.cells }]
         });
         console.log('History after now ', this.state.history);
-        return [startIndex,cells];
+        return [startIndex, this.state.cells];
     }
 
     fillBoard(){
@@ -89,7 +89,7 @@ class Board extends React.Component {
         this.state.order.forEach(function(item){ 
             for(let m = 0;m<item.quantity;m++)
             {
-                result = that.handleOneProduct(item, that.state.cells, result[0]);
+                result = that.handleOneProduct(item,  result[0]);
             }
                 
         });
