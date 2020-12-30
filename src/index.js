@@ -7,6 +7,9 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 
 class Simulator extends React.Component {
+  sayHello(){
+    alert('Hello!');
+  }
   render() {
     return (
       <Container>
@@ -14,10 +17,9 @@ class Simulator extends React.Component {
         Test
         </Row>
         <Board />
-        <div className="game-info">
-          <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
-        </div>
+        <Row>
+
+        </Row>
       </Container>    
       );
   }

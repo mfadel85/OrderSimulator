@@ -37,12 +37,17 @@ class Board extends React.Component {
             cells: cells,
             xIsNext: true,
             products: products,
-            order: order2
+            order: order2,
+            history:[{
+                cells:cells
+
+            }],
         };   
         console.log('before',order2);
         order2.sort(this.sortProduct);
         console.log('after', order2);
-        cells = this.fillBoard(order2, cells);
+        this.fillBoard = this.fillBoard.bind(this);
+        //cells = this.fillBoard();
     }
     sortProduct(a, b) {
             //console.log('Result: Name',a.name.name,a.beltCount - b.beltCount)
@@ -63,7 +68,9 @@ class Board extends React.Component {
         startIndex = startIndex + item.beltCount;
         return startIndex;
     }
-    fillBoard(order2,cells){
+    fillBoard(){
+        let order2 = this.state.order;
+        let cells = this.state.cells;
         //console.log('The order is : ',order2)
         let startIndex = 0;
         let that = this;
@@ -71,7 +78,10 @@ class Board extends React.Component {
             for(let m = 0;m<item.quantity;m++)
                 startIndex = that.handleOneProduct(item,cells,startIndex);
         });
-        return cells;
+        this.setState({
+            cells:cells
+        })
+        //return cells;
     }
     fillCellsFromRight(startingPoint,beltCount,cellDepth,cells,symbol){
         console.log('Right Product: ',startingPoint, beltCount, cellDepth);
@@ -144,9 +154,13 @@ class Board extends React.Component {
             value={this.state.cells[i]}
         />;
     }
-
+    sayHello(){
+        alert("Hello");
+    }
 
     render() {
+        const history = this.state.history;
+        const current = history[history.length-1];
         console.log('I am being rendered');
         return (
             <Row>
@@ -157,6 +171,9 @@ class Board extends React.Component {
                 <Col>
                     <h2>Order Sorted</h2>
                     <Order order={this.state.order} products={this.state.products} />
+                    <button onClick={this.fillBoard}>
+                        Start Order
+                    </button>
                 </Col>
                 
                 <Col xs={6}>
@@ -316,6 +333,7 @@ class Board extends React.Component {
                     </div>
                 </Col>
             </Row>
+            
         );
     }
 }
