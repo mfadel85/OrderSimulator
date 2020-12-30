@@ -97,17 +97,18 @@ class Board extends React.Component {
 
 
     }
-    fillCellsFromRight(startingPoint,beltCount,cellDepth,cells,symbol){
+    fillCellsFromRight(startingPoint,beltCount,cellDepth,symbol){
+        let currentCells = this.state.cells;
         console.log('Right Product: ',startingPoint, beltCount, cellDepth);
         for(let i=0; i<cellDepth;i++){
             for(let j=0;j<beltCount;j++){
                 let index = i * this.state.cellsInRow+j;
-                cells[startingPoint + index] = symbol+": Right";
+                currentCells[startingPoint + index] = symbol+": Right";
             }
             
         }
         let startPoint = startingPoint +5;
-        return cells;
+        return currentCells;
     }
 
     modifyIndex(startIndex, beltCount) {
@@ -155,10 +156,10 @@ class Board extends React.Component {
                     } 
                 }
                 if ( valid && startingPoint < 5)
-                    currentCells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth, currentCells,symbol);
+                    currentCells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth,symbol);
                 else if (!valid || startingPoint < cellsInRow){                            
                     startingPoint = startingPoint + cellsInRow;
-                    currentCells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth, currentCells,symbol);
+                    currentCells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth,symbol);
                     break;
                 }
             }
