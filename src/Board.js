@@ -71,7 +71,7 @@ class Board extends React.Component {
         console.log('startIndex is ', startIndex);
 
         let dir = item.name.dir;
-        this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl, this.state.cells);
+        this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl);
         startIndex = startIndex + item.beltCount;
         this.setState({
             cells: this.state.cells,
@@ -124,12 +124,8 @@ class Board extends React.Component {
         return index;
     }
 
-    shiftCells(beltCount, cellDepth, direction, startIndex, symbol, cells) {
-        const currentcells = cells.slice();
-        this.setState({
-            cells: cells,
-            history: [...this.state.history, { cells: currentcells }, { cells: cells }]
-        });
+    shiftCells(beltCount, cellDepth, direction, startIndex, symbol) {
+        let currentCells = this.state.cells;
         const cellsInRow = this.state.cellsInRow;
         let count = 0;
         if (direction === 'left') 
@@ -138,8 +134,8 @@ class Board extends React.Component {
                     for (let k = 0; k < beltCount; k++) {
                         let index = startIndex + (j * cellsInRow) + k;                       
                         count = count + 1;
-                        cells[index] = cells[index - cellsInRow];
-                        cells[index - cellsInRow] ="Left "+ symbol ;
+                        currentCells[index] = currentCells[index - cellsInRow];
+                        currentCells[index - cellsInRow] ="Left "+ symbol ;
                     } 
         else if (direction === 'right') {
             console.log('right side');
@@ -151,7 +147,7 @@ class Board extends React.Component {
                 let index = startIndex + (j*cellsInRow) +k;
                 let valid = true;
                 for(let m =0; m < beltCount; m++){
-                    if (cells[index+m] === null)
+                    if (currentCells[index+m] === null)
                         valid = true;
                     else {
                         valid = false;
@@ -159,18 +155,21 @@ class Board extends React.Component {
                     } 
                 }
                 if ( valid && startingPoint < 5)
-                    cells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth, cells,symbol);
+                    currentCells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth, currentCells,symbol);
                 else if (!valid || startingPoint < cellsInRow){                            
                     startingPoint = startingPoint + cellsInRow;
-                    cells = this.fillCellsFromRight(startingPoint,beltCount,cellDepth,cells,symbol);
+                    currentCells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth, currentCells,symbol);
                     break;
                 }
             }
         }
         console.log('swap count', count);
+        this.setState({
+            cells:currentCells,
+            history: [...this.state.history, { cells: currentCells }]
+        });
 
-
-        return cells;
+        return currentCells;
     }
 
     renderCell(i) {
