@@ -71,7 +71,7 @@ class Board extends React.Component {
         console.log('startIndex is ', startIndex);
 
         let dir = item.name.dir;
-        this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl);
+        this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl,item);
         startIndex = startIndex + item.beltCount;
         this.setState({
             cells: this.state.cells,
@@ -97,16 +97,15 @@ class Board extends React.Component {
 
 
     }
-    fillCellsFromRight(startingPoint,beltCount,cellDepth,symbol){
+    fillCellsFromRight(startingPoint,item){
         let currentCells = this.state.cells;
-        console.log('Right Product: ',startingPoint, beltCount, cellDepth);
-        for(let i=0; i<cellDepth;i++){
-            for(let j=0;j<beltCount;j++){
+        for(let i=0; i<item.cellsDepth;i++)
+            for(let j=0;j<item.beltCount;j++){
                 let index = i * this.state.cellsInRow+j;
-                currentCells[startingPoint + index] = symbol+": Right";
+                currentCells[startingPoint + index] = item.symobl+": Right";
             }
             
-        }
+        
         let startPoint = startingPoint +5;
         return currentCells;
     }
@@ -125,14 +124,14 @@ class Board extends React.Component {
         return index;
     }
 
-    shiftCells(beltCount, cellDepth, direction, startIndex, symbol) {
+    shiftCells(beltCount, cellDepth, direction, startIndex, symbol,item) {
         let currentCells = this.state.cells;
         const cellsInRow = this.state.cellsInRow;
         let count = 0;
         if (direction === 'left') 
-            for (let i = 0; i < cellDepth; i++) 
+            for (let i = 0; i < item.cellsDepth; i++) 
                 for (let j = this.state.cellsInBent-1; j > 0; j--) 
-                    for (let k = 0; k < beltCount; k++) {
+                    for (let k = 0; k < item.beltCount; k++) {
                         let index = startIndex + (j * cellsInRow) + k;                       
                         count = count + 1;
                         currentCells[index] = currentCells[index - cellsInRow];
@@ -156,10 +155,10 @@ class Board extends React.Component {
                     } 
                 }
                 if ( valid && startingPoint < 5)
-                    currentCells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth,symbol);
+                    currentCells = this.fillCellsFromRight(startingPoint, item);
                 else if (!valid || startingPoint < cellsInRow){                            
                     startingPoint = startingPoint + cellsInRow;
-                    currentCells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth,symbol);
+                    currentCells = this.fillCellsFromRight(startingPoint, item);
                     break;
                 }
             }
