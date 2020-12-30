@@ -9,16 +9,10 @@ class Order extends React.Component {
             products: this.props.products
         }
     }
-    sortProduct(a,b){
-        if(a.beltCount > b.beltCount)
-            return 0;
-        else 
-            return 1;
-    }
 
     render() {
         return this.props.order.map((product) => (
-            <h5 key={product.name.id} > { product.name.name}  - { product.quantity} pcs - { product.name.dir}  - { product.name.beltCount} </h5>
+            <h5 key={product.name.id} > { product.name.name}  - { product.quantity} pcs - { product.name.dir}  - { product.name.beltCount}  - { product.name.cellsDepth} Depth </h5>
         ))
     };
 }

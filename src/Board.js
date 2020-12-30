@@ -40,7 +40,6 @@ class Board extends React.Component {
             order: order2,
             history:[{
                 cells:cells
-
             }],
         };   
         console.log('before',order2);
@@ -146,6 +145,11 @@ class Board extends React.Component {
             //}
         }
         console.log('swap count', count);
+        this.setState({
+            history: this.state.history.concat({
+                cells:cells
+            })
+        });
         //console.log('after', cells);
     }
 

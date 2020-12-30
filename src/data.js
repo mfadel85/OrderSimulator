@@ -181,5 +181,4 @@ export const tester = [
     { id: 8, quantity: 1 },
     { id: 7, quantity: 1 },
     { id: 6, quantity: 1 },/**/
-
 ];
