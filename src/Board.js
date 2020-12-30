@@ -57,7 +57,14 @@ class Board extends React.Component {
             return a.beltCount - b.beltCount;         
     }
     handleOneProduct(item,cells,startIndex){
-        let currentcells = this.state.cells.slice();
+        //let currentcells = this.state.cells.slice();
+        let currentcells = [...this.state.cells];
+        console.log('History now ', this.state.history);
+        this.setState({
+            cells: cells,
+            history: [...this.state.history, { cells: currentcells }, { cells: cells }]
+        });
+        console.log('History after now ', this.state.history);
 
         if (startIndex + item.beltCount > this.state.cellsInRow || item.beltCount > 3)
             startIndex = 0;
@@ -68,13 +75,9 @@ class Board extends React.Component {
         console.log('startIndex is ', startIndex);
 
         let dir = item.name.dir;
-        currentcells = this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl, cells);
+        this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl, cells);
         startIndex = startIndex + item.beltCount;
-        this.setState({
-            cells: cells,
-            history: [...this.state.history, { cells: currentcells }, { cells: cells }]
-        });
-        return startIndex;
+        return [startIndex,cells];
     }
 
     fillBoard(){
@@ -83,11 +86,23 @@ class Board extends React.Component {
         this.state.order.forEach(function(item){ 
             for(let m = 0;m<item.quantity;m++)
             {
+               /* const serefsizler = that.state.cells.slice();
+                that.setState({
+                    cells: that.state.cells,
+                    history: [...that.state.history, { cells: serefsizler }]
+                });*/
                 //let index = that.modifyIndex(startIndex,item.beltCount);
-                startIndex = that.handleOneProduct(item, that.state.cells, startIndex);
+                const result = that.handleOneProduct(item, that.state.cells, startIndex);
+                startIndex = result[0];
+                /*that.setState({
+                    cells: that.state.cells,
+                    history: [...that.state.history, { cells: result[1] } ]
+                });*/
             }
                 
         });
+        console.log('History after now ', this.state.history);
+
 
     }
     fillCellsFromRight(startingPoint,beltCount,cellDepth,cells,symbol){
@@ -118,8 +133,11 @@ class Board extends React.Component {
     }
 
     shiftCells(beltCount, cellDepth, direction, startIndex, symbol, cells) {
-        const currentcells = this.state.cells.slice();
-
+        const currentcells = cells.slice();
+        this.setState({
+            cells: cells,
+            history: [...this.state.history, { cells: currentcells }, { cells: cells }]
+        });
         const cellsInRow = this.state.cellsInRow;
         let count = 0;
         if (direction === 'left') 
@@ -158,10 +176,8 @@ class Board extends React.Component {
             }
         }
         console.log('swap count', count);
-        this.setState({
-            cells: cells,
-            history: [...this.state.history, { cells: currentcells },{cells:cells}]
-        });
+
+
         return cells;
     }
 
@@ -173,8 +189,9 @@ class Board extends React.Component {
 
     render() {
         const history = this.state.history;
-        const current = history[history.length-1];
         console.log('I am being rendered');
+        console.log('History after now ', this.state.history);
+
         return (
             <Row>
                 <Col> 
