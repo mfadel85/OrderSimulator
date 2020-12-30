@@ -5,14 +5,14 @@ import Cell from './Cell.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { allProducts, lovelyOrder, terminator } from './data.js';
+import { allProducts, lovelyOrder, terminator,mainOrder,tester } from './data.js';
 
 class Board extends React.Component {
 
     constructor(props) {
         super(props);
         let products = allProducts;
-        let order1 = terminator;
+        let order1 = tester;
         console.log('pure order is : ', order1);
         let orderStorted = [];
         order1.forEach(function (item) {
@@ -30,15 +30,23 @@ class Board extends React.Component {
             let cellsDepth = name.cellsDepth;
             let symobl = name.symbol;
             order2.push({ id, quantity, name, productName, symobl, beltCount, cellsDepth })
-        });        
+        });     
+
         let cells = Array(110).fill(null); 
         this.state = {
             cells: cells,
             xIsNext: true,
             products: products,
             order: order2
-        };         
-        cells = this.fillBoard(this.state.order, cells);
+        };   
+        console.log('before',order2);
+        order2.sort(this.sortProduct);
+        console.log('after', order2);
+        cells = this.fillBoard(order2, cells);
+    }
+    sortProduct(a, b) {
+            //console.log('Result: Name',a.name.name,a.beltCount - b.beltCount)
+            return a.beltCount - b.beltCount;         
     }
     handleOneProduct(item,cells,startIndex){
         // check the situation of the cells to decide which startIndex
