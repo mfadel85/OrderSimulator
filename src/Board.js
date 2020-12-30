@@ -69,9 +69,7 @@ class Board extends React.Component {
         if (item.beltCount === 2 && startIndex % 2 === 1)
             startIndex = startIndex + 1;
         console.log('startIndex is ', startIndex);
-
-        let dir = item.name.dir;
-        this.shiftCells(item.beltCount,  dir, startIndex, item.symbol,item);
+        this.shiftCells(startIndex, item);
         startIndex = startIndex + item.beltCount;
         this.setState({
             cells: this.state.cells,
@@ -122,10 +120,11 @@ class Board extends React.Component {
         return index;
     }
 
-    shiftCells(beltCount,  direction, startIndex, symbol,item) {
+    shiftCells(  startIndex, item) {
         let currentCells = this.state.cells;
         const cellsInRow = this.state.cellsInRow;
         let count = 0;
+        let direction = item.name.dir;
         if (direction === 'left') 
             for (let i = 0; i < item.cellsDepth; i++) 
                 for (let j = this.state.cellsInBent-1; j > 0; j--) 
@@ -144,7 +143,7 @@ class Board extends React.Component {
                 let lastEmptyCell = -1;
                 let index = startIndex + (j*cellsInRow) +k;
                 let valid = true;
-                for(let m =0; m < beltCount; m++){
+                for (let m = 0; m < item.beltCount; m++){
                     if (currentCells[index+m] === null)
                         valid = true;
                     else {
