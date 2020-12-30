@@ -33,15 +33,19 @@ class Board extends React.Component {
         });     
 
         let cells = Array(110).fill(null); 
+        const initialCells = JSON.parse(JSON.stringify(cells));
         this.state = {
+            cellsInRow:5,
+            cellsInBent:22,
             cells: cells,
             xIsNext: true,
             products: products,
             order: order2,
             history:[{
-                cells:cells
+                cells: initialCells
             }],
-        };   
+        }; 
+
         console.log('before',order2);
         order2.sort(this.sortProduct);
         console.log('after', order2);
@@ -53,40 +57,38 @@ class Board extends React.Component {
             return a.beltCount - b.beltCount;         
     }
     handleOneProduct(item,cells,startIndex){
-        // check the situation of the cells to decide which startIndex
-        if (startIndex + item.beltCount > 5 || item.beltCount > 3)
+        if (startIndex + item.beltCount > this.state.cellsInRow || item.beltCount > 3)
             startIndex = 0;
         if (item.beltCount === 3)
             startIndex = 2;
         if (item.beltCount === 2 && startIndex % 2 === 1)
             startIndex = startIndex + 1;
-        let dir = item.name.dir;
-        //console.log('item', item,'dir',dir);
+        console.log('startIndex is ', startIndex);
 
+        let dir = item.name.dir;
         this.shiftCells(item.beltCount, item.cellsDepth, dir, startIndex, item.symobl, cells);
         startIndex = startIndex + item.beltCount;
         return startIndex;
     }
+
     fillBoard(){
-        let order2 = this.state.order;
-        let cells = this.state.cells;
-        //console.log('The order is : ',order2)
         let startIndex = 0;
         let that = this;
-        order2.forEach(function(item){ 
+        this.state.order.forEach(function(item){ 
             for(let m = 0;m<item.quantity;m++)
-                startIndex = that.handleOneProduct(item,cells,startIndex);
+            {
+                //let index = that.modifyIndex(startIndex,item.beltCount);
+                startIndex = that.handleOneProduct(item, that.state.cells, startIndex);
+            }
+                
         });
-        this.setState({
-            cells:cells
-        })
-        //return cells;
+
     }
     fillCellsFromRight(startingPoint,beltCount,cellDepth,cells,symbol){
         console.log('Right Product: ',startingPoint, beltCount, cellDepth);
         for(let i=0; i<cellDepth;i++){
             for(let j=0;j<beltCount;j++){
-                let index = i * 5+j;
+                let index = i * this.state.cellsInRow+j;
                 cells[startingPoint + index] = symbol+": Right";
             }
             
@@ -94,35 +96,46 @@ class Board extends React.Component {
         let startPoint = startingPoint +5;
         return cells;
     }
+
+    modifyIndex(startIndex, beltCount) {
+        let index = 0;
+        if (startIndex + beltCount > 5 || beltCount > 3)
+            index = 0;
+        if (beltCount === 3)
+            index = 2;
+        if (beltCount === 2 && startIndex % 2 === 1)
+            index = startIndex + 1;
+        else
+            index = startIndex;
+        console.log('index is ', index, 'start', startIndex, 'belt count', beltCount);
+        return index;
+    }
+
     shiftCells(beltCount, cellDepth, direction, startIndex, symbol, cells) {
-        //console.log('symbol', symbol);
-        const cellsInRow = 5;
+        const currentcells = JSON.parse(JSON.stringify(cells));
+
+        const cellsInRow = this.state.cellsInRow;
         let count = 0;
         if (direction === 'left') {
             for (let i = 0; i < cellDepth; i++) {
-                //let i=0;
-                for (let j = 21; j > 0; j--) {
+                for (let j = this.state.cellsInBent-1; j > 0; j--) {
                     for (let k = 0; k < beltCount; k++) {
                         let index = startIndex + (j * cellsInRow) + k;                       
                         count = count + 1;
-                        cells[index] = cells[index - 5];
-                        cells[index - 5] ="Left "+ symbol ;
+                        cells[index] = cells[index - cellsInRow];
+                        cells[index - cellsInRow] ="Left "+ symbol ;
                     }
                 }
             }
         }
         else if (direction === 'right') {
             console.log('right side');
-            //for (let i = 0; i < cellDepth; i++) {
                 let i= 0;
                 for(let j =21;j>=0;j--){
-                    //for(let k=0;k<beltCount;k++){
                         let k=0
                         let startingPoint = startIndex + (j * cellsInRow);
                         let lastEmptyCell = -1;
                         let index = startIndex + (j*cellsInRow) +k;
-                        console.log('cell index', cells[index],'i', i, 'j', j,'index', index, 'startingPoint', startingPoint, 'last empty cell', lastEmptyCell);
-                        // if beltCount is more than one check all the cells and then decide
                         let valid = true;
                         for(let m =0; m < beltCount; m++){
                             if (cells[index+m] === null)
@@ -134,8 +147,8 @@ class Board extends React.Component {
                         }
                         if ( valid && startingPoint < 5)
                             cells = this.fillCellsFromRight(startingPoint, beltCount, cellDepth, cells,symbol);
-                        else if (!valid || startingPoint <5){                            
-                            startingPoint = startingPoint +5;
+                        else if (!valid || startingPoint < cellsInRow){                            
+                            startingPoint = startingPoint + cellsInRow;
                             cells = this.fillCellsFromRight(startingPoint,beltCount,cellDepth,cells,symbol);
                             break;
                         }
@@ -145,12 +158,11 @@ class Board extends React.Component {
             //}
         }
         console.log('swap count', count);
+        //const newHistory = this.state.history.concat({ cells: currentcells }, { cells: cells });
         this.setState({
-            history: this.state.history.concat({
-                cells:cells
-            })
+            cells: cells,
+            history: [...this.state.history,{cells:cells}]
         });
-        //console.log('after', cells);
     }
 
     renderCell(i) {
