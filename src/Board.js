@@ -11,11 +11,8 @@ class Board extends React.Component {
 
     constructor(props) {
         super(props);
-        let order = this.initOrder(allOrders[0]);
-        order.sort(this.sortProduct);
-
-        console.log('pure order is : ', allOrders[0]);
-
+        let order = [];
+        //order = this.initOrder(allOrders[0]).sortProduct(this.sortProduct);
         let cells = Array(110).fill(null); 
         const initialCells = JSON.parse(JSON.stringify(cells));
 
@@ -30,8 +27,7 @@ class Board extends React.Component {
                 cells: initialCells
             }],
         }; 
-
-        this.fillBoard = this.fillBoard.bind(this);
+        //this.fillBoard = this.fillBoard.bind(this);
     }
     sortProduct(a, b) {
             //console.log('Result: Name',a.name.name,a.beltCount - b.beltCount)
