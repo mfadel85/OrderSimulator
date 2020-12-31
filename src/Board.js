@@ -29,7 +29,8 @@ class Board extends React.Component {
             history:[{
                 cells: initialCells
             }],
-            nextPatchProducts:[]
+            nextPatchProducts:[],
+            beltIndices :[0,0,0,0,0]
         }; 
         //this.fillBoard = this.fillBoard.bind(this);
     }
@@ -116,12 +117,22 @@ class Board extends React.Component {
         });
         console.log('History after now ', this.state.history);
     }
+    updateIndices(index){
+        let indices = this.state.beltIndices;
+        let startIndex = index%5;
+        let rowNumber = (index-startIndex)/5;
+        indices[startIndex] = rowNumber;
+        this.setState({
+            beltIndices:indices
+        })
+    }
     fillCellsFromRight(startingPoint,item){
         let currentCells = this.state.cells;
         for(let i=0; i<item.cellsDepth;i++)
             for(let j=0;j<item.beltCount;j++){
                 let index = i * this.state.cellsInRow+j;
                 currentCells[startingPoint + index] = item.symbol+": Right";
+                this.updateIndices(startingPoint+index);
             }
         return currentCells;
     }
@@ -153,7 +164,10 @@ class Board extends React.Component {
     }
     shiftCells(  startIndex, item) {
         this.checkSpace(startIndex, item.beltCount, item.cellsDepth);
-
+        let indicesUpdated = [];
+        for(let m=0; m<item.beltCount; m++)
+            indicesUpdated.push(false);
+        console.log('indices updated: ',indicesUpdated);
         let currentCells = this.state.cells;
         const cellsInRow = this.state.cellsInRow;
         let count = 0;
@@ -164,9 +178,13 @@ class Board extends React.Component {
                     for (let k = 0; k < item.beltCount; k++) {
                         let index = startIndex + (j * cellsInRow) + k;                       
                         count = count + 1;
-                        
+                        if (!indicesUpdated[k + startIndex] && currentCells[index] === null && currentCells[index - cellsInRow] !== null) {
+                            this.updateIndices(index - cellsInRow);
+                        }
                         currentCells[index] = currentCells[index - cellsInRow];
                         currentCells[index - cellsInRow] = "Left " + item.symbol ;
+                        
+                        
                     } 
         }
         else if (direction === 'right') {
@@ -211,13 +229,13 @@ class Board extends React.Component {
     render() {
         return (
             <Row>
-                <Col> 
+                <Col xs={3}> 
                     <h3>Products </h3>
                     <ListGroup variant="flush">
                         <Products products={ this.state.products } />
                     </ListGroup>
                 </Col>
-                <Col>
+                <Col xs={3}>
                     <Card>
                         <Card.Title>Order</Card.Title>
 
@@ -252,7 +270,7 @@ class Board extends React.Component {
                     </Card>
                 </Col>
                 
-                <Col xs={6}>
+                <Col xs={4}>
                     <div className="board-row">
                         {this.renderCell(0)}
                         {this.renderCell(1)}
@@ -407,6 +425,13 @@ class Board extends React.Component {
                         {this.renderCell(108)}
                         {this.renderCell(109)}
                     </div>
+                </Col>
+                <Col xs={2}>
+                    <Card>
+                        <Card.Title>Steps</Card.Title>
+                        <Card.Body></Card.Body>
+                    </Card>
+                
                 </Col>
             </Row>
         );

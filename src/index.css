@@ -25,12 +25,12 @@ ul {
     font-size: 16px;
     font-weight: 100;
     line-height: 19px;
-    height: 35px;
+    height: 41px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 90px;
+    width: 122px;
 }
 
 .cell:focus {
