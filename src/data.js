@@ -182,3 +182,7 @@ export const tester = [
     { id: 7, quantity: 1 },
     { id: 6, quantity: 1 },/**/
 ];
+
+export const allOrders = [
+    mainOrder,lovelyOrder,terminator,tester
+];

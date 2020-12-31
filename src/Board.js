@@ -5,14 +5,14 @@ import Cell from './Cell.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { allProducts, lovelyOrder, terminator,mainOrder,tester } from './data.js';
+import { allProducts, allOrders } from './data.js';
 
 class Board extends React.Component {
 
     constructor(props) {
         super(props);
         let products = allProducts;
-        let order1 = tester;
+        let order1 = allOrders[1];
         console.log('pure order is : ', order1);
         let orderStorted = [];
         order1.forEach(function (item) {
@@ -56,6 +56,9 @@ class Board extends React.Component {
     sortProduct(a, b) {
             //console.log('Result: Name',a.name.name,a.beltCount - b.beltCount)
             return a.beltCount - b.beltCount;         
+    }
+    initOrder(orderID){
+
     }
     handleOneProduct(item,startIndex){
         //let currentcells = this.state.cells.slice();
