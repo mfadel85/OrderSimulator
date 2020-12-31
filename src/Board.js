@@ -211,6 +211,9 @@ class Board extends React.Component {
                     <button onClick={() => this.setOrder(4)}>
                         Start Order 5
                     </button>
+                    <button onClick={() => this.setOrder(5)}>
+                        Start Order 6
+                    </button>
                 </Col>
                 
                 <Col xs={6}>

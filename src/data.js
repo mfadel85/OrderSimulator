@@ -152,7 +152,18 @@ export const allProducts = [
         beltCount: 3,
         cellsDepth: 2,
         unitNo: 4
-    },      
+    }, 
+    {
+        id: 15,
+        name: 'Times Wafer',
+        symbol: 'W',
+        dir: 'Right',
+        width: 6,
+        depth: 9,
+        beltCount: 1,
+        cellsDepth: 4,
+        unitNo: 2
+    },              
 ];
 export const mainOrder = [
     { id: 2, quantity: 2 },
@@ -215,7 +226,17 @@ export const order5 = [
     { id: 7, quantity: 1 },
     { id: 6, quantity: 2 },/**/
 ];
-
+export const order6 = [
+    { id: 15, quantity: 1 },
+    { id: 14, quantity: 1 },
+    { id: 13, quantity: 1 },
+    { id: 11, quantity: 2 },
+    { id: 9, quantity: 1 },
+    { id: 1, quantity: 1 },
+    { id: 8, quantity: 2 },
+    { id: 7, quantity: 1 },
+    { id: 6, quantity: 2 },/**/
+];
 export const allOrders = [
-    mainOrder,lovelyOrder,terminator,tester, order5
+    mainOrder,lovelyOrder,terminator,tester, order5,order6
 ];
