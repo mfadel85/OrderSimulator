@@ -17,7 +17,7 @@ export const allProducts = [
         dir: 'right',
         width: 12,
         depth: 6,
-        beltCount: 2,
+        beltCount: 3,
         cellsDepth: 3,
         unitNo: 2
     },
@@ -262,7 +262,6 @@ export const order8 = [
 export const order9 = [
     { id: 9, quantity: 1 },
     { id: 5, quantity: 2 },
-    { id: 14, quantity: 1 },
     { id: 7, quantity: 2 },
     { id: 12, quantity: 1 },
     { id: 1, quantity: 1 },
@@ -271,6 +270,8 @@ export const order9 = [
     { id: 8, quantity: 1 },/**/
     { id: 6, quantity: 1 },
     { id: 11, quantity: 1 },
+    { id: 14, quantity: 2 },
+
 
 ];
 export const allOrders = [
