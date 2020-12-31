@@ -1,4 +1,6 @@
 import React from 'react';
+import ListGroup from 'react-bootstrap/ListGroup';
+
 
 class Products extends React.Component {
     state = {
@@ -7,7 +9,7 @@ class Products extends React.Component {
     }
     render() {
        return this.props.products.map((product) => (
-           <h6 key={product.id} > { product.id}. { product.name} {product.symbol} - {product.beltCount} Belt Count - {product.cellsDepth} Cells Depth </h6>
+           <ListGroup.Item> { product.id}. { product.name} {product.symbol} - {product.beltCount} Belt Count - {product.cellsDepth} Cells Depth </ListGroup.Item>
        ));
     }
 }

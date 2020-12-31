@@ -5,6 +5,9 @@ import Cell from './Cell.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
+
 import { allProducts, allOrders } from './data.js';
 
 class Board extends React.Component {
@@ -26,6 +29,7 @@ class Board extends React.Component {
             history:[{
                 cells: initialCells
             }],
+            nextPatchProducts:[]
         }; 
         //this.fillBoard = this.fillBoard.bind(this);
     }
@@ -88,8 +92,11 @@ class Board extends React.Component {
             console.log('History after now ', this.state.history);
         }
         else {
-            alert('No space for '+ item.productName);
-            console.log('no space for ', item);
+            this.setState({
+                nextPatchProducts: [...this.state.nextPatchProducts,item]
+            });
+            alert('No space for ' + item.productName + ' will be added in the next patch.');
+            console.log('no space for ', item,);
             startIndex = originalStartIndex;
         }
            
@@ -205,11 +212,15 @@ class Board extends React.Component {
         return (
             <Row>
                 <Col> 
-                    <h2>Products </h2>
-                    <Products products={ this.state.products } />
+                    <h3>Products </h3>
+                    <ListGroup variant="flush">
+                        <Products products={ this.state.products } />
+                    </ListGroup>
                 </Col>
                 <Col>
-                    <h2>Order Sorted</h2>
+                    <Card>
+                        <Card.Title>Order</Card.Title>
+
                     <Order order={this.state.order} products={this.state.products} />
                     <button onClick={() => this.setOrder(0)}>
                         Order 1
@@ -238,6 +249,7 @@ class Board extends React.Component {
                     <button onClick={() => this.setOrder(8)}>
                         Order 9
                     </button>
+                    </Card>
                 </Col>
                 
                 <Col xs={6}>

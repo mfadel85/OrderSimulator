@@ -265,10 +265,13 @@ export const order9 = [
     { id: 14, quantity: 1 },
     { id: 7, quantity: 2 },
     { id: 12, quantity: 1 },
-    { id: 1, quantity: 2 },
+    { id: 1, quantity: 1 },
     { id: 3, quantity: 3 },
     { id: 2, quantity: 1 },
-    { id: 8, quantity: 3 },/**/
+    { id: 8, quantity: 1 },/**/
+    { id: 6, quantity: 1 },
+    { id: 11, quantity: 1 },
+
 ];
 export const allOrders = [
     mainOrder,lovelyOrder,terminator,tester, order5,order6,order7,order8,order9
