@@ -131,6 +131,28 @@ export const allProducts = [
         cellsDepth: 3,
         unitNo: 1
     },
+    {
+        id: 13,
+        name: 'Işıl Sabun',
+        symbol: 'Ş',
+        dir: 'Right',
+        width: 13,
+        depth: 4.6,
+        beltCount: 2,
+        cellsDepth: 2,
+        unitNo: 2
+    },    
+    {
+        id: 14,
+        name: 'Süsse Biscuit',
+        symbol: 'S',
+        dir: 'Right',
+        width: 18.5,
+        depth: 5,
+        beltCount: 3,
+        cellsDepth: 2,
+        unitNo: 4
+    },      
 ];
 export const mainOrder = [
     { id: 2, quantity: 2 },
@@ -182,6 +204,18 @@ export const tester = [
     { id: 6, quantity: 1 },/**/
 ];
 
+export const order5 = [
+    { id: 4, quantity: 1 },
+    { id: 9, quantity: 1 },
+    { id: 2, quantity: 1 },
+    { id: 1, quantity: 2 },
+    { id: 14, quantity: 1 },
+    { id: 13, quantity: 1 },
+    { id: 8, quantity: 2 },
+    { id: 7, quantity: 1 },
+    { id: 6, quantity: 2 },/**/
+];
+
 export const allOrders = [
-    mainOrder,lovelyOrder,terminator,tester
+    mainOrder,lovelyOrder,terminator,tester, order5
 ];

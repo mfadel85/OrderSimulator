@@ -197,16 +197,19 @@ class Board extends React.Component {
                     <h2>Order Sorted</h2>
                     <Order order={this.state.order} products={this.state.products} />
                     <button onClick={() => this.setOrder(0)}>
-                        Start Order
-                    </button>
-                    <button onClick={() => this.setOrder(1)}>
                         Start Order 1
                     </button>
-                    <button onClick={() => this.setOrder(2)}>
+                    <button onClick={() => this.setOrder(1)}>
                         Start Order 2
                     </button>
-                    <button onClick={() => this.setOrder(3)}>
+                    <button onClick={() => this.setOrder(2)}>
                         Start Order 3
+                    </button>
+                    <button onClick={() => this.setOrder(3)}>
+                        Start Order 4
+                    </button>
+                    <button onClick={() => this.setOrder(4)}>
+                        Start Order 5
                     </button>
                 </Col>
                 
