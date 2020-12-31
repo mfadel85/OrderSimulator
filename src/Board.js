@@ -57,8 +57,30 @@ class Board extends React.Component {
             //console.log('Result: Name',a.name.name,a.beltCount - b.beltCount)
             return a.beltCount - b.beltCount;         
     }
-    initOrder(orderID){
-
+    setOrder(orderID){
+        var order = allOrders[orderID];
+        let orderReady = this.initOrder(order);
+        this.setState({
+            order:orderReady
+        });
+    }
+    initOrder(order){
+        let orderStorted = [];
+        order.forEach(function (item) {
+            orderStorted.push([item.id - 1, item.quantity]);
+        });
+        let finalOrder = [];
+        finalOrder.forEach((product) => {
+            let id = product[0];
+            let quantity = product[1];
+            let name = allProducts[id];
+            let productName = name.name;
+            let beltCount = name.beltCount;
+            let cellsDepth = name.cellsDepth;
+            let symbol = name.symbol;
+            finalOrder.push({ id, quantity, name, productName, symbol, beltCount, cellsDepth })
+        });
+        return finalOrder;
     }
     handleOneProduct(item,startIndex){
         //let currentcells = this.state.cells.slice();
@@ -193,6 +215,9 @@ class Board extends React.Component {
                     <Order order={this.state.order} products={this.state.products} />
                     <button onClick={this.fillBoard}>
                         Start Order
+                    </button>
+                    <button onClick={() => this.setOrder(2)}>
+                        Start Order 2
                     </button>
                 </Col>
                 
