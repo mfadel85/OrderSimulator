@@ -155,8 +155,8 @@ export const lovelyOrder = [
     { id: 6, quantity: 1 },
     { id: 8, quantity: 1 },
     { id: 11, quantity: 1 },/**/
-
 ];
+
 export const terminator = [
     { id: 3, quantity: 1 },
     { id: 12, quantity: 2 },
@@ -168,11 +168,10 @@ export const terminator = [
     { id: 1, quantity: 1 },
     { id: 11, quantity: 1 },
     { id: 6, quantity: 1 },/**/
-
 ];
+
 export const tester = [
     { id: 5, quantity: 1 },
-    { id: 3, quantity: 2 },
     { id: 9, quantity: 1 },
     { id: 2, quantity: 1 },
     { id: 1, quantity: 2 },

@@ -30,7 +30,7 @@ class Board extends React.Component {
                 cells: initialCells
             }],
         }; 
-        
+
         this.fillBoard = this.fillBoard.bind(this);
     }
     sortProduct(a, b) {
@@ -44,8 +44,8 @@ class Board extends React.Component {
         this.setState({
             cells: Array(110).fill(null),
             order:orderReady
-        });
-        this.fillBoard();
+        }, () => { this.fillBoard();});
+        
     }
     initOrder(order){
         let orderStorted = [];
@@ -196,14 +196,17 @@ class Board extends React.Component {
                 <Col>
                     <h2>Order Sorted</h2>
                     <Order order={this.state.order} products={this.state.products} />
-                    <button onClick={this.fillBoard}>
+                    <button onClick={() => this.setOrder(0)}>
                         Start Order
                     </button>
-                    <button onClick={() => this.setOrder(0)}>
+                    <button onClick={() => this.setOrder(1)}>
                         Start Order 1
                     </button>
                     <button onClick={() => this.setOrder(2)}>
                         Start Order 2
+                    </button>
+                    <button onClick={() => this.setOrder(3)}>
+                        Start Order 3
                     </button>
                 </Col>
                 
