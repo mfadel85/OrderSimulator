@@ -11,47 +11,27 @@ class Board extends React.Component {
 
     constructor(props) {
         super(props);
-        let products = allProducts;
-        let order1 = allOrders[1];
-        console.log('pure order is : ', order1);
-        let orderStorted = [];
-        order1.forEach(function (item) {
-            orderStorted.push([item.id - 1, item.quantity]);
-        });
-        console.log('SOrted', orderStorted);
-        let order2 = [];
-        let that = products;
-        // order to be set dynamically
-        orderStorted.forEach((product) => {
-            let id = product[0];
-            let quantity = product[1];
-            let name = that[id];
-            let  productName= name.name;
-            let beltCount = name.beltCount;
-            let cellsDepth = name.cellsDepth;
-            let symbol = name.symbol;
-            order2.push({ id, quantity, name, productName, symbol, beltCount, cellsDepth })
-        });     
+        let order = this.initOrder(allOrders[0]);
+        order.sort(this.sortProduct);
+
+        console.log('pure order is : ', allOrders[0]);
 
         let cells = Array(110).fill(null); 
         const initialCells = JSON.parse(JSON.stringify(cells));
+
         this.state = {
             cellsInRow:5,
             cellsInBent:22,
             cells: cells,
             xIsNext: true,
-            products: products,
-            order: order2,
+            products: allProducts,
+            order: order,
             history:[{
                 cells: initialCells
             }],
         }; 
-
-        console.log('before',order2);
-        order2.sort(this.sortProduct);
-        console.log('after', order2);
+        
         this.fillBoard = this.fillBoard.bind(this);
-        //cells = this.fillBoard();
     }
     sortProduct(a, b) {
             //console.log('Result: Name',a.name.name,a.beltCount - b.beltCount)
@@ -218,6 +198,9 @@ class Board extends React.Component {
                     <Order order={this.state.order} products={this.state.products} />
                     <button onClick={this.fillBoard}>
                         Start Order
+                    </button>
+                    <button onClick={() => this.setOrder(0)}>
+                        Start Order 1
                     </button>
                     <button onClick={() => this.setOrder(2)}>
                         Start Order 2
