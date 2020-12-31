@@ -7,7 +7,7 @@ class Products extends React.Component {
     }
     render() {
        return this.props.products.map((product) => (
-           <h5 key={product.id} > { product.id}. { product.name} {product.symbol} - {product.beltCount} Belt Count - {product.cellsDepth} Cells Depth </h5>
+           <h6 key={product.id} > { product.id}. { product.name} {product.symbol} - {product.beltCount} Belt Count - {product.cellsDepth} Cells Depth </h6>
        ));
     }
 }

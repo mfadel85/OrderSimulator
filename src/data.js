@@ -237,6 +237,39 @@ export const order6 = [
     { id: 7, quantity: 1 },
     { id: 6, quantity: 2 },/**/
 ];
+export const order7 = [
+    { id: 10, quantity: 1 },
+    { id: 12, quantity: 1 },
+    { id: 14, quantity: 1 },
+    { id: 1, quantity: 2 },
+    { id: 9, quantity: 1 },
+    { id: 3, quantity: 1 },
+    { id: 4, quantity: 2 },
+    { id: 2, quantity: 1 },
+    { id: 6, quantity: 2 },/**/
+];
+export const order8 = [
+    { id: 1, quantity: 1 },
+    { id: 13, quantity: 1 },
+    { id: 15, quantity: 1 },
+    { id: 7, quantity: 2 },
+    { id: 6, quantity: 1 },
+    { id: 3, quantity: 1 },
+    { id: 4, quantity: 2 },
+    { id: 2, quantity: 1 },
+    { id: 9, quantity: 2 },/**/
+];
+export const order9 = [
+    { id: 9, quantity: 1 },
+    { id: 5, quantity: 1 },
+    { id: 14, quantity: 1 },
+    { id: 7, quantity: 2 },
+    { id: 12, quantity: 1 },
+    { id: 1, quantity: 1 },
+    { id: 3, quantity: 2 },
+    { id: 2, quantity: 1 },
+    { id: 8, quantity: 2 },/**/
+];
 export const allOrders = [
-    mainOrder,lovelyOrder,terminator,tester, order5,order6
+    mainOrder,lovelyOrder,terminator,tester, order5,order6,order7,order8,order9
 ];
