@@ -446,6 +446,8 @@ class Board extends React.Component {
                                  </ListGroup.Item>
                             ))}
                         </Card.Body>
+                        <button onClick={()=> alert('will be picked')}>Pick Order</button>
+
                     </Card>
                 
                 </Col>
