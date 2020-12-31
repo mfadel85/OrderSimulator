@@ -30,7 +30,8 @@ class Board extends React.Component {
                 cells: initialCells
             }],
             nextPatchProducts:[],
-            beltIndices :[0,0,0,0,0]
+            beltIndices :[0,0,0,0,0],
+            myOrder:[]
         }; 
         //this.fillBoard = this.fillBoard.bind(this);
     }
@@ -225,21 +226,28 @@ class Board extends React.Component {
             value={this.state.cells[i]}
         />;
     }
-
+    addProduct(id){
+        
+        let name = allProducts[id].name;
+        let item = { id:id - 1,quantity: 1, name:name}
+        this.setState({
+            myOrder: [...this.state.myOrder,item],
+        });
+    }
     render() {
         return (
             <Row>
                 <Col xs={3}> 
                     <h3>Products </h3>
                     <ListGroup variant="flush">
-                        <Products products={ this.state.products } />
+                        <Products products={this.state.products} addProduct={(id)=>this.addProduct(id)}/>
                     </ListGroup>
                 </Col>
                 <Col xs={3}>
                     <Card>
                         <Card.Title>Order</Card.Title>
 
-                    <Order order={this.state.order} products={this.state.products} />
+                    <Order order={this.state.order} products={this.state.products}  />
                     <button onClick={() => this.setOrder(0)}>
                         Order 1
                     </button>
@@ -428,8 +436,16 @@ class Board extends React.Component {
                 </Col>
                 <Col xs={2}>
                     <Card>
-                        <Card.Title>Steps</Card.Title>
-                        <Card.Body></Card.Body>
+                        <Card.Title>My Order </Card.Title>
+                        <Card.Body>
+                        
+                            {this.state.myOrder.map((product) => (
+                                <ListGroup.Item key={product.id} >
+                                    {product.id}. 
+                                     {product.name} - quantity: {product.quantity} 
+                                 </ListGroup.Item>
+                            ))}
+                        </Card.Body>
                     </Card>
                 
                 </Col>
