@@ -60,6 +60,7 @@ class Board extends React.Component {
     setOrder(orderID){
         let orderReady = this.initOrder(allOrders[orderID]);
         console.log('order is ready??', orderReady);
+        orderReady.sort(this.sortProduct);
         this.setState({
             cells: Array(110).fill(null),
             order:orderReady
@@ -67,7 +68,6 @@ class Board extends React.Component {
         this.fillBoard();
     }
     initOrder(order){
-        console.log('ourlovely order is', order);
         let orderStorted = [];
         order.forEach(function (item) {
             orderStorted.push([item.id - 1, item.quantity]);
@@ -111,7 +111,6 @@ class Board extends React.Component {
     }
 
     fillBoard(){
-        //window.location.reload();
         // this is to refactored soon!!
         let startIndex = 0;
         let that = this;
