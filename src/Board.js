@@ -105,7 +105,6 @@ class Board extends React.Component {
                 let index = i * this.state.cellsInRow+j;
                 currentCells[startingPoint + index] = item.symbol+": Right";
             }
-        let startPoint = startingPoint +5;
         return currentCells;
     }
 
@@ -139,11 +138,9 @@ class Board extends React.Component {
                     } 
         else if (direction === 'right') {
             console.log('right side');
-            let i= 0;
             for(let j =21;j>=0;j--){
                 let k=0
                 let startingPoint = startIndex + (j * cellsInRow);
-                let lastEmptyCell = -1;
                 let index = startIndex + (j*cellsInRow) +k;
                 let valid = true;
                 for (let m = 0; m < item.beltCount; m++){
@@ -179,10 +176,6 @@ class Board extends React.Component {
     }
 
     render() {
-        const history = this.state.history;
-        console.log('I am being rendered');
-        console.log('History after now ', this.state.history);
-
         return (
             <Row>
                 <Col> 
