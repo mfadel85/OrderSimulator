@@ -58,19 +58,22 @@ class Board extends React.Component {
             return a.beltCount - b.beltCount;         
     }
     setOrder(orderID){
-        var order = allOrders[orderID];
-        let orderReady = this.initOrder(order);
+        let orderReady = this.initOrder(allOrders[orderID]);
+        console.log('order is ready??', orderReady);
         this.setState({
+            cells: Array(110).fill(null),
             order:orderReady
         });
+        this.fillBoard();
     }
     initOrder(order){
+        console.log('ourlovely order is', order);
         let orderStorted = [];
         order.forEach(function (item) {
             orderStorted.push([item.id - 1, item.quantity]);
         });
         let finalOrder = [];
-        finalOrder.forEach((product) => {
+        orderStorted.forEach((product) => {
             let id = product[0];
             let quantity = product[1];
             let name = allProducts[id];
@@ -80,6 +83,7 @@ class Board extends React.Component {
             let symbol = name.symbol;
             finalOrder.push({ id, quantity, name, productName, symbol, beltCount, cellsDepth })
         });
+
         return finalOrder;
     }
     handleOneProduct(item,startIndex){
