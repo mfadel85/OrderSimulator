@@ -68,7 +68,7 @@ class Board extends React.Component {
         console.log('History now ', this.state.history);
 
 
-        if (startIndex + item.beltCount > this.state.cellsInRow || item.beltCount > 3)
+        if (startIndex + item.beltCount >= this.state.cellsInRow || item.beltCount > 3)
             startIndex = 0;
         if (item.beltCount === 3)
             startIndex = 2;
