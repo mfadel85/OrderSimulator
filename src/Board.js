@@ -63,6 +63,7 @@ class Board extends React.Component {
         return finalOrder;
     }
     handleOneProduct(item,startIndex){
+        let originalStartIndex = startIndex;
         //let currentcells = this.state.cells.slice();
         let currentcells = [...this.state.cells];
         console.log('History now ', this.state.history);
@@ -75,14 +76,24 @@ class Board extends React.Component {
         if (item.beltCount === 2 && startIndex % 2 === 1)
             startIndex = startIndex + 1;
         console.log('startIndex is ', startIndex);
-        this.shiftCells(startIndex, item);
-        startIndex = startIndex + item.beltCount;
-        this.setState({
-            cells: this.state.cells,
-            index:startIndex,
-            history: [...this.state.history, { cells: currentcells }, { cells: this.state.cells }]
-        });
-        console.log('History after now ', this.state.history);
+        let available = this.checkSpace(startIndex, item.beltCount, item.cellsDepth);
+        if(available){
+            this.shiftCells(startIndex, item);
+            startIndex = startIndex + item.beltCount;
+            this.setState({
+                cells: this.state.cells,
+                index: startIndex,
+                history: [...this.state.history, { cells: currentcells }, { cells: this.state.cells }]
+            });
+            console.log('History after now ', this.state.history);
+        }
+        else {
+            alert('No space for '+ item.productName);
+            console.log('no space for ', item);
+            startIndex = originalStartIndex;
+        }
+           
+        
         return startIndex;
     }
 
@@ -121,21 +132,36 @@ class Board extends React.Component {
         console.log('index is ', index, 'start', startIndex, 'belt count', beltCount);
         return index;
     }
-
+    checkSpace(startIndex,beltCount,cellsDepth){
+        let startRow = this.state.cellsInBent - cellsDepth;
+        for (let i = startRow; i < this.state.cellsInBent;i++){
+            for (let l=0;l<beltCount;l++){
+                const index = i*5+startIndex+l;
+                if(this.state.cells[index] !== null)
+                    return false;
+                    
+            }
+        }
+        return true;
+    }
     shiftCells(  startIndex, item) {
+        this.checkSpace(startIndex, item.beltCount, item.cellsDepth);
+
         let currentCells = this.state.cells;
         const cellsInRow = this.state.cellsInRow;
         let count = 0;
         let direction = item.name.dir;
-        if (direction === 'left') 
+        if (direction === 'left'){ 
             for (let i = 0; i < item.cellsDepth; i++) 
                 for (let j = this.state.cellsInBent-1; j > 0; j--) 
                     for (let k = 0; k < item.beltCount; k++) {
                         let index = startIndex + (j * cellsInRow) + k;                       
                         count = count + 1;
+                        
                         currentCells[index] = currentCells[index - cellsInRow];
                         currentCells[index - cellsInRow] = "Left " + item.symbol ;
                     } 
+        }
         else if (direction === 'right') {
             console.log('right side');
             for(let j =21;j>=0;j--){
