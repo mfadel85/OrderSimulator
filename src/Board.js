@@ -288,7 +288,7 @@ class Board extends React.Component {
                     </Card>
                 </Col>
                 
-                <Col xs={4}>
+                <Col xs={4} ms={5}>
                     <div className="board-row">
                         {this.renderCell(0)}
                         {this.renderCell(1)}
@@ -444,7 +444,7 @@ class Board extends React.Component {
                         {this.renderCell(109)}
                     </div>
                 </Col>
-                <Col xs={2}>
+                <Col xs={2} md={2}>
                     <Card>
                         <Card.Title>My Order </Card.Title>
                         <Card.Body>
