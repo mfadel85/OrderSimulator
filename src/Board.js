@@ -247,7 +247,7 @@ class Board extends React.Component {
     render() {
         return (
             <Row>
-                <Col xs={3}> 
+                <Col xs={3} md={4}> 
                     <h3>Products </h3>
                     <ListGroup variant="flush">
                         <Products products={this.state.products} addProduct={(id)=>this.addProduct(id)}/>
