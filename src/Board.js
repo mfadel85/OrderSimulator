@@ -40,7 +40,11 @@ class Board extends React.Component {
             return a.beltCount - b.beltCount;         
     }
     setOrder(orderID){
-        let orderReady = this.initOrder(allOrders[orderID]);
+        let orderReady = [];
+        if (orderID == -1)
+            orderReady = this.initOrder(this.state.myOrder);
+        else 
+            orderReady = this.initOrder(allOrders[orderID]);
         console.log('order is ready??', orderReady);
         orderReady.sort(this.sortProduct);
         this.setState({
@@ -49,6 +53,7 @@ class Board extends React.Component {
         }, () => { this.fillBoard();});
         
     }
+
     initOrder(order){
         let orderStorted = [];
         order.forEach(function (item) {
@@ -228,8 +233,8 @@ class Board extends React.Component {
     }
     addProduct(id){
         
-        let name = allProducts[id].name;
-        let item = { id:id - 1,quantity: 1, name:name}
+        //let name = allProducts[id].name;
+        let item = { id:id ,quantity: 1}
         this.setState({
             myOrder: [...this.state.myOrder,item],
         });
@@ -446,7 +451,7 @@ class Board extends React.Component {
                                  </ListGroup.Item>
                             ))}
                         </Card.Body>
-                        <button onClick={()=> alert('will be picked')}>Pick Order</button>
+                        <button onClick={()=> this.setOrder(-1)}>Pick Order</button>
 
                     </Card>
                 
