@@ -249,7 +249,10 @@ class Board extends React.Component {
             myOrder: [...this.state.myOrder,item],
             myOrderWithName: [...this.state.myOrderWithName, itemWithName],
 
+        },()=>{
+            this.setOrder(-1);
         });
+        
     }
     render() {
         return (
