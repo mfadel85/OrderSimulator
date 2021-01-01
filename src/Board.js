@@ -31,7 +31,8 @@ class Board extends React.Component {
             }],
             nextPatchProducts:[],
             beltIndices :[0,0,0,0,0],
-            myOrder:[]
+            myOrder:[],
+            myOrderWithName:[]
         }; 
         //this.fillBoard = this.fillBoard.bind(this);
     }
@@ -234,9 +235,13 @@ class Board extends React.Component {
     addProduct(id){
         
         //let name = allProducts[id].name;
-        let item = { id:id ,quantity: 1}
+        let item = { id:id ,quantity: 1};
+        let itemWithName = { id: id, quantity: 1,name:allProducts[id].name };
+
         this.setState({
             myOrder: [...this.state.myOrder,item],
+            myOrderWithName: [...this.state.myOrderWithName, itemWithName],
+
         });
     }
     render() {
@@ -248,7 +253,7 @@ class Board extends React.Component {
                         <Products products={this.state.products} addProduct={(id)=>this.addProduct(id)}/>
                     </ListGroup>
                 </Col>
-                <Col xs={3}>
+                <Col xs={3} md={2}>
                     <Card>
                         <Card.Title>Order</Card.Title>
 
@@ -444,9 +449,9 @@ class Board extends React.Component {
                         <Card.Title>My Order </Card.Title>
                         <Card.Body>
                         
-                            {this.state.myOrder.map((product) => (
+                            {this.state.myOrderWithName.map((product) => (
                                 <ListGroup.Item key={product.id} >
-                                    {product.id}. 
+                                    {product.id}.   
                                      {product.name} - quantity: {product.quantity} 
                                  </ListGroup.Item>
                             ))}
