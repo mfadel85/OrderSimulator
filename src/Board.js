@@ -74,6 +74,13 @@ class Board extends React.Component {
 
         return finalOrder;
     }
+    clearMyOrder(){
+        this.setState({
+            myOrder:[],
+            myOrderWithName:[],
+            cells:[]
+        });
+    }
     handleOneProduct(item,startIndex){
         let originalStartIndex = startIndex;
         //let currentcells = this.state.cells.slice();
@@ -457,6 +464,7 @@ class Board extends React.Component {
                             ))}
                         </Card.Body>
                         <button onClick={()=> this.setOrder(-1)}>Pick Order</button>
+                        <button onClick={() => this.clearMyOrder()}>Clear Order</button>
 
                     </Card>
                 
