@@ -17,7 +17,7 @@ export const allProducts = [
         dir: 'right',
         width: 12,
         depth: 6,
-        beltCount: 3,
+        beltCount: 2,
         cellsDepth: 3,
         unitNo: 2
     },
