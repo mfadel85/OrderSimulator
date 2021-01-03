@@ -12,26 +12,29 @@ class Board extends React.Component {
 
 	constructor(props) {
 		super(props);
+		let cellsInBelt = 22;
+		let cellsInRow =5;
+
 		let order = [];
 		//order = this.initOrder(allOrders[0]).sortProduct(this.sortProduct);
-		let cells = Array(110).fill(null); 
+		let cells = Array(cellsInBelt*cellsInRow).fill(null); 
 		const initialCells = JSON.parse(JSON.stringify(cells));
 
 		this.state = {
-				cellsInRow:5,
-				cellsInBent:22,
-				cells: cells,
-				xIsNext: true,
-				products: allProducts,
-				order: order,
-				history:[{
-						cells: initialCells
-				}],
-				nextPatchProducts:[],
-				beltIndices :[0,0,0,0,0],
-				myOrder:[],
-				myOrderWithName:[],
-				fillingPercent:0
+			cellsInRow: cellsInRow,
+			cellsInBent: cellsInBelt,
+			cells: cells,
+			xIsNext: true,
+			products: allProducts,
+			order: order,
+			history:[{
+				cells: initialCells
+			}],
+			nextPatchProducts:[],
+			beltIndices :[0,0,0,0,0],
+			myOrder:[],
+			myOrderWithName:[],
+			fillingPercent:0
 		}; 
 	}
 	sortProduct(a, b) {
@@ -46,7 +49,7 @@ class Board extends React.Component {
 			console.log('order is ready??', orderReady);
 			orderReady.sort(this.sortProduct);
 			this.setState({
-					cells: Array(110).fill(null),
+					cells: Array(this.state.cellsInBent*this.state.cellsInRow).fill(null),
 					order:orderReady
 			}, () => { 
 				this.fillBoard();
@@ -105,20 +108,20 @@ class Board extends React.Component {
 
 			startIndex = startIndex + item.beltCount;
 			this.setState({
-					cells: this.state.cells,
-					index: startIndex,
-				fillingPercent:filledCount*1.0/110*1.0,
-					history: [...this.state.history, { cells: currentcells }, { cells: this.state.cells }]
+				cells: this.state.cells,
+				index: startIndex,
+				fillingPercent:filledCount*1.0/(this.state.cellsInBent*this.state.cellsInRow*1.0),
+				history: [...this.state.history, { cells: currentcells }, { cells: this.state.cells }]
 			});
 			console.log('History after now ', this.state.history);
 		}
 		else {
-				this.setState({
-						nextPatchProducts: [...this.state.nextPatchProducts,item]
-				});
-				alert('No space for ' + item.productName + ' will be added in the next patch.');
-				console.log('no space for ', item,);
-				startIndex = originalStartIndex;
+			this.setState({
+				nextPatchProducts: [...this.state.nextPatchProducts,item]
+			});
+			alert('No space for ' + item.productName + ' will be added in the next patch.');
+			console.log('no space for ', item,);
+			startIndex = originalStartIndex;
 		}
 				
 			
