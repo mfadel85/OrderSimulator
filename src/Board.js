@@ -122,12 +122,13 @@ class Board extends React.Component {
 				startIndex = 0;
 			break;
 		}*/
-		if (item.beltCount == 1 && startIndex == 4)
+		if (item.beltCount === 3)
+			startIndex = 2;
+		else  if (item.beltCount == 1 && startIndex == 4)
 			startIndex = 4;
 		else if (startIndex + item.beltCount >= this.state.cellsInRow || item.beltCount > 3)
 			startIndex = 0;
-		else if (item.beltCount === 3)
-			startIndex = 2;
+		
 		
 		if (item.beltCount === 2 && startIndex % 2 === 1)
 			startIndex = startIndex + 1;
