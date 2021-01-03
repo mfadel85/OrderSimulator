@@ -1,13 +1,11 @@
 import React from 'react';
 import Products from './products.js';
+import Grid from './grid.js';
+
 import Order from './Order.js';
 import Cell from './Cell.js';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Table from 'react-bootstrap/Table'
+import { Table, Card,Row,Col,ListGroup } from 'react-bootstrap';
 import { allProducts, allOrders } from './data.js';
 
 class Board extends React.Component {
@@ -276,10 +274,8 @@ class Board extends React.Component {
 												<th>Dir</th>
 												<th>BeltCo</th>
 												<th>Cells</th>
-
 											</tr>
-										
-										<Order order={this.state.order} products={this.state.products}  />
+											<Order order={this.state.order} products={this.state.products}  />
 										</tbody>
 									</Table>
 									<button onClick={() => this.setOrder(0)}>
