@@ -30,9 +30,9 @@ class Board extends React.Component {
 				nextPatchProducts:[],
 				beltIndices :[0,0,0,0,0],
 				myOrder:[],
-				myOrderWithName:[]
+				myOrderWithName:[],
+				fillingPercent:0
 		}; 
-		//this.fillBoard = this.fillBoard.bind(this);
 	}
 	sortProduct(a, b) {
 		return a.beltCount - b.beltCount;         
@@ -48,7 +48,9 @@ class Board extends React.Component {
 			this.setState({
 					cells: Array(110).fill(null),
 					order:orderReady
-			}, () => { this.fillBoard();});
+			}, () => { 
+				this.fillBoard();
+			});
 			
 	}
 
@@ -79,54 +81,62 @@ class Board extends React.Component {
 			});
 	}
 	handleOneProduct(item,startIndex){
-			let originalStartIndex = startIndex;
-			//let currentcells = this.state.cells.slice();
-			let currentcells = [...this.state.cells];
-			console.log('History now ', this.state.history);
+		let filledCount = 0;
+		let originalStartIndex = startIndex;
+		let currentcells = [...this.state.cells];
+		console.log('History now ', this.state.history);
 
 
-			if (startIndex + item.beltCount >= this.state.cellsInRow || item.beltCount > 3)
-					startIndex = 0;
-			if (item.beltCount === 3)
-					startIndex = 2;
-			if (item.beltCount === 2 && startIndex % 2 === 1)
-					startIndex = startIndex + 1;
-			console.log('startIndex is ', startIndex);
-			let available = this.checkSpace(startIndex, item.beltCount, item.cellsDepth);
-			if(available){
-					this.shiftCells(startIndex, item);
-					startIndex = startIndex + item.beltCount;
-					this.setState({
-							cells: this.state.cells,
-							index: startIndex,
-							history: [...this.state.history, { cells: currentcells }, { cells: this.state.cells }]
-					});
-					console.log('History after now ', this.state.history);
-			}
-			else {
-					this.setState({
-							nextPatchProducts: [...this.state.nextPatchProducts,item]
-					});
-					alert('No space for ' + item.productName + ' will be added in the next patch.');
-					console.log('no space for ', item,);
-					startIndex = originalStartIndex;
-			}
-					
+		if (startIndex + item.beltCount >= this.state.cellsInRow || item.beltCount > 3)
+				startIndex = 0;
+		if (item.beltCount === 3)
+				startIndex = 2;
+		if (item.beltCount === 2 && startIndex % 2 === 1)
+				startIndex = startIndex + 1;
+		console.log('startIndex is ', startIndex);
+		let available = this.checkSpace(startIndex, item.beltCount, item.cellsDepth);
+		if(available){
+			this.shiftCells(startIndex, item);
+			this.state.cells.forEach((cell) => {
+				if (cell != null)
+					filledCount++;
+				console.log('FilledCellsCount', filledCount, cell);
+			});					
+
+			startIndex = startIndex + item.beltCount;
+			this.setState({
+					cells: this.state.cells,
+					index: startIndex,
+				fillingPercent:filledCount*1.0/110*1.0,
+					history: [...this.state.history, { cells: currentcells }, { cells: this.state.cells }]
+			});
+			console.log('History after now ', this.state.history);
+		}
+		else {
+				this.setState({
+						nextPatchProducts: [...this.state.nextPatchProducts,item]
+				});
+				alert('No space for ' + item.productName + ' will be added in the next patch.');
+				console.log('no space for ', item,);
+				startIndex = originalStartIndex;
+		}
+				
 			
-			return startIndex;
+		return startIndex;
 	}
 
 	fillBoard(){
-			// this is to refactored soon!!
-			let startIndex = 0;
-			let that = this;
-			this.state.order.forEach(function(item){ 
-					for(let m = 0;m<item.quantity;m++)
-					{
-							startIndex = that.handleOneProduct(item, startIndex);
-					}
-			});
-			console.log('History after now ', this.state.history);
+		// this is to refactored soon!!
+		let startIndex = 0;
+		let that = this;
+		this.state.order.forEach(function(item){ 
+			for(let m = 0;m<item.quantity;m++)
+			{
+					startIndex = that.handleOneProduct(item, startIndex);
+			}
+		});
+
+		console.log('History after now ', this.state.history);
 	}
 	updateIndices(index){
 			let indices = this.state.beltIndices;
@@ -173,63 +183,61 @@ class Board extends React.Component {
 			}
 			return true;
 	}
-    shiftCells(  startIndex, item) {
-        this.checkSpace(startIndex, item.beltCount, item.cellsDepth);
-        let indicesUpdated = [];
-        for(let m=0; m<item.beltCount; m++)
-            indicesUpdated.push(false);
-        console.log('indices updated: ',indicesUpdated);
-        let currentCells = this.state.cells;
-        const cellsInRow = this.state.cellsInRow;
-        let count = 0;
-        let direction = item.name.dir;
-        if (direction === 'left'){ 
-            for (let i = 0; i < item.cellsDepth; i++) 
-                for (let j = this.state.cellsInBent-1; j > 0; j--) 
-                    for (let k = 0; k < item.beltCount; k++) {
-                        let index = startIndex + (j * cellsInRow) + k;                       
-                        count = count + 1;
-                        if (!indicesUpdated[k + startIndex] && currentCells[index] === null && currentCells[index - cellsInRow] !== null) {
-                            this.updateIndices(index - cellsInRow);
-                        }
-                        currentCells[index] = currentCells[index - cellsInRow];
-                        currentCells[index - cellsInRow] = "Left " + item.symbol ;
-                        
-                        
-                    } 
-        }
-        else if (direction === 'right') {
-            console.log('right side');
-            for(let j =21;j>=0;j--){
-                let k=0
-                let startingPoint = startIndex + (j * cellsInRow);
-                let index = startIndex + (j*cellsInRow) +k;
-                let valid = true;
-                for (let m = 0; m < item.beltCount; m++){
-                    if (currentCells[index+m] === null)
-                        valid = true;
-                    else {
-                        valid = false;
-                        break;
-                    } 
-                }
-                if ( valid && startingPoint < 5)
-                    currentCells = this.fillCellsFromRight(startingPoint, item);
-                else if (!valid || startingPoint < cellsInRow){                            
-                    startingPoint = startingPoint + cellsInRow;
-                    currentCells = this.fillCellsFromRight(startingPoint, item);
-                    break;
-                }
-            }
-        }
-        console.log('swap count', count);
-        this.setState({
-            cells:currentCells,
-            history: [...this.state.history, { cells: currentCells }]
-        });
+	shiftCells(  startIndex, item) {
+		this.checkSpace(startIndex, item.beltCount, item.cellsDepth);
+		let indicesUpdated = [];
+		for(let m=0; m<item.beltCount; m++)
+				indicesUpdated.push(false);
+		console.log('indices updated: ',indicesUpdated);
+		let currentCells = this.state.cells;
+		const cellsInRow = this.state.cellsInRow;
+		let count = 0;
+		let direction = item.name.dir;
+		if (direction === 'left'){ 
+			for (let i = 0; i < item.cellsDepth; i++) 
+				for (let j = this.state.cellsInBent-1; j > 0; j--) 
+					for (let k = 0; k < item.beltCount; k++) {
+						let index = startIndex + (j * cellsInRow) + k;                       
+						count = count + 1;
+						if (!indicesUpdated[k + startIndex] && currentCells[index] === null && currentCells[index - cellsInRow] !== null) {
+								this.updateIndices(index - cellsInRow);
+						}
+						currentCells[index] = currentCells[index - cellsInRow];
+						currentCells[index - cellsInRow] = "Left " + item.symbol ;	
+					} 
+		}
+		else if (direction === 'right') {
+				console.log('right side');
+				for(let j =21;j>=0;j--){
+						let k=0
+						let startingPoint = startIndex + (j * cellsInRow);
+						let index = startIndex + (j*cellsInRow) +k;
+						let valid = true;
+						for (let m = 0; m < item.beltCount; m++){
+								if (currentCells[index+m] === null)
+										valid = true;
+								else {
+										valid = false;
+										break;
+								} 
+						}
+						if ( valid && startingPoint < 5)
+								currentCells = this.fillCellsFromRight(startingPoint, item);
+						else if (!valid || startingPoint < cellsInRow){                            
+								startingPoint = startingPoint + cellsInRow;
+								currentCells = this.fillCellsFromRight(startingPoint, item);
+								break;
+						}
+				}
+		}
+		console.log('swap count', count);
+		this.setState({
+				cells:currentCells,
+				history: [...this.state.history, { cells: currentCells }]
+		});
 
-        return currentCells;
-    }
+		return currentCells;
+	}
 
 	renderCell(i) {
 			return <Cell
@@ -419,6 +427,7 @@ class Board extends React.Component {
 					<Cell value={this.state.cells[107]} />
 					<Cell value={this.state.cells[108]} />
 					<Cell value={this.state.cells[109]} />
+					<span>Percentage:{this.state.fillingPercent}</span>
 				</Col>
 				<Col xs={1} md={2}>
 					<Card>
