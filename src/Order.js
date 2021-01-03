@@ -9,10 +9,20 @@ class Order extends React.Component {
             products: this.props.products
         }
     }
+/*
+             <h6 key={product.name.id} >{index+1}. { product.name.name}  - { product.quantity} pcs - { product.name.dir}  - { product.name.beltCount}  - { product.name.cellsDepth} Depth </h6>
 
+*/
     render() {
         return this.props.order.map((product,index) => (
-            <h6 key={product.name.id} >{index+1}. { product.name.name}  - { product.quantity} pcs - { product.name.dir}  - { product.name.beltCount}  - { product.name.cellsDepth} Depth </h6>
+            <tr className='orderItem' key={product.name.id} >
+                <td>{index + 1}</td>
+                <td>{product.name.name}</td>
+                <td>{product.quantity}</td>
+                <td>{product.name.dir}</td>
+                <td>{product.name.beltCount}</td>
+                <td>{product.name.cellsDepth}</td>
+            </tr>
         ))
     };
 }

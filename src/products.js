@@ -12,7 +12,7 @@ class Products extends React.Component {
     }
     render() {
        return this.props.products.map((product) => (
-           <ListGroup.Item key={product.id} id={product.id}
+           <ListGroup.Item className='itemProduct' key={product.id} id={product.id}
                onClick={this.onClick}> 
            { product.id}. { product.name} {product.symbol} 
            - {product.beltCount} Belt Count 

@@ -24,13 +24,13 @@ ul {
     float: left;
     font-size: 16px;
     font-weight: 100;
-    line-height: 19px;
-    height: 41px;
+    line-height: 25px;
+    height: 36px;
     margin-right: -1px;
     margin-top: -1px;
     padding: 0;
     text-align: center;
-    width: 112px;
+    width: 85px;
 }
 
 .cell:focus {
@@ -54,19 +54,26 @@ ul {
 /* For 1366 Resolution */
 
 @media only screen and (min-width: 1030px) and (max-width: 1366px) {
+    .orderItem td {
+        font-size: 12px;
+        padding:.50rem !important;
+    }
+    .itemProduct{
+        font-size:13px;
+    }
     .cell {
         background: #fff;
         border: 1px solid #999;
         float: left;
-        font-size: 16px;
+        font-size: 14px;
         font-weight: 100;
-        line-height: 19px;
+        line-height: 18px;
         height: 25px;
         margin-right: -1px;
         margin-top: -1px;
         padding: 0;
         text-align: center;
-        width: 80px;
+        width: 59px;
     }
     .list-group-item {
         padding: .40rem 0.80rem !important;

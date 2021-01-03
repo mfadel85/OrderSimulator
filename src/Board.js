@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-
+import Table from 'react-bootstrap/Table'
 import { allProducts, allOrders } from './data.js';
 
 class Board extends React.Component {
@@ -256,49 +256,64 @@ class Board extends React.Component {
     }
     render() {
         return (
-            <Row>
-                <Col xs={3} md={4}> 
-                    <h3>Products </h3>
-                    <ListGroup variant="flush">
-                        <Products products={this.state.products} addProduct={(id)=>this.addProduct(id)}/>
-                    </ListGroup>
-                </Col>
-                <Col xs={3} md={2}>
-                    <Card>
-                        <Card.Title>Order</Card.Title>
+					<Row>
+						<Col xs={3} md={3}> 
+								<h3>Products </h3>
+								<ListGroup variant="flush">
+										<Products products={this.state.products} addProduct={(id)=>this.addProduct(id)}/>
+								</ListGroup>
+						</Col>
+						<Col xs={4} md={4}>
+							<Card>
+								<Card.Title>Order</Card.Title>
+								<Card.Body>
+									<Table striped bordered hover>
+										<tbody>
+											<tr>
+												<th>#</th>
+												<th>Name</th>
+												<th>Qn</th>
+												<th>Dir</th>
+												<th>BeltCo</th>
+												<th>Cells</th>
 
-                    <Order order={this.state.order} products={this.state.products}  />
-                    <button onClick={() => this.setOrder(0)}>
-                        Order 1
-                    </button>
-                    <button onClick={() => this.setOrder(1)}>
-                        Order 2
-                    </button>
-                    <button onClick={() => this.setOrder(2)}>
-                        Order 3
-                    </button>
-                    <button onClick={() => this.setOrder(3)}>
-                        Order 4
-                    </button>
-                    <button onClick={() => this.setOrder(4)}>
-                        Order 5
-                    </button>
-                    <button onClick={() => this.setOrder(5)}>
-                        Order 6
-                    </button>
-                    <button onClick={() => this.setOrder(6)}>
-                        Order 7
-                    </button>
-                    <button onClick={() => this.setOrder(7)}>
-                        Order 8
-                    </button>
-                    <button onClick={() => this.setOrder(8)}>
-                        Order 9
-                    </button>
-                    </Card>
-                </Col>
+											</tr>
+										
+										<Order order={this.state.order} products={this.state.products}  />
+										</tbody>
+									</Table>
+									<button onClick={() => this.setOrder(0)}>
+											Order 1
+									</button>
+									<button onClick={() => this.setOrder(1)}>
+											Order 2
+									</button>
+									<button onClick={() => this.setOrder(2)}>
+											Order 3
+									</button>
+									<button onClick={() => this.setOrder(3)}>
+											Order 4
+									</button>
+									<button onClick={() => this.setOrder(4)}>
+											Order 5
+									</button>
+									<button onClick={() => this.setOrder(5)}>
+											Order 6
+									</button>
+									<button onClick={() => this.setOrder(6)}>
+											Order 7
+									</button>
+									<button onClick={() => this.setOrder(7)}>
+											Order 8
+									</button>
+									<button onClick={() => this.setOrder(8)}>
+											Order 9
+									</button>
+								</Card.Body>
+								</Card>
+						</Col>
                 
-                <Col xs={4} ms={5}>
+                <Col xs={3} ms={4}>
                     <div className="board-row">
                         {this.renderCell(0)}
                         {this.renderCell(1)}
@@ -454,15 +469,14 @@ class Board extends React.Component {
                         {this.renderCell(109)}
                     </div>
                 </Col>
-                <Col xs={2} md={2}>
+                <Col xs={1} md={2}>
                     <Card>
                         <Card.Title>My Order </Card.Title>
                         <Card.Body>
                         
                             {this.state.myOrderWithName.map((product) => (
-                                <ListGroup.Item key={product.id} >
-                                    {product.id}.   
-                                     {product.name} - quantity: {product.quantity} 
+                                <ListGroup.Item className='itemProduct' key={product.id} >  
+                                     {product.name} - qn: {product.quantity} 
                                  </ListGroup.Item>
                             ))}
                         </Card.Body>
