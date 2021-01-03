@@ -243,7 +243,7 @@ class Board extends React.Component {
         
         //let name = allProducts[id].name;
         let item = { id:id ,quantity: 1};
-        let itemWithName = { id: id, quantity: 1,name:allProducts[id].name };
+        let itemWithName = { id: id-1, quantity: 1,name:allProducts[id-1].name };
 
         this.setState({
             myOrder: [...this.state.myOrder,item],
