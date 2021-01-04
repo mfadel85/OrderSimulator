@@ -260,9 +260,6 @@ class Board extends React.Component {
 		return true;
 	}
 	shiftCells(startIndex, item) {
-		let available = this.checkSpace(startIndex, item.beltCount, item.cellsDepth);
-		if(!available)
-			alert('Buraya Kadar yeter bi artık');
 		let indicesUpdated = [];
 		for (let m = 0; m < item.beltCount; m++) indicesUpdated.push(false);
 		console.log("indices updated: ", indicesUpdated);
