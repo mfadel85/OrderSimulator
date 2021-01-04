@@ -111,6 +111,7 @@ class Board extends React.Component {
 	decideStartIndex(startIndex,beltCount){
 		if (beltCount === 3) startIndex = 2;
 		else if (beltCount == 1 && startIndex == 4) startIndex = 4;
+		else if (beltCount == 1 && startIndex == 0) startIndex = 4;
 		else if ( startIndex + beltCount >= this.state.cellsInRow || beltCount > 3)
 			startIndex = 0;
 
@@ -259,7 +260,9 @@ class Board extends React.Component {
 		return true;
 	}
 	shiftCells(startIndex, item) {
-		this.checkSpace(startIndex, item.beltCount, item.cellsDepth);
+		let available = this.checkSpace(startIndex, item.beltCount, item.cellsDepth);
+		if(!available)
+			alert('Buraya Kadar yeter bi artık');
 		let indicesUpdated = [];
 		for (let m = 0; m < item.beltCount; m++) indicesUpdated.push(false);
 		console.log("indices updated: ", indicesUpdated);
