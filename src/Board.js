@@ -855,33 +855,24 @@ class Board extends React.Component {
 			md = {
 				2
 			} >
-			<
-			Card >
-			<
-			Card.Title > My Order < /Card.Title> <
-			Card.Body > {
-				this.state.myOrderWithName.map((product) => ( <
-					ListGroup.Item className = 'itemProduct'
-					key = {
-						product.id
-					} > {
-						product.name
-					} - qn: {
-						product.quantity
-					} <
-					/ListGroup.Item>
+			<Card >
+			<Card.Title > My Order < /Card.Title> 
+			<Card.Body > {
+				this.state.myOrderWithName.map((product) => ( 
+					<ListGroup.Item className = 'itemProductCustom' key = { product.id} > 
+					{product.name} - qn: {product.quantity} 
+					</ListGroup.Item>
 				))
-			} <
-			/Card.Body> <
-			button onClick = {
+			} </Card.Body> 
+			<button onClick = {
 				() => this.setOrder(-1)
-			} > Pick Order < /button> <
-			button onClick = {
+			} > Pick Order < /button> 
+			<button onClick = {
 				() => this.clearMyOrder()
-			} > Clear Order < /button> <
-			/Card> <
-			/Col> <
-			/Row>
+			} > Clear Order < /button> 
+			</Card> 
+			</Col> 
+			</Row>
 		);
 	}
 }
