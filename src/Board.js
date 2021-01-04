@@ -97,7 +97,8 @@ class Board extends React.Component {
 		this.setState({
 			myOrder: [],
 			myOrderWithName: [],
-			cells: []
+            cells: [],
+            fillingPercent:0
 		});
 	}
 	handleOneProduct(item, startIndex) {
