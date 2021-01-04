@@ -22,6 +22,8 @@ class Order extends React.Component {
                 <td>{product.name.dir}</td>
                 <td>{product.name.beltCount}</td>
                 <td>{product.name.cellsDepth}</td>
+                <td>{product.name.unitNo}</td>
+
             </tr>
         ))
     };

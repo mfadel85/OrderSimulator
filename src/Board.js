@@ -79,7 +79,8 @@ class Board extends React.Component {
 			let productName = name.name;
 			let beltCount = name.beltCount;
 			let cellsDepth = name.cellsDepth;
-			let symbol = name.symbol;
+            let symbol = name.symbol;
+            let unitNo = name.unitNo;
 			finalOrder.push({
 				id,
 				quantity,
@@ -87,7 +88,8 @@ class Board extends React.Component {
 				productName,
 				symbol,
 				beltCount,
-				cellsDepth
+                cellsDepth,
+                unitNo
 			})
 		});
 
@@ -314,54 +316,38 @@ class Board extends React.Component {
 
 	}
 	render() {
-		return ( <
-			Row >
-			<
-			Col xs = {
-				3
-			}
-			md = {
-				3
-			} >
-			<
-			h3 > Products < /h3> <
-			ListGroup variant = "flush" >
-			<
-			Products products = {
-				this.state.products
-			}
-			addProduct = {
-				(id) => this.addProduct(id)
-			}
-			/> <
-			/ListGroup> <
-			/Col> <
+		return ( 
+            <Row >
+			<Col xs = {3 } md = {3} >
+			<h3 > Products < /h3> 
+            <ListGroup variant = "flush" >
+            <Products 
+                products = {this.state.products} 
+                addProduct = { (id) => this.addProduct(id)}
+			/> 
+            </ListGroup> 
+            </Col> <
 			Col xs = {
 				4
 			}
 			md = {
 				4
 			} >
-			<
-			Card >
-			<
-			Card.Title > Order < /Card.Title> <
-			Card.Body >
-			<
-			Table striped bordered hover >
-			<
-			tbody >
-			<
-			tr >
-			<
-			th > # < /th> <
-			th > Name < /th> <
-			th > Qn < /th> <
-			th > Dir < /th> <
-			th > BeltCo < /th> <
-			th > Cells < /th> <
-			/tr> <
-			Order order = {
+			<Card >
+			<Card.Title > Order < /Card.Title> 
+            <Card.Body >
+			<Table striped bordered hover >
+			<tbody >
+			<tr >
+            <th > # < /th> 
+            <th > Name < /th> 
+            <th > Qn < /th> 
+            <th > Dir < /th> 
+            <th > BeltCo < /th> 
+            <th > Cells < /th> 
+            <th>Unit</th>
+            </tr> 
+            <Order order = {
 				this.state.order
 			}
 			products = {
@@ -542,16 +528,10 @@ class Board extends React.Component {
 			Cell value = {
 				this.state.cells[28]
 			}
-			/> <
-			Cell value = {
-				this.state.cells[29]
-			}
-			/> <
-			Cell value = {
-				this.state.cells[30]
-			}
-			/> <
-			Cell value = {
+            /> 
+            <Cell value = { this.state.cells[29]} /> 
+            <Cell value = {this.state.cells[30]} /> 
+                <Cell value = {
 				this.state.cells[31]
 			}
 			/> <
