@@ -36,6 +36,8 @@ class Board extends React.Component {
 			myOrder: [],
 			myOrderWithName: [],
 			fillingPercent: 0,
+			time:0,
+			lastPosition:1
 		};
 	}
 	sortProduct(a, b) {
@@ -48,10 +50,19 @@ class Board extends React.Component {
 		else orderReady = this.initOrder(allOrders[orderID]);
 		console.log("order is ready??", orderReady);
 		orderReady.sort(this.sortProduct);
+		// calctime by how?
+		let time = 0;
+		let position = 1;
+		orderReady.forEach(element => {
+			time += 4 + Math.abs(element.name.unitNo -position)*2;
+			position = element.name.unitNo;
+		});
 		this.setState(
 			{
 				cells: Array(this.state.cellsInBent * this.state.cellsInRow).fill(null),
 				order: orderReady,
+				time:time,
+				/*lastPosition:1*/
 			},
 			() => {
 				this.fillBoard();
@@ -142,8 +153,9 @@ class Board extends React.Component {
 				if (cell != null) filledCount++;
 				//console.log('FilledCellsCount', filledCount, cell);
 			});
-
 			startIndex = startIndex + item.beltCount;
+			/*let time = this.state.time + 3 + Math.abs(this.state.lastPosition-item.unitNo)*2;
+			console.log('time till now',time);*/
 			this.setState({
 				cells: this.state.cells,
 				index: startIndex,
@@ -159,6 +171,8 @@ class Board extends React.Component {
 						cells: this.state.cells,
 					},
 				],
+				lastPosition:item.unitNo,
+				/*time:time*/
 			});
 			console.log("History after now ", this.state.history);
 		} else {
@@ -494,6 +508,8 @@ class Board extends React.Component {
 					<Cell value={this.state.cells[108]} />
 					<Cell value={this.state.cells[109]} />
 					<span> Percentage: {this.state.fillingPercent} </span>
+					<span> Time: {this.state.time} Seconds </span>
+
 				</Col>
 				<Col xs={2} md={2}>
 					<Card>
