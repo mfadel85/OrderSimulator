@@ -47,7 +47,10 @@ class Board extends React.Component {
 		};
 	}
 	sortProduct(a, b) {
-		return a.beltCount - b.beltCount;
+		if (a.beltCount != b.beltCount)
+			return a.beltCount - b.beltCount;
+		else 
+			return a.unitNo - b.unitNo;
 	}
 	setOrder(orderID) {
 		let orderReady = [];
@@ -318,7 +321,7 @@ class Board extends React.Component {
 	render() {
 		return ( 
             <Row >
-			<Col xs = {3 } md = {3} >
+			<Col xs = {2 } md = {2} >
 			<h3 > Products < /h3> 
             <ListGroup variant = "flush" >
             <Products 
@@ -326,26 +329,21 @@ class Board extends React.Component {
                 addProduct = { (id) => this.addProduct(id)}
 			/> 
             </ListGroup> 
-            </Col> <
-			Col xs = {
-				4
-			}
-			md = {
-				4
-			} >
+            </Col> 
+            <Col xs = {4} md = {4} >
 			<Card >
 			<Card.Title > Order < /Card.Title> 
             <Card.Body >
 			<Table striped bordered hover >
 			<tbody >
 			<tr >
-            <th > # < /th> 
-            <th > Name < /th> 
-            <th > Qn < /th> 
-            <th > Dir < /th> 
-            <th > BeltCo < /th> 
-            <th > Cells < /th> 
-            <th>Unit</th>
+        <th > # </th> 
+        <th > Name </th> 
+				<th > Qn </th> 
+				<th > Dir </th> 
+				<th > BeltCo </th> 
+				<th > Cells </th> 
+				<th>Unit</th>
             </tr> 
             <Order order = {
 				this.state.order

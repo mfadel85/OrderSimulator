@@ -55,14 +55,15 @@ ul {
 
     .itemProduct {
         cursor: pointer;
+        font-size: 11px;
     }
 @media only screen and (min-width: 1030px) and (max-width: 1366px) {
     .orderItem td {
-        font-size: 12px;
+        font-size: 11px;
         padding:.50rem !important;
     }
     .itemProduct{
-        font-size:13px;
+        font-size:10px;
         cursor: pointer;
     }
     .cell {
