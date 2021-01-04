@@ -54,7 +54,7 @@ class Board extends React.Component {
 		let time = 0;
 		let position = 1;
 		orderReady.forEach(element => {
-			time += 4 + Math.abs(element.name.unitNo -position)*2;
+			time += 3 + Math.abs(element.name.unitNo -position)*2;
 			position = element.name.unitNo;
 		});
 		this.setState(
@@ -108,6 +108,16 @@ class Board extends React.Component {
 			order: [],
 		});
 	}
+	decideStartIndex(startIndex,beltCount){
+		if (beltCount === 3) startIndex = 2;
+		else if (beltCount == 1 && startIndex == 4) startIndex = 4;
+		else if ( startIndex + beltCount >= this.state.cellsInRow || beltCount > 3)
+			startIndex = 0;
+
+		if (beltCount === 2 && startIndex % 2 === 1)
+			startIndex = startIndex + 1;
+		return startIndex;
+	}
 	handleOneProduct(item, startIndex) {
 		let filledCount = 0;
 		let originalStartIndex = startIndex;
@@ -130,7 +140,7 @@ class Board extends React.Component {
 				startIndex = 0;
 			break;
 		}*/
-		if (item.beltCount === 3) startIndex = 2;
+		/*if (item.beltCount === 3) startIndex = 2;
 		else if (item.beltCount == 1 && startIndex == 4) startIndex = 4;
 		else if (
 			startIndex + item.beltCount >= this.state.cellsInRow ||
@@ -139,7 +149,8 @@ class Board extends React.Component {
 			startIndex = 0;
 
 		if (item.beltCount === 2 && startIndex % 2 === 1)
-			startIndex = startIndex + 1;
+			startIndex = startIndex + 1;*/
+		startIndex = this.decideStartIndex(startIndex,item.beltCount);
 
 		console.log("startIndex is ", startIndex);
 		let available = this.checkSpace(
