@@ -112,6 +112,10 @@ class Board extends React.Component {
 		if (beltCount === 3) startIndex = 2;
 		else if (beltCount == 1 && startIndex == 4) startIndex = 4;
 		else if (beltCount == 1 && startIndex == 0) startIndex = 4;
+		/*else if(beltCount == 1)
+		{
+			startIndex = this.state.beltIndices.indexOf(Math.min(...this.state.beltIndices));
+		}*/
 		else if ( startIndex + beltCount >= this.state.cellsInRow || beltCount > 3)
 			startIndex = 0;
 
@@ -168,6 +172,8 @@ class Board extends React.Component {
 			startIndex = startIndex + item.beltCount;
 			/*let time = this.state.time + 3 + Math.abs(this.state.lastPosition-item.unitNo)*2;
 			console.log('time till now',time);*/
+			this.updateBeltsStatus();
+
 			this.setState({
 				cells: this.state.cells,
 				index: startIndex,
@@ -185,6 +191,7 @@ class Board extends React.Component {
 				],
 				lastPosition:item.unitNo,
 				/*time:time*/
+			},()=> {
 			});
 			console.log("History after now ", this.state.history);
 		} else {
@@ -249,6 +256,22 @@ class Board extends React.Component {
 		);
 		return index;
 	}
+	updateBeltsStatus(cells=this.state.cells){
+		let beltIndices = [];
+		for(let i=0;i<this.state.cellsInRow;i++)
+		{
+			for(let j =21; j>=0; j--){
+				if(cells[j*5+i] != null){
+					beltIndices[i] = j+1;
+					break;					
+				}
+			}
+		}
+		this.setState({
+			beltIndices:beltIndices
+		});
+		console.log('indices are ',beltIndices)
+	}
 	checkSpace(startIndex, beltCount, cellsDepth) {
 		let startRow = this.state.cellsInBent - cellsDepth;
 		for (let i = startRow; i < this.state.cellsInBent; i++) {
@@ -261,7 +284,8 @@ class Board extends React.Component {
 	}
 	shiftCells(startIndex, item) {
 		let indicesUpdated = [];
-		for (let m = 0; m < item.beltCount; m++) indicesUpdated.push(false);
+		for (let m = 0; m < item.beltCount*item.cellsDepth; m++) 
+			indicesUpdated.push(false);
 		console.log("indices updated: ", indicesUpdated);
 		let currentCells = this.state.cells;
 		const cellsInRow = this.state.cellsInRow;
@@ -278,8 +302,9 @@ class Board extends React.Component {
 							currentCells[index] === null &&
 							currentCells[index - cellsInRow] !== null
 						) {
-							this.updateIndices(index - cellsInRow);
+							//this.updateIndices(index - cellsInRow);
 						}
+						this.updateIndices(index - cellsInRow);
 						currentCells[index] = currentCells[index - cellsInRow];
 						currentCells[index - cellsInRow] = "Left " + item.symbol;
 					}
