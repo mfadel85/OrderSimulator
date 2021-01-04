@@ -37,7 +37,8 @@ class Board extends React.Component {
 			myOrderWithName: [],
 			fillingPercent: 0,
 			time:0,
-			lastPosition:1
+			lastPosition:1,
+			twicy: 0
 		};
 	}
 	sortProduct(a, b) {
@@ -109,6 +110,8 @@ class Board extends React.Component {
 		});
 	}
 	decideStartIndex(startIndex,beltCount){
+		console.log('beltIndices', ...this.state.beltIndices);
+
 		if (beltCount === 3) startIndex = 2;
 		else if (beltCount == 1 && startIndex == 4) startIndex = 4;
 		else if (beltCount == 1 && startIndex == 0) startIndex = 4;
@@ -116,11 +119,15 @@ class Board extends React.Component {
 		{
 			startIndex = this.state.beltIndices.indexOf(Math.min(...this.state.beltIndices));
 		}*/
+		
 		else if ( startIndex + beltCount >= this.state.cellsInRow || beltCount > 3)
 			startIndex = 0;
 
 		if (beltCount === 2 && startIndex % 2 === 1)
 			startIndex = startIndex + 1;
+		/*else if (beltCount === 2) {
+			startIndex = this.state.twicy;
+		}*/
 		return startIndex;
 	}
 	handleOneProduct(item, startIndex) {
@@ -267,8 +274,17 @@ class Board extends React.Component {
 				}
 			}
 		}
+		let max1 = Math.max(beltIndices.slice(0,2));
+		let max2 = Math.max(beltIndices.slice(2, 4));
+		let twicy;
+		if(max1 >= max2)
+			twicy= beltIndices.indexOf(max1);
+		else 
+			twicy = beltIndices.indexOf(max2);
+
 		this.setState({
-			beltIndices:beltIndices
+			beltIndices:beltIndices,
+			twicy:twicy
 		});
 		console.log('indices are ',beltIndices)
 	}
