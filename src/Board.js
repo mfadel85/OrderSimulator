@@ -110,24 +110,28 @@ class Board extends React.Component {
 		});
 	}
 	decideStartIndex(startIndex,beltCount){
-		console.log('beltIndices', ...this.state.beltIndices);
 
 		if (beltCount === 3) startIndex = 2;
 		else if (beltCount == 1 && startIndex == 4) startIndex = 4;
 		else if (beltCount == 1 && startIndex == 0) startIndex = 4;
-		/*else if(beltCount == 1)
+		else if(beltCount == 1)
 		{
 			startIndex = this.state.beltIndices.indexOf(Math.min(...this.state.beltIndices));
-		}*/
+		}
 		
 		else if ( startIndex + beltCount >= this.state.cellsInRow || beltCount > 3)
 			startIndex = 0;
 
 		if (beltCount === 2 && startIndex % 2 === 1)
 			startIndex = startIndex + 1;
-		/*else if (beltCount === 2) {
-			startIndex = this.state.twicy;
-		}*/
+		else if (beltCount === 2 && this.state.twicy !==  -1) {
+			console.log('beltIndices', ...this.state.beltIndices);
+
+			/*if (Math.max(this.state.beltIndices[0], this.state.beltIndices[1]) < Math.max(this.state.beltIndices[2], this.state.beltIndices[3]))
+				startIndex = 0;
+			else 
+				startIndex =2;*/
+		}
 		return startIndex;
 	}
 	handleOneProduct(item, startIndex) {
@@ -136,32 +140,6 @@ class Board extends React.Component {
 		let currentcells = [...this.state.cells];
 		console.log("History now ", this.state.history);
 
-		/*switch (item.beltCount){
-			case 1:
-			break;
-			case 2:
-				if(startIndex > 3)
-					startIndex =0;
-				if (startIndex % 2 === 1)
-					startIndex = startIndex + 1;
-			break;
-			case 3:
-				startIndex = 2;
-			break;
-			case 4,5:
-				startIndex = 0;
-			break;
-		}*/
-		/*if (item.beltCount === 3) startIndex = 2;
-		else if (item.beltCount == 1 && startIndex == 4) startIndex = 4;
-		else if (
-			startIndex + item.beltCount >= this.state.cellsInRow ||
-			item.beltCount > 3
-		)
-			startIndex = 0;
-
-		if (item.beltCount === 2 && startIndex % 2 === 1)
-			startIndex = startIndex + 1;*/
 		startIndex = this.decideStartIndex(startIndex,item.beltCount);
 
 		console.log("startIndex is ", startIndex);
@@ -174,13 +152,8 @@ class Board extends React.Component {
 			this.shiftCells(startIndex, item);
 			this.state.cells.forEach((cell) => {
 				if (cell != null) filledCount++;
-				//console.log('FilledCellsCount', filledCount, cell);
 			});
 			startIndex = startIndex + item.beltCount;
-			/*let time = this.state.time + 3 + Math.abs(this.state.lastPosition-item.unitNo)*2;
-			console.log('time till now',time);*/
-			this.updateBeltsStatus();
-
 			this.setState({
 				cells: this.state.cells,
 				index: startIndex,
@@ -199,6 +172,7 @@ class Board extends React.Component {
 				lastPosition:item.unitNo,
 				/*time:time*/
 			},()=> {
+					this.updateBeltsStatus();
 			});
 			console.log("History after now ", this.state.history);
 		} else {
@@ -247,24 +221,8 @@ class Board extends React.Component {
 		return currentCells;
 	}
 
-	modifyIndex(startIndex, beltCount) {
-		let index = 0;
-		if (startIndex + beltCount > 5 || beltCount > 3) index = 0;
-		if (beltCount === 3) index = 2;
-		if (beltCount === 2 && startIndex % 2 === 1) index = startIndex + 1;
-		else index = startIndex;
-		console.log(
-			"index is ",
-			index,
-			"start",
-			startIndex,
-			"belt count",
-			beltCount
-		);
-		return index;
-	}
 	updateBeltsStatus(cells=this.state.cells){
-		let beltIndices = [];
+		let beltIndices = this.state.beltIndices;
 		for(let i=0;i<this.state.cellsInRow;i++)
 		{
 			for(let j =21; j>=0; j--){
@@ -274,10 +232,10 @@ class Board extends React.Component {
 				}
 			}
 		}
-		let max1 = Math.max(beltIndices.slice(0,2));
-		let max2 = Math.max(beltIndices.slice(2, 4));
+		let max1 = Math.max(...beltIndices.slice(0, 2));
+		let max2 = Math.max(...beltIndices.slice(2, 4));
 		let twicy;
-		if(max1 >= max2)
+		if(max1 <= max2)
 			twicy= beltIndices.indexOf(max1);
 		else 
 			twicy = beltIndices.indexOf(max2);
@@ -306,39 +264,29 @@ class Board extends React.Component {
 		let currentCells = this.state.cells;
 		const cellsInRow = this.state.cellsInRow;
 		let count = 0;
-		let direction = item.name.dir;
+		const direction = item.name.dir;
 		if (direction === "left") {
 			for (let i = 0; i < item.cellsDepth; i++)
 				for (let j = this.state.cellsInBent - 1; j > 0; j--)
 					for (let k = 0; k < item.beltCount; k++) {
-						let index = startIndex + j * cellsInRow + k;
+						let index = startIndex + (j-1) * cellsInRow + k;
 						count = count + 1;
-						if (
-							!indicesUpdated[k + startIndex] &&
-							currentCells[index] === null &&
-							currentCells[index - cellsInRow] !== null
-						) {
-							//this.updateIndices(index - cellsInRow);
-						}
-						this.updateIndices(index - cellsInRow);
+						this.updateIndices(index);
 						currentCells[index] = currentCells[index - cellsInRow];
 						currentCells[index - cellsInRow] = "Left " + item.symbol;
 					}
-		} else if (direction === "right") {
-			console.log("right side");
+		} 
+		else if (direction === "right") {
 			for (let j = 21; j >= 0; j--) {
-				let k = 0;
 				let startingPoint = startIndex + j * cellsInRow;
-				let index = startIndex + j * cellsInRow + k;
 				let valid = true;
 				for (let m = 0; m < item.beltCount; m++) {
-					if (currentCells[index + m] === null) valid = true;
-					else {
+					if (currentCells[startIndex + j * cellsInRow + m] !== null) {
 						valid = false;
 						break;
 					}
 				}
-				if (valid && startingPoint < 5)
+				if (valid && startingPoint < cellsInRow)
 					currentCells = this.fillCellsFromRight(startingPoint, item);
 				else if (!valid || startingPoint < cellsInRow) {
 					startingPoint = startingPoint + cellsInRow;
@@ -350,14 +298,8 @@ class Board extends React.Component {
 		console.log("swap count", count);
 		this.setState({
 			cells: currentCells,
-			history: [
-				...this.state.history,
-				{
-					cells: currentCells,
-				},
-			],
+			history: [...this.state.history,{cells: currentCells}],
 		});
-
 		return currentCells;
 	}
 
@@ -411,7 +353,7 @@ class Board extends React.Component {
 		//}
 
 	}
-	render() {
+	render() {	
 		return (
 			<Row>
 				<Col xs={2} md={2}>
@@ -435,6 +377,10 @@ class Board extends React.Component {
 									/>
 								</tbody>
 							</Table>
+							{/*{allButtons.map((value) => {
+								return <button onclick={() => this.setOrder({ value })}> Order {value+1} </button>
+							}) 
+							}*/}
 							<button onClick={() => this.setOrder(0)}>Order 1 </button>
 							<button onClick={() => this.setOrder(1)}>Order 2 </button>
 							<button onClick={() => this.setOrder(2)}>Order 3 </button>

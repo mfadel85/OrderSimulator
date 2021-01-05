@@ -87,3 +87,7 @@ ul {
         padding: .40rem 0.80rem !important;
     }
 }
+
+.quantity {
+    width:20px;
+}
