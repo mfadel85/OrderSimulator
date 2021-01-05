@@ -267,9 +267,9 @@ class Board extends React.Component {
 		const direction = item.name.dir;
 		if (direction === "left") {
 			for (let i = 0; i < item.cellsDepth; i++)
-				for (let j = this.state.cellsInBent - 1; j > 0; j--)
+				for (let j = this.state.cellsInBent ; j > 0; j--)
 					for (let k = 0; k < item.beltCount; k++) {
-						let index = startIndex + (j-1) * cellsInRow + k;
+						let index = startIndex + (j) * cellsInRow + k;
 						count = count + 1;
 						this.updateIndices(index);
 						currentCells[index] = currentCells[index - cellsInRow];
