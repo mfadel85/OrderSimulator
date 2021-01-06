@@ -67,7 +67,8 @@ class Board extends React.Component {
 				cells: Array(this.state.cellsInBent * this.state.cellsInRow).fill(null),
 				order: orderReady,
 				time:time,
-				/*lastPosition:1*/
+				/*twicy: 0
+				lastPosition:1*/
 			},
 			() => {
 				this.fillBoard();
@@ -96,12 +97,14 @@ class Board extends React.Component {
 		return finalOrder;
 	}
 	clearMyOrder() {
+		alert('order cleared');
 		this.setState({
 			myOrder: [],
 			myOrderWithName: [],
 			cells: [],
 			fillingPercent: 0,
 			order: [],
+			twicy:0
 		});
 	}
 	decideStartIndex(startIndex,beltCount){
@@ -119,8 +122,9 @@ class Board extends React.Component {
 		if (beltCount === 2 && startIndex % 2 === 1)
 			startIndex = startIndex + 1;
 		else if (beltCount === 2 && this.state.twicy !==  -1) {
-			//console.log('beltIndices', ...this.state.beltIndices,'twicy is',this.state.twicy);
-			//startIndex = this.state.twicy;
+			let index = this.updateBeltsStatus();
+			console.log('beltIndices', ...this.state.beltIndices, 'twicy is', this.state.twicy,'current twicy',index);
+
 			/*if (Math.max(this.state.beltIndices[0], this.state.beltIndices[1]) < Math.max(this.state.beltIndices[2], this.state.beltIndices[3]))
 				startIndex = 0;
 			else 
@@ -142,7 +146,6 @@ class Board extends React.Component {
 			item.cellsDepth
 		);
 		if (available) {
-			// here we update twicy
 			this.shiftCells(startIndex, item);
 			this.state.cells.forEach((cell) => {
 				if (cell != null) filledCount++;
@@ -151,22 +154,14 @@ class Board extends React.Component {
 			this.setState({
 				cells: this.state.cells,
 				index: startIndex,
-				fillingPercent:
-					(filledCount * 1.0) /
-					(this.state.cellsInBent * this.state.cellsInRow * 1.0),
+				fillingPercent:(filledCount * 1.0) /(this.state.cellsInBent * this.state.cellsInRow * 1.0),
 				history: [
-					...this.state.history,
-					{
-						cells: currentcells,
-					},
-					{
-						cells: this.state.cells,
-					},
+					...this.state.history,{cells: currentcells},{cells: this.state.cells}
 				],
 				lastPosition:item.unitNo,
 				/*time:time*/
 			},()=> {
-					this.updateBeltsStatus();
+					//this.updateBeltsStatus();
 			});
 			//console.log("History after now ", this.state.history);
 		} else {
@@ -182,15 +177,31 @@ class Board extends React.Component {
 
 		return startIndex;
 	}
+	updateBeltsStatus(cells = this.state.cells) {
+		let beltIndices = this.state.beltIndices;
+		for (let i = 0; i < this.state.cellsInRow; i++)
+			for (let j = 21; j >= 0; j--) {
+				if (cells[j * 5 + i] != null) {
+					beltIndices[i] = j + 1;
+					break;
+				}
+			}
+		let max1 = Math.max(...beltIndices.slice(0, 2));
+		let max2 = Math.max(...beltIndices.slice(2, 4));
+		let twicy = (max1 <= max2 ? beltIndices.indexOf(max1) : beltIndices.indexOf(max2));
+		this.setState({
+			beltIndices: beltIndices,
+			twicy: twicy
+		});
+		return twicy;
+	}
 
 	fillBoard() {// this is to refactored soon!!
 		let startIndex = 0;
 		let that = this;
 		this.state.order.forEach(function (item) {
 			for (let m = 0; m < item.quantity; m++) {
-				//that.updateBeltsStatus();
 				startIndex = that.handleOneProduct(item, startIndex);
-				//that.updateBeltsStatus();
 			}
 		});
 
@@ -210,32 +221,12 @@ class Board extends React.Component {
 			for (let j = 0; j < item.beltCount; j++) {
 				let index = i * this.state.cellsInRow + j;
 				currentCells[startingPoint + index] = item.symbol + ": Right";
-				this.updateIndices(startingPoint + index);
+				//this.updateIndices(startingPoint + index);
 			}
 		return currentCells;
 	}
 
-	updateBeltsStatus(cells=this.state.cells){
-		let beltIndices = this.state.beltIndices;
-		for(let i=0;i<this.state.cellsInRow;i++)
-		{
-			for(let j =21; j>=0; j--){
-				if(cells[j*5+i] != null){
-					beltIndices[i] = j+1;
-					break;					
-				}
-			}
-		}
-		let max1 = Math.max(...beltIndices.slice(0, 2));
-		let max2 = Math.max(...beltIndices.slice(2, 4));
-		let twicy = (max1 <= max2 ? beltIndices.indexOf(max1) : beltIndices.indexOf(max2) );
 
-
-		this.setState({
-			beltIndices:beltIndices,
-			twicy:twicy
-		});
-	}
 	checkSpace(startIndex, beltCount, cellsDepth) {
 		let startRow = this.state.cellsInBent - cellsDepth;
 		for (let i = startRow; i < this.state.cellsInBent; i++) {
@@ -263,7 +254,7 @@ class Board extends React.Component {
 						count = count + 1;
 						currentCells[index] = currentCells[index - cellsInRow];
 						currentCells[index - cellsInRow] = "Left " + item.symbol;
-						this.updateIndices(index);
+						//this.updateIndices(index);
 					}
 		} 
 		else if (direction === "right") {
@@ -304,9 +295,26 @@ class Board extends React.Component {
 			{
 				myOrder: [...this.state.myOrder, item],
 				myOrderWithName: [...this.state.myOrderWithName, itemWithName],
+				
 			},
 			() => {this.setOrder(-1);}
 		);
+	}
+	generateRandom(){
+		//window.location.reload();
+
+		let randomOrder=[];
+		for(let i =0;i<14;i++){
+			let newItem = { id: Math.floor(Math.random() * 14+1),quantity:1};
+			randomOrder.push(newItem);
+		}
+		allOrders.push(randomOrder);
+		this.setOrder(10);
+		console.log(randomOrder);
+		/*this.setState({
+			myOrder:randomOrder,
+			order:randomOrder
+		});*/
 	}
 	render() {	
 		return (
@@ -346,6 +354,7 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(7)}>Order 8 </button>
 							<button onClick={() => this.setOrder(8)}>Order 9 </button>
 							<button onClick={() => this.setOrder(9)}>Order 10 </button>
+							<button onClick={() => this.generateRandom()}>Random Order </button>
 
 						</Card.Body>
 					</Card>
@@ -464,6 +473,8 @@ class Board extends React.Component {
 					<Cell value={this.state.cells[109]} />
 					<span> Percentage: {this.state.fillingPercent} </span>
 					<span> Time: {this.state.time} Seconds </span>
+					<span> Twicy: {this.state.twicy}</span>
+
 				</Col>
 				<Col xs={2} md={2}>
 					<Card>
