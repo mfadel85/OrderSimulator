@@ -42,16 +42,20 @@ class Board extends React.Component {
 		};
 	}
 	sortProduct(a, b) {
-		if (a.beltCount != b.beltCount) return a.beltCount - b.beltCount;
-		else return a.unitNo - b.unitNo;
+		if (a.beltCount != b.beltCount) 
+			return a.beltCount - b.beltCount;
+		else 
+			return a.unitNo - b.unitNo;
 	}
 	setOrder(orderID) {
 		let orderReady = [];
-		if (orderID == -1) orderReady = this.initOrder(this.state.myOrder);
-		else orderReady = this.initOrder(allOrders[orderID]);
+		if (orderID == -1) 
+			orderReady = this.initOrder(this.state.myOrder);
+		else 
+			orderReady = this.initOrder(allOrders[orderID]);
 		console.log("order is ready??", orderReady);
 		orderReady.sort(this.sortProduct);
-		// calctime by how?
+
 		let time = 0;
 		let position = 1;
 		orderReady.forEach(element => {
@@ -86,16 +90,7 @@ class Board extends React.Component {
 			let cellsDepth = name.cellsDepth;
 			let symbol = name.symbol;
 			let unitNo = name.unitNo;
-			finalOrder.push({
-				id,
-				quantity,
-				name,
-				productName,
-				symbol,
-				beltCount,
-				cellsDepth,
-				unitNo,
-			});
+			finalOrder.push({id,quantity,name,productName,symbol,beltCount,cellsDepth,unitNo});
 		});
 
 		return finalOrder;
@@ -110,14 +105,13 @@ class Board extends React.Component {
 		});
 	}
 	decideStartIndex(startIndex,beltCount){
-
 		if (beltCount === 3) startIndex = 2;
 		else if (beltCount == 1 && startIndex == 4) startIndex = 4;
 		else if (beltCount == 1 && startIndex == 0) startIndex = 4;
-		else if(beltCount == 1)
+		/*else if(beltCount == 1)
 		{
 			startIndex = this.state.beltIndices.indexOf(Math.min(...this.state.beltIndices));
-		}
+		}*/
 		
 		else if ( startIndex + beltCount >= this.state.cellsInRow || beltCount > 3)
 			startIndex = 0;
@@ -127,8 +121,6 @@ class Board extends React.Component {
 		else if (beltCount === 2 && this.state.twicy !==  -1) {
 			//console.log('beltIndices', ...this.state.beltIndices,'twicy is',this.state.twicy);
 			//startIndex = this.state.twicy;
-			
-
 			/*if (Math.max(this.state.beltIndices[0], this.state.beltIndices[1]) < Math.max(this.state.beltIndices[2], this.state.beltIndices[3]))
 				startIndex = 0;
 			else 
@@ -191,8 +183,7 @@ class Board extends React.Component {
 		return startIndex;
 	}
 
-	fillBoard() {
-		// this is to refactored soon!!
+	fillBoard() {// this is to refactored soon!!
 		let startIndex = 0;
 		let that = this;
 		this.state.order.forEach(function (item) {
@@ -200,11 +191,9 @@ class Board extends React.Component {
 				//that.updateBeltsStatus();
 				startIndex = that.handleOneProduct(item, startIndex);
 				//that.updateBeltsStatus();
-
 			}
 		});
 
-		//console.log("History after now ", this.state.history);
 	}
 	updateIndices(index) {
 		let indices = this.state.beltIndices;
@@ -309,50 +298,15 @@ class Board extends React.Component {
 	}
 
 	addProduct(id) {
-		// if this item in the list then only update quantity
-		//let name = allProducts[id].name;
-		/*var found = false;
-		for (var i = 0; i < this.state.myOrder.length; i++) {
-			if (this.state.myOrder[i].id == id) {
-				console.log('heahdsfhdsfahdfsh before', this.state.myOrder[i]);
-				found = true;
-				let item = this.state.myOrder[i];
-				item.quantity = item.quantity+1;
-				let itemWithName= this.state.myOrderWithName[i];
-				itemWithName.quantity = itemWithName.quantity+1;
-				this.setState({
-					myOrder:[...this.state.myOrder.slice(0,id),item,...this.state.myOrder.slice(id+1)],
-					myOrderWithName: [...this.state.myOrderWithName.slice(0, id), itemWithName, ...this.state.myOrderWithName.slice(id + 1)],
-				},
-					() => {
-						this.setOrder(-1);
-					});
-				console.log('heahdsfhdsfahdfsh asdfh', item);
-				break;
-			}
-		}
-		if(!found){*/
-			let item = {
-				id: id,
-				quantity: 1,
-			};
-			let itemWithName = {
-				id: id - 1,
-				quantity: 1,
-				name: allProducts[id - 1].name,
-			};
-
-			this.setState(
-				{
-					myOrder: [...this.state.myOrder, item],
-					myOrderWithName: [...this.state.myOrderWithName, itemWithName],
-				},
-				() => {
-					this.setOrder(-1);
-				}
-			);
-		//}
-
+		let item = {id: id,quantity: 1,};
+		let itemWithName = {id: id - 1,quantity: 1,name: allProducts[id - 1].name};
+		this.setState(
+			{
+				myOrder: [...this.state.myOrder, item],
+				myOrderWithName: [...this.state.myOrderWithName, itemWithName],
+			},
+			() => {this.setOrder(-1);}
+		);
 	}
 	render() {	
 		return (
@@ -510,7 +464,6 @@ class Board extends React.Component {
 					<Cell value={this.state.cells[109]} />
 					<span> Percentage: {this.state.fillingPercent} </span>
 					<span> Time: {this.state.time} Seconds </span>
-
 				</Col>
 				<Col xs={2} md={2}>
 					<Card>
