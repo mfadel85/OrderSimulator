@@ -163,7 +163,18 @@ export const allProducts = [
         beltCount: 1,
         cellsDepth: 4,
         unitNo: 2
-    },              
+    }, 
+    {
+        id: 16,
+        name: 'Simple',
+        symbol: 'L',
+        dir: 'right',
+        width: 10,
+        depth: 2,
+        beltCount: 2,
+        cellsDepth: 1,
+        unitNo: 2
+    },                  
 ];
 export const mainOrder = [
     { id: 1, quantity: 4 },
@@ -178,8 +189,8 @@ export const lovelyOrder = [
     { id: 3, quantity: 3 },
     { id: 4, quantity: 2 },
     { id: 7, quantity: 2 },
-    { id: 10, quantity: 3 },
-    { id: 14, quantity: 2 },
+    { id: 10, quantity: 2 },
+    { id: 14, quantity: 4 },
     { id: 15, quantity: 2 },
 
 ];
@@ -268,6 +279,13 @@ export const order9 = [
 
 
 ];
+export const order10 = [
+    { id: 1, quantity: 1 },
+    { id: 2, quantity: 1 },
+
+
+
+];
 export const allOrders = [
-    mainOrder,lovelyOrder,terminator,tester, order5,order6,order7,order8,order9
+    mainOrder,lovelyOrder,terminator,tester, order5,order6,order7,order8,order9,order10
 ];
