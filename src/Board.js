@@ -118,20 +118,23 @@ class Board extends React.Component {
 	decideStartIndex(startIndex,beltCount){
 		console.log('decideStartIndex()0: StartIndex:',startIndex,'Belt Count:',beltCount);
 		let index = this.updateBeltsStatus();
-
+		if(startIndex>4)
+			startIndex = 0;
 		if (beltCount === 3) 
 			startIndex = 2;
 		else if (beltCount == 1 && startIndex == 4) 
 			startIndex = 4;
-		else if (beltCount == 1 && startIndex == 0) startIndex = 4;
+		/*else if (beltCount == 1 && startIndex == 0) 
+			startIndex = 4;*/
 		else if(beltCount == 1)
 		{
 			//startIndex = this.state.beltIndices.indexOf(Math.min(...this.state.beltIndices));
 			//startIndex = 4;
 		}
 		
-		else if ( startIndex + beltCount >= this.state.cellsInRow || beltCount > 3)
+		else if ( startIndex + beltCount >= this.state.cellsInRow || beltCount > 3 )
 			startIndex = 0;
+
 		if (beltCount === 2 && startIndex % 2 === 1)
 			startIndex = startIndex + 1;
 		else if (beltCount === 2 && this.state.twicy !==  -1) {
@@ -255,7 +258,8 @@ class Board extends React.Component {
 		for (let i = startRow; i < this.state.cellsInBent; i++) {
 			for (let l = 0; l < beltCount; l++) {
 				const index = i * 5 + startIndex + l;
-				if (this.state.cells[index] !== null) return false;
+				if (this.state.cells[index] !== null) 
+					return false;
 			}
 		}
 		return true;
