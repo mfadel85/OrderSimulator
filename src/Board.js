@@ -54,7 +54,7 @@ class Board extends React.Component {
 		else 
 			orderReady = this.initOrder(allOrders[orderID]);
 		console.log("order is ready??", orderReady);
-		orderReady.sort(this.sortProduct);
+		orderReady.sort(this.sortProduct); /// changing sorting function based on the algorithm
 
 		let time = 0;
 		let position = 1;
@@ -71,7 +71,7 @@ class Board extends React.Component {
 				lastPosition:1*/
 			},
 			() => {
-				this.fillBoard();
+				this.fillBoard();/// changing algorithm
 			}
 		);
 	}
@@ -353,8 +353,15 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(6)}>Order 7 </button>
 							<button onClick={() => this.setOrder(7)}>Order 8 </button>
 							<button onClick={() => this.setOrder(8)}>Order 9 </button>
-							<button onClick={() => this.setOrder(9)}>Order 10 </button>
 							<button onClick={() => this.generateRandom()}>Random Order </button>
+							<button onClick={() => this.setOrder(9)}>Order S1 </button>
+							<button onClick={() => this.setOrder(10)}>Order S2 </button>
+							<button onClick={() => this.setOrder(11)}>Order S3 </button>
+							<button onClick={() => this.setOrder(12)}>Order S4 </button>
+							<button onClick={() => this.setOrder(13)}>Order S5 </button>
+							<button onClick={() => this.setOrder(14)}>Order S6 </button>
+							<button onClick={() => this.setOrder(15)}>Order S7 </button>
+
 
 						</Card.Body>
 					</Card>

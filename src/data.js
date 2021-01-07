@@ -281,11 +281,49 @@ export const order9 = [
 ];
 export const order10 = [
     { id: 1, quantity: 1 },
+];
+export const order11 = [
+    { id: 1, quantity: 1 },
     { id: 2, quantity: 1 },
-
-
+];
+export const order12 = [
+    { id: 1, quantity: 1 },
+    { id: 2, quantity: 1 },
+    { id: 9, quantity: 1 },
+];
+export const order13 = [
+    { id: 1, quantity: 1 },
+    { id: 2, quantity: 1 },
+    { id: 9, quantity: 1 },
+    { id: 16, quantity: 1 },
+];
+export const order14 = [
+    { id: 1, quantity: 1 },
+    { id: 2, quantity: 1 },
+    { id: 9, quantity: 1 },
+    { id: 16, quantity: 1 },
+    { id: 13, quantity: 1 },
+];
+export const order15 = [
+    { id: 1, quantity: 1 },
+    { id: 2, quantity: 1 },
+    { id: 9, quantity: 1 },
+    { id: 16, quantity: 1 },
+    { id: 13, quantity: 1 },
+    { id: 10, quantity: 1 },
+];
+export const order16 = [
+    { id: 1, quantity: 1 },
+    { id: 2, quantity: 1 },
+    { id: 9, quantity: 1 },
+    { id: 16, quantity: 1 },
+    { id: 13, quantity: 1 },
+    { id: 10, quantity: 1 },
+    { id: 11, quantity: 1 },
 
 ];
 export const allOrders = [
-    mainOrder,lovelyOrder,terminator,tester, order5,order6,order7,order8,order9,order10
+    mainOrder,lovelyOrder,terminator,tester, order5,
+    order6,order7,order8,order9,order10,
+    order11,order12,order13,order14,order15,order16
 ];
