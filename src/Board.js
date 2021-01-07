@@ -48,12 +48,14 @@ class Board extends React.Component {
 			return a.unitNo - b.unitNo;
 	}
 	setOrder(orderID) {
+		
 		let orderReady = [];
 		if (orderID == -1) 
 			orderReady = this.initOrder(this.state.myOrder);
 		else 
 			orderReady = this.initOrder(allOrders[orderID]);
-		console.log("order is ready??", orderReady);
+		console.log("setOrder:", orderReady);
+
 		orderReady.sort(this.sortProduct); /// changing sorting function based on the algorithm
 
 		let time = 0;
@@ -67,8 +69,10 @@ class Board extends React.Component {
 				cells: Array(this.state.cellsInBent * this.state.cellsInRow).fill(null),
 				order: orderReady,
 				time:time,
-				/*twicy: 0
-				lastPosition:1*/
+				twicy: 0,
+				beltIndices: [0, 0, 0, 0, 0],
+
+				/*lastPosition:1*/
 			},
 			() => {
 				this.fillBoard();/// changing algorithm
@@ -77,6 +81,8 @@ class Board extends React.Component {
 	}
 
 	initOrder(order) {
+		console.log("initOrder:");
+
 		let orderStorted = [];
 		order.forEach(function (item) {
 			orderStorted.push([item.id - 1, item.quantity]);
@@ -97,49 +103,53 @@ class Board extends React.Component {
 		return finalOrder;
 	}
 	clearMyOrder() {
-		alert('order cleared');
+		//alert('order cleared');
 		this.setState({
 			myOrder: [],
 			myOrderWithName: [],
 			cells: [],
 			fillingPercent: 0,
 			order: [],
-			twicy:0
-		});
+			twicy:0,
+			beltIndices: [0, 0, 0, 0, 0],
+		},
+		()=>console.log('after cleraing',this.state.order));
 	}
 	decideStartIndex(startIndex,beltCount){
-		if (beltCount === 3) startIndex = 2;
-		else if (beltCount == 1 && startIndex == 4) startIndex = 4;
+		console.log('decideStartIndex()0: StartIndex:',startIndex,'Belt Count:',beltCount);
+		let index = this.updateBeltsStatus();
+
+		if (beltCount === 3) 
+			startIndex = 2;
+		else if (beltCount == 1 && startIndex == 4) 
+			startIndex = 4;
 		else if (beltCount == 1 && startIndex == 0) startIndex = 4;
-		/*else if(beltCount == 1)
+		else if(beltCount == 1)
 		{
-			startIndex = this.state.beltIndices.indexOf(Math.min(...this.state.beltIndices));
-		}*/
+			//startIndex = this.state.beltIndices.indexOf(Math.min(...this.state.beltIndices));
+			//startIndex = 4;
+		}
 		
 		else if ( startIndex + beltCount >= this.state.cellsInRow || beltCount > 3)
 			startIndex = 0;
-
 		if (beltCount === 2 && startIndex % 2 === 1)
 			startIndex = startIndex + 1;
 		else if (beltCount === 2 && this.state.twicy !==  -1) {
-			let index = this.updateBeltsStatus();
-			console.log('beltIndices', ...this.state.beltIndices, 'twicy is', this.state.twicy,'current twicy',index);
-
-			/*if (Math.max(this.state.beltIndices[0], this.state.beltIndices[1]) < Math.max(this.state.beltIndices[2], this.state.beltIndices[3]))
-				startIndex = 0;
-			else 
-				startIndex =2;*/
+			//startIndex = this.state.twicy;
+			startIndex = index;
 		}
+		console.log('decideStartIndex()1: beltIndices', ...this.state.beltIndices, 'twicy is', this.state.twicy, 'current twicy', index,'startIndex',startIndex);
 		return startIndex;
 	}
 	handleOneProduct(item, startIndex) {
 		let filledCount = 0;
 		let originalStartIndex = startIndex;
 		let currentcells = [...this.state.cells];
-		//console.log("History now ", this.state.history);
+		console.log("handleOneProduct0: startIndex is ", startIndex,'product is:',item);
+
 		startIndex = this.decideStartIndex(startIndex,item.beltCount);
 
-		console.log("startIndex is ", startIndex);
+		console.log("handleOneProduct1: startIndex is ", startIndex);
 		let available = this.checkSpace(
 			startIndex,
 			item.beltCount,
@@ -147,10 +157,11 @@ class Board extends React.Component {
 		);
 		if (available) {
 			this.shiftCells(startIndex, item);
+			startIndex = startIndex + item.beltCount;
+
 			this.state.cells.forEach((cell) => {
 				if (cell != null) filledCount++;
 			});
-			startIndex = startIndex + item.beltCount;
 			this.setState({
 				cells: this.state.cells,
 				index: startIndex,
@@ -161,6 +172,9 @@ class Board extends React.Component {
 				lastPosition:item.unitNo,
 				/*time:time*/
 			},()=> {
+
+					//console.log("handleOneProduct1: startIndex is ", startIndex, 'beltIndices:', this.state.beltIndices);
+
 					//this.updateBeltsStatus();
 			});
 			//console.log("History after now ", this.state.history);
@@ -168,9 +182,7 @@ class Board extends React.Component {
 			this.setState({
 				nextPatchProducts: [...this.state.nextPatchProducts, item],
 			});
-			alert(
-				"No space for " + item.productName + " will be added in the next patch."
-			);
+			//alert("No space for " + item.productName + " will be added in the next patch.");
 			console.log("no space for ", item);
 			startIndex = originalStartIndex;
 		}
@@ -178,30 +190,39 @@ class Board extends React.Component {
 		return startIndex;
 	}
 	updateBeltsStatus(cells = this.state.cells) {
+		let currentBeltIndices = [0,0,0,0,0];
 		let beltIndices = this.state.beltIndices;
+		console.log('updateBeltsStatus()0', beltIndices);
 		for (let i = 0; i < this.state.cellsInRow; i++)
 			for (let j = 21; j >= 0; j--) {
 				if (cells[j * 5 + i] != null) {
-					beltIndices[i] = j + 1;
+					currentBeltIndices[i] = j + 1;
 					break;
 				}
 			}
-		let max1 = Math.max(...beltIndices.slice(0, 2));
-		let max2 = Math.max(...beltIndices.slice(2, 4));
-		let twicy = (max1 <= max2 ? beltIndices.indexOf(max1) : beltIndices.indexOf(max2));
+		let max1 = Math.max(...currentBeltIndices.slice(0, 2));
+		let max2 = Math.max(...currentBeltIndices.slice(2, 4));
+		let twicy = (max1 <= max2 ? currentBeltIndices.indexOf(max1) : currentBeltIndices.indexOf(max2));
+		if(twicy%2 !==0)
+			twicy = twicy-1;
 		this.setState({
-			beltIndices: beltIndices,
+			beltIndices: currentBeltIndices,
 			twicy: twicy
-		});
+		}, 
+			() => console.log('updateBeltsStatus()1', currentBeltIndices)
+		);
 		return twicy;
 	}
 
 	fillBoard() {// this is to refactored soon!!
+		console.log('fillBoard');
 		let startIndex = 0;
 		let that = this;
 		this.state.order.forEach(function (item) {
 			for (let m = 0; m < item.quantity; m++) {
 				startIndex = that.handleOneProduct(item, startIndex);
+				console.log("fillBoard : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
+
 			}
 		});
 
@@ -223,6 +244,8 @@ class Board extends React.Component {
 				currentCells[startingPoint + index] = item.symbol + ": Right";
 				//this.updateIndices(startingPoint + index);
 			}
+
+		this.updateBeltsStatus();
 		return currentCells;
 	}
 
@@ -241,7 +264,6 @@ class Board extends React.Component {
 		let indicesUpdated = [];
 		for (let m = 0; m < item.beltCount*item.cellsDepth; m++) 
 			indicesUpdated.push(false);
-		console.log("indices updated: ", indicesUpdated);
 		let currentCells = this.state.cells;
 		const cellsInRow = this.state.cellsInRow;
 		let count = 0;
@@ -276,7 +298,6 @@ class Board extends React.Component {
 				}
 			}
 		}
-		console.log("swap count", count);
 		this.setState({
 			cells: currentCells,
 			history: [...this.state.history,{cells: currentCells}],
@@ -301,15 +322,14 @@ class Board extends React.Component {
 		);
 	}
 	generateRandom(){
-		//window.location.reload();
-
+		this.clearMyOrder();
 		let randomOrder=[];
 		for(let i =0;i<14;i++){
 			let newItem = { id: Math.floor(Math.random() * 14+1),quantity:1};
 			randomOrder.push(newItem);
 		}
 		allOrders.push(randomOrder);
-		this.setOrder(10);
+		this.setOrder(allOrders.length-1);
 		console.log(randomOrder);
 		/*this.setState({
 			myOrder:randomOrder,

@@ -188,10 +188,10 @@ export const lovelyOrder = [
     { id: 2, quantity: 3 },
     { id: 3, quantity: 3 },
     { id: 4, quantity: 2 },
-    { id: 7, quantity: 2 },
-    { id: 10, quantity: 2 },
-    { id: 14, quantity: 4 },
-    { id: 15, quantity: 2 },
+    { id: 7, quantity: 0 },
+    { id: 10, quantity: 7 },
+    { id: 14, quantity: 1 },
+    { id: 15, quantity: 1 },
 
 ];
 
@@ -320,7 +320,6 @@ export const order16 = [
     { id: 13, quantity: 1 },
     { id: 10, quantity: 1 },
     { id: 11, quantity: 1 },
-
 ];
 export const allOrders = [
     mainOrder,lovelyOrder,terminator,tester, order5,
