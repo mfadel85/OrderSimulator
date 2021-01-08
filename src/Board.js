@@ -5,9 +5,8 @@ import Grid from "./grid.js";
 import Order from "./Order.js";
 import Cell from "./Cell.js";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Table, Card, Row, Col, ListGroup } from "react-bootstrap";
+import { Table, Card, Row, Col, ListGroup, ButtonToolbar,ButtonGroup,Button } from "react-bootstrap";
 import { allProducts, allOrders } from "./data.js";
-
 class Board extends React.Component {
 	constructor(props) {
 		super(props);
@@ -38,7 +37,8 @@ class Board extends React.Component {
 			time:0,
 			lastPosition:1,
 			twicy: 0,
-			lastUnitPos:1
+			lastUnitPos:1,
+			algorithm:1
 		};
 	}
 	sortProduct(a, b) {
@@ -56,7 +56,8 @@ class Board extends React.Component {
 			orderReady = this.initOrder(allOrders[orderID]);
 		console.log("setOrder:", orderReady);
 
-		orderReady.sort(this.sortProduct); /// changing sorting function based on the algorithm
+		const sorterFunction = this.sortProduct;
+		orderReady.sort(sorterFunction); /// changing sorting function based on the algorithm
 
 		let time = 0;
 		let position = 1;
@@ -244,7 +245,7 @@ class Board extends React.Component {
 		for (let i = 0; i < item.cellsDepth; i++)
 			for (let j = 0; j < item.beltCount; j++) {
 				let index = i * this.state.cellsInRow + j;
-				currentCells[startingPoint + index] = item.symbol + ": Right";
+				currentCells[startingPoint + index] = item.symbol + ": (R)";
 				//this.updateIndices(startingPoint + index);
 			}
 
@@ -279,7 +280,7 @@ class Board extends React.Component {
 						let index = startIndex + (j) * cellsInRow + k;
 						count = count + 1;
 						currentCells[index] = currentCells[index - cellsInRow];
-						currentCells[index - cellsInRow] = "Left " + item.symbol;
+						currentCells[index - cellsInRow] = "(L) " + item.symbol;
 						//this.updateIndices(index);
 					}
 		} 
@@ -340,6 +341,12 @@ class Board extends React.Component {
 			order:randomOrder
 		});*/
 	}
+	chooseAlgorithm(event){
+		console.log('key: ', event.target.attributes.getNamedItem('data-key').value);
+		this.setState({
+			algorithm: event.target.attributes.getNamedItem('data-key').value
+		});
+	}
 	render() {	
 		return (
 			<Row>
@@ -351,6 +358,11 @@ class Board extends React.Component {
 							addProduct={(id) => this.addProduct(id)}
 						/>
 					</ListGroup>
+					<ButtonGroup aria-label="Basic example" onClick={this.chooseAlgorithm.bind(this)}>
+						<Button data-key='1' >Algorithm 1</Button>
+						<Button data-key='2'>Alogrithm 2</Button>
+						<Button data-key='3' >Alogrithm 3</Button>
+					</ButtonGroup>
 				</Col>
 				<Col xs={4} md={4}>
 					<Card>
@@ -507,7 +519,7 @@ class Board extends React.Component {
 					<span> Twicy: {this.state.twicy}</span>
 
 				</Col>
-				<Col xs={2} md={2}>
+				<Col xs={2} md={2} >
 					<Card>
 						<Card.Title> My Order </Card.Title>
 						<Card.Body>
