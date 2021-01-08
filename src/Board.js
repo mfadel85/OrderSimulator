@@ -149,13 +149,12 @@ class Board extends React.Component {
 				startIndex = 2;
 				break;
 			case 1:
-				if (beltCount == 1 && startIndex == 4)
+				if ( startIndex == 4)
 					startIndex = 4;
 			case 2:
-				if (beltCount === 2 && startIndex % 2 === 1)
+				if (startIndex % 2 === 1)
 					startIndex = startIndex + 1;
-				else if (beltCount === 2 && this.state.twicy !== -1) {
-					//startIndex = this.state.twicy;
+				else if (this.state.twicy !== -1) {
 					startIndex = index;
 				}
 			default:
@@ -225,7 +224,7 @@ class Board extends React.Component {
 			}
 		let max1 = Math.max(...currentBeltIndices.slice(0, 2));
 		let max2 = Math.max(...currentBeltIndices.slice(2, 4));
-		let twicy = (max1 <= max2 ? currentBeltIndices.indexOf(max1) : currentBeltIndices.indexOf(max2));
+		let twicy = (max1+4 <= max2 ? currentBeltIndices.indexOf(max1) : currentBeltIndices.indexOf(max2));
 		if(twicy%2 !==0)
 			twicy = twicy-1;
 		this.setState({
