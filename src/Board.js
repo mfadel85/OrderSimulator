@@ -140,28 +140,26 @@ class Board extends React.Component {
 	decideStartIndex(startIndex,beltCount){
 		console.log('decideStartIndex()0: StartIndex:',startIndex,'Belt Count:',beltCount);
 		let index = this.updateBeltsStatus();
-		if(startIndex>4)
+		if (startIndex > 4 || startIndex + beltCount >= this.state.cellsInRow)
 			startIndex = 0;
-		if (beltCount === 3) 
-			startIndex = 2;
-		else if (beltCount == 1 && startIndex == 4) 
-			startIndex = 4;
-		/*else if (beltCount == 1 && startIndex == 0) 
-			startIndex = 4;*/
-		else if(beltCount == 1)
-		{
-			//startIndex = this.state.beltIndices.indexOf(Math.min(...this.state.beltIndices));
-			//startIndex = 4;
-		}
-		
-		else if ( startIndex + beltCount >= this.state.cellsInRow || beltCount > 3 )
-			startIndex = 0;
-
-		if (beltCount === 2 && startIndex % 2 === 1)
-			startIndex = startIndex + 1;
-		else if (beltCount === 2 && this.state.twicy !==  -1) {
-			//startIndex = this.state.twicy;
-			startIndex = index;
+		switch (beltCount) {
+			case 4,5:
+				startIndex=0;
+			case 3:
+				startIndex = 2;
+				break;
+			case 1:
+				if (beltCount == 1 && startIndex == 4)
+					startIndex = 4;
+			case 2:
+				if (beltCount === 2 && startIndex % 2 === 1)
+					startIndex = startIndex + 1;
+				else if (beltCount === 2 && this.state.twicy !== -1) {
+					//startIndex = this.state.twicy;
+					startIndex = index;
+				}
+			default:
+				break;
 		}
 		console.log('decideStartIndex()1: beltIndices', ...this.state.beltIndices, 'twicy is', this.state.twicy, 'current twicy', index,'startIndex',startIndex);
 		return startIndex;
