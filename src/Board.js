@@ -47,6 +47,28 @@ class Board extends React.Component {
 		else 
 			return a.unitNo - b.unitNo;
 	}
+	sortProduct2(a,b){
+	}
+	sortProduct3(a, b) {
+	}
+	getSortFunction(){
+		let sorterFunction;
+		switch (this.state.algorithm) {
+			case 1:
+				sorterFunction = this.sortProduct;
+				break;
+			case 2:
+				sorterFunction = this.sortProduct2;
+				break;
+			case 3:
+				sorterFunction = this.sortProduct3;
+				break;				
+			default:
+				sorterFunction = this.sortProduct;
+				break;	
+		}
+		return sorterFunction;
+	}
 	setOrder(orderID) {
 		
 		let orderReady = [];
@@ -55,8 +77,7 @@ class Board extends React.Component {
 		else 
 			orderReady = this.initOrder(allOrders[orderID]);
 		console.log("setOrder:", orderReady);
-
-		const sorterFunction = this.sortProduct;
+		const sorterFunction = this.getSortFunction();
 		orderReady.sort(sorterFunction); /// changing sorting function based on the algorithm
 
 		let time = 0;
