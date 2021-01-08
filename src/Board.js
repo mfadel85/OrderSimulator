@@ -48,25 +48,36 @@ class Board extends React.Component {
 			return a.unitNo - b.unitNo;
 	}
 	sortProduct2(a,b){
+		if (a.beltCount < 3 && b.beltCount < 3 ||  a.beltCount == b.beltCount)
+			return a.unitNo - b.unitNo;
+		else
+			return a.beltCount - b.beltCount;
+
+		// if a has 1 belt count  or 2 belt couts then 
 	}
 	sortProduct3(a, b) {
 	}
 	getSortFunction(){
 		let sorterFunction;
+		console.log('Algorithm: ',this.state.algorithm);
 		switch (this.state.algorithm) {
-			case 1:
+			case '1':
 				sorterFunction = this.sortProduct;
 				break;
-			case 2:
+			case '2':
+
 				sorterFunction = this.sortProduct2;
 				break;
-			case 3:
+			case '3':
 				sorterFunction = this.sortProduct3;
 				break;				
 			default:
+
 				sorterFunction = this.sortProduct;
 				break;	
 		}
+		console.log('Sorter Function: ', sorterFunction);
+
 		return sorterFunction;
 	}
 	setOrder(orderID) {
@@ -97,6 +108,7 @@ class Board extends React.Component {
 				/*lastPosition:1*/
 			},
 			() => {
+
 				this.fillBoard();/// changing algorithm
 			}
 		);
@@ -237,7 +249,7 @@ class Board extends React.Component {
 	}
 
 	fillBoard() {// this is to refactored soon!!
-		console.log('fillBoard');
+		console.log('fillBoard algo 1');
 		let startIndex = 0;
 		let that = this;
 		this.state.order.forEach(function (item) {
@@ -363,7 +375,8 @@ class Board extends React.Component {
 		console.log('key: ', event.target.attributes.getNamedItem('data-key').value);
 		this.setState({
 			algorithm: event.target.attributes.getNamedItem('data-key').value
-		});
+		},
+			() => { console.log('chooseAlgorithm : algo', this.state.algorithm)});
 	}
 	render() {	
 		return (
