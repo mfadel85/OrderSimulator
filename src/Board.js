@@ -98,7 +98,7 @@ class Board extends React.Component {
 				fillFunction = this.fillBoard;
 				break;
 		}
-		console.log('Filler Function: ', fillFunction);
+		//console.log('Filler Function: ', fillFunction);
 		return fillFunction;
 	}
 	setOrder(orderID) {
@@ -168,6 +168,15 @@ class Board extends React.Component {
 		},
 		()=>console.log('after cleraing',this.state.order));
 	}
+	decideStartIndex2(startIndex,beltCount){
+		/// fix this
+		console.log('decideStartIndex2()0: StartIndex:', startIndex, 'Belt Count:', beltCount);
+		if (startIndex > 4 || startIndex + beltCount >= this.state.cellsInRow)
+			startIndex = 0;
+
+
+		return startIndex;
+	}
 	decideStartIndex(startIndex,beltCount){
 		console.log('decideStartIndex()0: StartIndex:',startIndex,'Belt Count:',beltCount);
 		let index = this.updateBeltsStatus();
@@ -194,10 +203,47 @@ class Board extends React.Component {
 		console.log('decideStartIndex()1: beltIndices', ...this.state.beltIndices, 'twicy is', this.state.twicy, 'current twicy', index,'startIndex',startIndex);
 		return startIndex;
 	}
-	
+	handleNextProduct(item,startIndex){
+		let filledCount = 0;
+
+		const originalStartIndex = startIndex;
+		let currentcells = [...this.state.cells];
+		console.log("handleNextProduct0: startIndex is ", startIndex, 'product is:', item);
+		startIndex = this.decideStartIndex2(startIndex,item.beltCount);
+		console.log("handleOneProduct1: startIndex is ", startIndex);
+		let available = this.checkSpace(
+			startIndex,
+			item.beltCount,
+			item.cellsDepth
+		);
+		if (available) {
+			startIndex = this.shiftCells(startIndex, item); // returns startIndexed changed, 
+
+			this.state.cells.forEach((cell) => {
+				if (cell != null) filledCount++;
+			});
+			this.setState({
+				cells: this.state.cells,
+				index: startIndex,
+				fillingPercent: (filledCount * 1.0) / (this.state.cellsInBent * this.state.cellsInRow * 1.0),
+				history: [
+					...this.state.history, { cells: currentcells }, { cells: this.state.cells }
+				],
+				lastPosition: item.unitNo,
+			}, () => {
+			});
+		} else {
+			this.setState({
+				nextPatchProducts: [...this.state.nextPatchProducts, item],
+			});
+			console.log("no space for ", item);
+			startIndex = originalStartIndex;
+		}
+		return startIndex;
+	}
 	handleOneProduct(item, startIndex) {
 		let filledCount = 0;
-		let originalStartIndex = startIndex;
+		const originalStartIndex = startIndex;
 		let currentcells = [...this.state.cells];
 		console.log("handleOneProduct0: startIndex is ", startIndex,'product is:',item);
 
@@ -210,8 +256,7 @@ class Board extends React.Component {
 			item.cellsDepth
 		);
 		if (available) {
-			this.shiftCells(startIndex, item);
-			startIndex = startIndex + item.beltCount;
+			startIndex = this.shiftCells(startIndex, item); // returns startIndexed changed, 
 
 			this.state.cells.forEach((cell) => {
 				if (cell != null) filledCount++;
@@ -273,13 +318,13 @@ class Board extends React.Component {
 			}
 		});
 	}
-	fillBoard2(context) {// this is to refactored soon!!
-		console.log('fillBoard algo 1');
+	fillBoard2(context) {
+		console.log('fillBoard algo 2');
 		let startIndex = 0;
 		let that = context;
 		context.state.order.forEach(function (item) {
 			for (let m = 0; m < item.quantity; m++) {
-				startIndex = that.handleOneProduct(item, startIndex);
+				startIndex = that.handleNextProduct(item, startIndex);
 				console.log("context : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
 
 			}
@@ -361,7 +406,8 @@ class Board extends React.Component {
 			cells: currentCells,
 			history: [...this.state.history,{cells: currentCells}],
 		});
-		return currentCells;
+		startIndex = startIndex + item.beltCount;
+		return startIndex;
 	}
 
 	renderCell(i) {
