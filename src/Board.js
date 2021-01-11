@@ -77,8 +77,29 @@ class Board extends React.Component {
 				break;	
 		}
 		console.log('Sorter Function: ', sorterFunction);
-
 		return sorterFunction;
+	}
+	getFillFunction() {
+		let fillFunction;
+		console.log('Algorithm: ', this.state.algorithm);
+		switch (this.state.algorithm) {
+			case '1':
+				fillFunction = this.fillBoard;
+				break;
+			case '2':
+
+				fillFunction = this.fillBoard2;
+				break;
+			case '3':
+				fillFunction = this.fillBoard3;
+				break;
+			default:
+
+				fillFunction = this.fillBoard;
+				break;
+		}
+		console.log('Filler Function: ', fillFunction);
+		return fillFunction;
 	}
 	setOrder(orderID) {
 		
@@ -97,6 +118,7 @@ class Board extends React.Component {
 			time += 3 + Math.abs(element.name.unitNo -position)*2;
 			position = element.name.unitNo;
 		});
+		let fillBoardFunction = this.getFillFunction();
 		this.setState(
 			{
 				cells: Array(this.state.cellsInBent * this.state.cellsInRow).fill(null),
@@ -104,12 +126,9 @@ class Board extends React.Component {
 				time:time,
 				twicy: 0,
 				beltIndices: [0, 0, 0, 0, 0],
-
-				/*lastPosition:1*/
 			},
 			() => {
-
-				this.fillBoard();/// changing algorithm
+				fillBoardFunction(this);/// changing algorithm
 			}
 		);
 	}
@@ -175,6 +194,7 @@ class Board extends React.Component {
 		console.log('decideStartIndex()1: beltIndices', ...this.state.beltIndices, 'twicy is', this.state.twicy, 'current twicy', index,'startIndex',startIndex);
 		return startIndex;
 	}
+	
 	handleOneProduct(item, startIndex) {
 		let filledCount = 0;
 		let originalStartIndex = startIndex;
@@ -204,19 +224,12 @@ class Board extends React.Component {
 					...this.state.history,{cells: currentcells},{cells: this.state.cells}
 				],
 				lastPosition:item.unitNo,
-				/*time:time*/
 			},()=> {
-
-					//console.log("handleOneProduct1: startIndex is ", startIndex, 'beltIndices:', this.state.beltIndices);
-
-					//this.updateBeltsStatus();
 			});
-			//console.log("History after now ", this.state.history);
 		} else {
 			this.setState({
 				nextPatchProducts: [...this.state.nextPatchProducts, item],
 			});
-			//alert("No space for " + item.productName + " will be added in the next patch.");
 			console.log("no space for ", item);
 			startIndex = originalStartIndex;
 		}
@@ -248,18 +261,29 @@ class Board extends React.Component {
 		return twicy;
 	}
 
-	fillBoard() {// this is to refactored soon!!
+	fillBoard(context) {// this is to refactored soon!!
 		console.log('fillBoard algo 1');
 		let startIndex = 0;
-		let that = this;
-		this.state.order.forEach(function (item) {
+		let that = context;
+		context.state.order.forEach(function (item) {
 			for (let m = 0; m < item.quantity; m++) {
 				startIndex = that.handleOneProduct(item, startIndex);
-				console.log("fillBoard : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
+				console.log("context : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
 
 			}
 		});
+	}
+	fillBoard2(context) {// this is to refactored soon!!
+		console.log('fillBoard algo 1');
+		let startIndex = 0;
+		let that = context;
+		context.state.order.forEach(function (item) {
+			for (let m = 0; m < item.quantity; m++) {
+				startIndex = that.handleOneProduct(item, startIndex);
+				console.log("context : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
 
+			}
+		});
 	}
 	updateIndices(index) {
 		let indices = this.state.beltIndices;
