@@ -182,9 +182,11 @@ class Board extends React.Component {
 				startIndex = 0;
 			break;
 			case 3:
-				startIndex = 2; 
+				//startIndex = 2; 
 				//the cases to be handle  [1 2 2], [2 2 1],[131] ,[311],[113]
-				if (this.state.fillingGuide[startIndex][0] == 'E')
+				if (this.state.fillingGuide[0][1] == 2)
+					startIndex = 2; 
+				else if (this.state.fillingGuide[startIndex][0] == 'E')
 				   startIndex = startIndex -1;
 				break;
 			case 2:// check filling guide whether this startIndex is S or SE or E
