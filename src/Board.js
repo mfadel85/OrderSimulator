@@ -30,8 +30,10 @@ class Board extends React.Component {
 				},
 			],
 			nextPatchProducts: [],
+			fillingGuide: [['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1]],
 			beltIndices: [0, 0, 0, 0, 0],
 			myOrder: [],
+			orderID:-1,
 			myOrderWithName: [],
 			fillingPercent: 0,
 			time:0,
@@ -123,9 +125,11 @@ class Board extends React.Component {
 			{
 				cells: Array(this.state.cellsInBent * this.state.cellsInRow).fill(null),
 				order: orderReady,
+				orderID:orderID+1,
 				time:time,
 				twicy: 0,
 				beltIndices: [0, 0, 0, 0, 0],
+				fillingGuide: [['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1]],
 			},
 			() => {
 				fillBoardFunction(this);/// changing algorithm
@@ -168,11 +172,23 @@ class Board extends React.Component {
 		},
 		()=>console.log('after cleraing',this.state.order));
 	}
-	decideStartIndex2(startIndex,beltCount){
+	decideStartIndex2(startIndex,beltCount){// startIndex for Algorithm2
 		/// fix this
 		console.log('decideStartIndex2()0: StartIndex:', startIndex, 'Belt Count:', beltCount);
 		if (startIndex > 4 || startIndex + beltCount >= this.state.cellsInRow)
 			startIndex = 0;
+		switch (beltCount) {
+			case 4, 5:
+				startIndex = 0;
+			break;
+			case 3:
+				startIndex = 2; // not necessary
+				break;
+			case 1:// move the two belts together
+
+			default:
+				break;
+		}
 
 
 		return startIndex;
@@ -364,10 +380,38 @@ class Board extends React.Component {
 		}
 		return true;
 	}
+	updateFillingGuide(startIndex,beltCount){
+		let fillingGuide = this.state.fillingGuide;
+		switch (beltCount) {
+			case 2:// check if the second one is a part of  another 2
+				if (fillingGuide[startIndex][1] == 1)
+				{
+					for(let i=0;i<beltCount;i++)
+					{
+						fillingGuide[startIndex] = ['S', 2];
+						fillingGuide[startIndex + 1] = ['E', 2];
+					}
+				}	
+				break;
+			case 3:
+				if(fillingGuide[startIndex][1]<3){
+					fillingGuide[startIndex] = ['S', 3];
+					fillingGuide[startIndex + 1] = ['S', 3];
+					fillingGuide[startIndex + 2] = ['E', 3];
+				}
+			default:
+				break;
+		}
+		this.setState({
+			fillingGuide:fillingGuide
+		})
+	}
 	shiftCells(startIndex, item) {
+
 		let indicesUpdated = [];
 		for (let m = 0; m < item.beltCount*item.cellsDepth; m++) 
 			indicesUpdated.push(false);
+		this.updateFillingGuide(startIndex,item.beltCount);
 		let currentCells = this.state.cells;
 		const cellsInRow = this.state.cellsInRow;
 		let count = 0;
@@ -467,7 +511,7 @@ class Board extends React.Component {
 				</Col>
 				<Col xs={4} md={4}>
 					<Card>
-						<Card.Title> Order </Card.Title>
+						<Card.Title> Order  {this.state.orderID} Algorithm: {this.state.algorithm}</Card.Title>
 						<Card.Body>
 							<Table striped bordered hover>
 								<tbody><tr><th> # </th><th> Name </th><th> Qn </th><th> Dir </th><th> BeltCo </th><th> Cells </th><th>Unit</th></tr>
