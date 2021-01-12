@@ -184,8 +184,12 @@ class Board extends React.Component {
 			case 3:
 				startIndex = 2; // not necessary
 				break;
-			case 1:// move the two belts together
-
+			case 2:// check filling guide whether this startIndex is S or SE or E
+				if(this.state.fillingGuide[startIndex][0] == 'E' )
+					startIndex++;
+				else if (this.state.fillingGuide[startIndex][0] == 'SE' 
+					&& this.state.fillingGuide[startIndex+1][0] == 'S')
+						startIndex++;
 			default:
 				break;
 		}
