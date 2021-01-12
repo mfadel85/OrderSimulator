@@ -182,7 +182,10 @@ class Board extends React.Component {
 				startIndex = 0;
 			break;
 			case 3:
-				startIndex = 2; // not necessary
+				startIndex = 2; 
+				//the cases to be handle  [1 2 2], [2 2 1],[131] ,[311],[113]
+				if (this.state.fillingGuide[startIndex][0] == 'E')
+				   startIndex = startIndex -1;
 				break;
 			case 2:// check filling guide whether this startIndex is S or SE or E
 				if(this.state.fillingGuide[startIndex][0] == 'E' )
@@ -398,7 +401,7 @@ class Board extends React.Component {
 				}	
 				break;
 			case 3:
-				if(fillingGuide[startIndex][1]<3){
+				if(fillingGuide[startIndex][1]<3){ // handle case of  1 2 2? then 
 					fillingGuide[startIndex] = ['S', 3];
 					fillingGuide[startIndex + 1] = ['S', 3];
 					fillingGuide[startIndex + 2] = ['E', 3];
@@ -411,7 +414,8 @@ class Board extends React.Component {
 		})
 	}
 	shiftCells(startIndex, item) {
-
+		// if the item is one belt product and in that index there is a two belt product what to do
+		// how to detect this?? mmmm                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
 		let indicesUpdated = [];
 		for (let m = 0; m < item.beltCount*item.cellsDepth; m++) 
 			indicesUpdated.push(false);
@@ -426,8 +430,20 @@ class Board extends React.Component {
 					for (let k = 0; k < item.beltCount; k++) {
 						let index = startIndex + (j) * cellsInRow + k;
 						count = count + 1;
-						currentCells[index] = currentCells[index - cellsInRow];
+						currentCells[index] = currentCells[index - cellsInRow];//
 						currentCells[index - cellsInRow] = "(L) " + item.symbol;
+						// to be tested
+						if (item.beltCount == 1 && this.state.fillingGuide[startIndex][1] == 2 && currentCells[index] != null)
+							if (this.state.fillingGuide[startIndex][0]=='S'){
+								currentCells[index+1] = currentCells[index+1 - cellsInRow];//
+								currentCells[index+1 - cellsInRow] = '';								
+							}
+							else if (this.state.fillingGuide[startIndex][0] == 'E') {
+								currentCells[index -1] = currentCells[index-1 - cellsInRow];//
+								currentCells[index - 1 - cellsInRow] = '';
+							}
+								
+						// in two cases also currentCells[index - cellsInRow +-1 ] has to be changed
 						//this.updateIndices(index);
 					}
 		} 

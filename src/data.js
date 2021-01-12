@@ -251,7 +251,7 @@ export const order7 = [
     { id: 3, quantity: 1 },
     { id: 4, quantity: 2 },
     { id: 2, quantity: 1 },
-    { id: 6, quantity: 2 },/**/
+    { id: 6, quantity: 1 },/**/
 ];
 export const order8 = [
     { id: 1, quantity: 1 },
