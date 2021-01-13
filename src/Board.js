@@ -1,7 +1,7 @@
 import React from "react";
 import Products from "./products.js";
 import Grid from "./grid.js";
-
+import NextPatch from "./nextPatch";
 import Order from "./Order.js";
 import Cell from "./Cell.js";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -129,6 +129,7 @@ class Board extends React.Component {
 				time:time,
 				twicy: 0,
 				beltIndices: [0, 0, 0, 0, 0],
+				nextPatchProducts:[],
 				fillingGuide: [['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1]],
 			},
 			() => {
@@ -564,7 +565,14 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(13)}>Order S5 </button>
 							<button onClick={() => this.setOrder(14)}>Order S6 </button>
 							<button onClick={() => this.setOrder(15)}>Order S7 </button>
-
+							<div>
+								<span>No Space For:
+									<Table striped bordered hover>
+										<NextPatch order={this.state.nextPatchProducts}>
+										</NextPatch>
+									</Table>
+								</span>
+							</div>
 
 						</Card.Body>
 					</Card>
