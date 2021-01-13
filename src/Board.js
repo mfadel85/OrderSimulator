@@ -40,7 +40,8 @@ class Board extends React.Component {
 			lastPosition:1,
 			twicy: 0,
 			lastUnitPos:1,
-			algorithm:1
+			algorithm:1,
+			threeBeltsIndex:-1
 		};
 	}
 	sortProduct(a, b) {
@@ -130,6 +131,7 @@ class Board extends React.Component {
 				twicy: 0,
 				beltIndices: [0, 0, 0, 0, 0],
 				nextPatchProducts:[],
+				threeBeltsIndex:-1,
 				fillingGuide: [['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1]],
 			},
 			() => {
@@ -169,9 +171,20 @@ class Board extends React.Component {
 			fillingPercent: 0,
 			order: [],
 			twicy:0,
+			threeBeltsIndex:-2,
 			beltIndices: [0, 0, 0, 0, 0],
 		},
 		()=>console.log('after cleraing',this.state.order));
+	}
+	detectThreeBeltIndex(){
+		let result = -1;
+		const fillingGuide = this.state.fillingGuide;
+		for(let i=0;i<=2;i++){
+			let results = [3, 5, 9].filter(x => x == fillingGuide[i][1] + fillingGuide[i+1][1] + fillingGuide[i+2][1]);
+			if (results.length > 0)
+			 	return i;
+		}
+		return result;
 	}
 	decideStartIndex2(startIndex,beltCount){// startIndex for Algorithm2
 		/// fix this
@@ -184,12 +197,18 @@ class Board extends React.Component {
 				startIndex = 0;
 			break;
 			case 3: // a bug in order 9
+				let result = this.detectThreeBeltIndex();
+				if (this.state.threeBeltsIndex!= -1)
+					startIndex = this.state.threeBeltsIndex;
+				if(result != -1)
+					startIndex = result;
+
 				//startIndex = 2; 
 				//the cases to be handle  [1 2 2], [2 2 1],[131] ,[311],[113]
-				if (this.state.fillingGuide[0][1] == 2)
+				/*if (this.state.fillingGuide[0][1] == 2)
 					startIndex = 2; 
 				else if (this.state.fillingGuide[startIndex][0] == 'E')
-				   startIndex = startIndex -1;
+				   startIndex = startIndex -1;*/
 			break;
 			case 2:// check filling guide whether this startIndex is S or SE or E startIndex should not exceed 4
 				if(this.state.fillingGuide[startIndex][0] == 'E' )
@@ -255,8 +274,9 @@ class Board extends React.Component {
 			item.cellsDepth
 		);
 		if (available) {
+			const threeBeltsIndex = startIndex;
 			startIndex = this.shiftCells(startIndex, item); // returns startIndexed changed, 
-
+			
 			this.state.cells.forEach((cell) => {
 				if (cell != null) filledCount++;
 			});
@@ -268,6 +288,7 @@ class Board extends React.Component {
 					...this.state.history, { cells: currentcells }, { cells: this.state.cells }
 				],
 				lastPosition: item.unitNo,
+				threeBeltsIndex: threeBeltsIndex
 			}, () => {
 			});
 		} else {
