@@ -202,16 +202,15 @@ class Board extends React.Component {
 						startIndex++;
 			break;
 			case 1:
-				const min = this.state.beltIndices.indexOf(Math.min(...this.state.beltIndices));
-				console.log('decideStartIndex2()0: beltIndices:', this.state.beltIndices, 'Min:', min);
-
+				const min = this.getMinBelt();
+				//console.log('decideStartIndex2()0: beltIndices:', this.state.beltIndices, 'Min:', min);
 				startIndex = min;
 			break;
 			default:
 			break;
 		}
 
-
+		
 		return startIndex;
 	}
 	decideStartIndex(startIndex,beltCount){
@@ -231,6 +230,10 @@ class Board extends React.Component {
 				else if (this.state.twicy !== -1) {
 					startIndex = index;
 				}
+			break;
+			case 1:
+				startIndex = this.getMinBelt();
+				break;
 			default:
 				break;
 		}
@@ -314,6 +317,19 @@ class Board extends React.Component {
 		}
 
 		return startIndex;
+	}
+	getMinBelt(){
+		let currentBeltIndices = [0, 0, 0, 0, 0];
+		for (let i = 0; i < this.state.cellsInRow; i++)
+			for (let j = 21; j >= 0; j--) {
+				if (this.state.cells[j * 5 + i] != null) {
+					currentBeltIndices[i] = j + 1;
+					break;
+				}
+			}
+
+		const min = currentBeltIndices.indexOf(Math.min(...currentBeltIndices));
+		return min;
 	}
 	updateBeltsStatus(cells = this.state.cells) {
 		let currentBeltIndices = [0,0,0,0,0];
