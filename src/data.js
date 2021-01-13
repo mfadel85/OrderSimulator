@@ -182,7 +182,7 @@ export const mainOrder = [
     { id: 8, quantity: 5 },
     { id: 5, quantity: 1 },
     { id: 12, quantity: 1 },
-
+    /*{ id: 16, quantity: 1 },*/
 ];
 export const lovelyOrder = [
     { id: 2, quantity: 3 },

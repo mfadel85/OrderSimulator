@@ -176,7 +176,7 @@ class Board extends React.Component {
 	decideStartIndex2(startIndex,beltCount){// startIndex for Algorithm2
 		/// fix this
 		console.log('decideStartIndex2()0: StartIndex:', startIndex, 'Belt Count:', beltCount);
-		if (startIndex > 4 || startIndex + beltCount >= this.state.cellsInRow)
+		if (startIndex > 4 || startIndex + beltCount > this.state.cellsInRow)
 			startIndex = 0;
 		switch (beltCount) {
 			case 4, 5:
@@ -190,9 +190,12 @@ class Board extends React.Component {
 				else if (this.state.fillingGuide[startIndex][0] == 'E')
 				   startIndex = startIndex -1;
 				break;
-			case 2:// check filling guide whether this startIndex is S or SE or E
+			case 2:// check filling guide whether this startIndex is S or SE or E startIndex should not exceed 4
 				if(this.state.fillingGuide[startIndex][0] == 'E' )
-					startIndex++;
+					if(startIndex>2)
+						startIndex--;
+					else
+						startIndex++;
 				else if (this.state.fillingGuide[startIndex][0] == 'SE' 
 					&& this.state.fillingGuide[startIndex+1][0] == 'S')
 						startIndex++;
@@ -214,9 +217,6 @@ class Board extends React.Component {
 			case 3:
 				startIndex = 2;
 				break;
-			case 1:
-				if ( startIndex == 4)
-					startIndex = 4;
 			case 2:
 				if (startIndex % 2 === 1)
 					startIndex = startIndex + 1;
@@ -566,14 +566,12 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(14)}>Order S6 </button>
 							<button onClick={() => this.setOrder(15)}>Order S7 </button>
 							<div>
-								<span>No Space For:
-									<Table striped bordered hover>
-										<NextPatch order={this.state.nextPatchProducts}>
-										</NextPatch>
-									</Table>
-								</span>
+								<span>No Space For:</span>
+								<Table striped bordered hover>
+									<NextPatch order={this.state.nextPatchProducts}>
+									</NextPatch>
+								</Table>
 							</div>
-
 						</Card.Body>
 					</Card>
 				</Col>
