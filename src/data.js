@@ -176,6 +176,7 @@ export const allProducts = [
         unitNo: 2
     },                  
 ];
+// order 1
 export const mainOrder = [
     { id: 1, quantity: 4 },
     { id: 6, quantity: 2 },
@@ -184,6 +185,7 @@ export const mainOrder = [
     { id: 12, quantity: 1 },
     /*{ id: 16, quantity: 1 },*/
 ];
+// order 2
 export const lovelyOrder = [
     { id: 2, quantity: 3 },
     { id: 3, quantity: 3 },
@@ -194,7 +196,7 @@ export const lovelyOrder = [
     { id: 15, quantity: 1 },
 
 ];
-
+// order 3
 export const terminator = [
     { id: 3, quantity: 1 },
     { id: 12, quantity: 2 },
@@ -202,12 +204,12 @@ export const terminator = [
     { id: 4, quantity: 1 },
     { id: 2, quantity: 2 },
     { id: 5, quantity: 1 },
-    /*{ id: 10, quantity: 1 },
+    { id: 10, quantity: 1 },
     { id: 1, quantity: 1 },
     { id: 11, quantity: 1 },
-    { id: 6, quantity: 1 },*/
+    { id: 6, quantity: 1 },
 ];
-
+// order 4
 export const tester = [
     { id: 5, quantity: 1 },
     { id: 9, quantity: 1 },
@@ -219,7 +221,7 @@ export const tester = [
     { id: 7, quantity: 1 },
     { id: 6, quantity: 1 },/**/
 ];
-
+// order 5
 export const order5 = [
     { id: 4, quantity: 1 },
     { id: 9, quantity: 1 },
@@ -231,6 +233,7 @@ export const order5 = [
     { id: 7, quantity: 1 },
     { id: 6, quantity: 2 },/**/
 ];
+// order 1=6
 export const order6 = [
     { id: 15, quantity: 1 },
     { id: 14, quantity: 1 },
@@ -240,8 +243,10 @@ export const order6 = [
     { id: 1, quantity: 1 },
     { id: 8, quantity: 2 },
     { id: 7, quantity: 1 },
-    { id: 6, quantity: 2 },/**/
+    { id: 6, quantity: 2 },
+    /*{ id: 12, quantity: 2 },*/
 ];
+// order 7
 export const order7 = [
     { id: 10, quantity: 1 },
     { id: 12, quantity: 1 },
@@ -251,8 +256,10 @@ export const order7 = [
     { id: 3, quantity: 1 },
     { id: 4, quantity: 2 },
     { id: 2, quantity: 1 },
-    { id: 6, quantity: 1 },/**/
+    { id: 6, quantity: 1 },
+    { id: 13, quantity: 1 },/**/
 ];
+// order 8
 export const order8 = [
     { id: 1, quantity: 1 },
     { id: 13, quantity: 1 },
@@ -262,8 +269,11 @@ export const order8 = [
     { id: 3, quantity: 1 },
     { id: 4, quantity: 2 },
     { id: 2, quantity: 1 },
-    { id: 9, quantity: 2 },/**/
+    { id: 9, quantity: 2 },
+    { id: 12, quantity: 2 },
+    { id: 16, quantity: 3 },/**/
 ];
+// order 9
 export const order9 = [
     { id: 9, quantity: 1 },
     { id: 5, quantity: 2 },

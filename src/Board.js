@@ -183,7 +183,7 @@ class Board extends React.Component {
 			case 4, 5:
 				startIndex = 0;
 			break;
-			case 3:
+			case 3: // a bug in order 9
 				//startIndex = 2; 
 				//the cases to be handle  [1 2 2], [2 2 1],[131] ,[311],[113]
 				if (this.state.fillingGuide[0][1] == 2)
@@ -225,11 +225,12 @@ class Board extends React.Component {
 				startIndex = 2;
 				break;
 			case 2:
-				if (startIndex % 2 === 1)
-					startIndex = startIndex + 1;
-				else if (this.state.twicy !== -1) {
+				if (this.state.twicy !== -1) {
 					startIndex = index;
 				}
+				else 
+					if (startIndex % 2 === 1)
+						startIndex = startIndex + 1;
 			break;
 			case 1:
 				startIndex = this.getMinBelt();
