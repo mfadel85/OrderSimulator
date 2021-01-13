@@ -175,6 +175,7 @@ class Board extends React.Component {
 	}
 	decideStartIndex2(startIndex,beltCount){// startIndex for Algorithm2
 		/// fix this
+		let index = this.updateBeltsStatus();
 		console.log('decideStartIndex2()0: StartIndex:', startIndex, 'Belt Count:', beltCount);
 		if (startIndex > 4 || startIndex + beltCount > this.state.cellsInRow)
 			startIndex = 0;
@@ -189,7 +190,7 @@ class Board extends React.Component {
 					startIndex = 2; 
 				else if (this.state.fillingGuide[startIndex][0] == 'E')
 				   startIndex = startIndex -1;
-				break;
+			break;
 			case 2:// check filling guide whether this startIndex is S or SE or E startIndex should not exceed 4
 				if(this.state.fillingGuide[startIndex][0] == 'E' )
 					if(startIndex>2)
@@ -199,8 +200,15 @@ class Board extends React.Component {
 				else if (this.state.fillingGuide[startIndex][0] == 'SE' 
 					&& this.state.fillingGuide[startIndex+1][0] == 'S')
 						startIndex++;
+			break;
+			case 1:
+				const min = this.state.beltIndices.indexOf(Math.min(...this.state.beltIndices));
+				console.log('decideStartIndex2()0: beltIndices:', this.state.beltIndices, 'Min:', min);
+
+				startIndex = min;
+			break;
 			default:
-				break;
+			break;
 		}
 
 
