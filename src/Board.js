@@ -6,7 +6,7 @@ import Order from "./Order.js";
 import Cell from "./Cell.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Table, Card, Row, Col, ListGroup, ButtonToolbar,ButtonGroup,Button } from "react-bootstrap";
-import { allProducts, allOrders } from "./data.js";
+import { allProducts, allOrders, testingOrders } from "./data.js";
 class Board extends React.Component {
 	constructor(props) {
 		super(props);
@@ -42,6 +42,7 @@ class Board extends React.Component {
 			lastUnitPos:1,
 			algorithm:1,
 			threeBeltsIndex:-1,
+			counter:0
 		};
 	}
 	sortProduct(a, b) {
@@ -110,7 +111,7 @@ class Board extends React.Component {
 		if (orderID == -1) 
 			orderReady = this.initOrder(this.state.myOrder);
 		else 
-			orderReady = this.initOrder(allOrders[orderID]);
+			orderReady = this.initOrder(testingOrders[orderID]);
 		console.log("setOrder:", orderReady);
 		const sorterFunction = this.getSortFunction();
 		orderReady.sort(sorterFunction); /// changing sorting function based on the algorithm
@@ -292,7 +293,7 @@ class Board extends React.Component {
 			}, () => {
 			});
 		} else {
-			alert("no space for " + item.productName);
+			//alert("no space for " + item.productName);
 
 			this.setState({
 				nextPatchProducts: [...this.state.nextPatchProducts, item],
@@ -332,7 +333,7 @@ class Board extends React.Component {
 				lastPosition: item.unitNo,
 			});
 		} else {
-			alert("no space for " + item.productName);
+			//alert("no space for " + item.productName);
 			this.setState({
 				nextPatchProducts: [...this.state.nextPatchProducts, item],
 			});
@@ -565,12 +566,29 @@ class Board extends React.Component {
 	}
 	saveJson(){
 		var myJson = JSON.stringify(allOrders);
-		console.log(this.state.allOrders,myJson);
-
+		//console.log(myJson);
 	}
+	readOrders(that) {
+		that.clearMyOrder();
+		console.log(allOrders);
+		console.log(testingOrders);
+		that.setOrder(this.state.counter);
+		let newCounter = this.state.counter +1;
+		if(newCounter > 49)
+			newCounter = 0;
+		that.setState({
+			counter:newCounter
+		});
+	}	
+
+	onKeyDownHandler = e => {
+		if (e.keyCode === 70) {
+			this.readOrders();
+		}
+	};
 	render() {	
 		return (
-			<Row>
+			<Row onKeyDown={this.onKeyDownHandler}>
 				<Col xs={2} md={2}>
 					<h3> Products </h3>
 					<ListGroup variant="flush">
@@ -610,7 +628,6 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(6)}>Order 7 </button>
 							<button onClick={() => this.setOrder(7)}>Order 8 </button>
 							<button onClick={() => this.setOrder(8)}>Order 9 </button>
-							<button onClick={() => this.generateRandom()}>Random Order </button>
 							<button onClick={() => this.setOrder(9)}>Order S1 </button>
 							<button onClick={() => this.setOrder(10)}>Order S2 </button>
 							<button onClick={() => this.setOrder(11)}>Order S3 </button>
@@ -618,7 +635,7 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(13)}>Order S5 </button>
 							<button onClick={() => this.setOrder(14)}>Order S6 </button>
 							<button onClick={() => this.setOrder(15)}>Order S7 </button>
-							<button onClick={this.saveJson()}>Export Orders</button>  
+						
 							<div>
 								<span>No Space For:</span>
 								<Table striped bordered hover>
@@ -758,9 +775,14 @@ class Board extends React.Component {
 									{product.name} - qn: {product.quantity}
 								</ListGroup.Item>
 							))}
+							<button onClick={() => this.readOrders(this)}>Get Orders</button>  
+							<button onClick={() => this.clearMyOrder()}> Clear Order </button>
+							<button onClick={() => this.setOrder(-1)}> Pick Order </button>
+							<button onClick={this.saveJson()}>Export Orders</button>
+							<button onClick={() => this.generateRandom()}>Random Order </button>
+
 						</Card.Body>
-						<button onClick={() => this.setOrder(-1)}> Pick Order </button>
-						<button onClick={() => this.clearMyOrder()}> Clear Order </button>
+						
 					</Card>
 				</Col>
 			</Row>
