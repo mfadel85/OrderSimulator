@@ -204,11 +204,14 @@ class Board extends React.Component {
 		switch (beltCount) {
 			case 5:
 				startIndex = 0;
-			break;
-			case 4: // 0 or 1 
-				startIndex = 0;
-				
-			break;
+				break;
+			case 4:
+				let max = this.getMaxnBelt();
+				if (max == 0)
+					startIndex = 1;
+				else
+					startIndex = 0;
+				break;
 			case 3: // a bug in order 9
 				let result = this.detectThreeBeltIndex();
 				if (this.state.threeBeltsIndex!= -1)
@@ -251,8 +254,16 @@ class Board extends React.Component {
 		if (startIndex > 4 || startIndex + beltCount >= this.state.cellsInRow)
 			startIndex = 0;
 		switch (beltCount) {
-			case 4,5:
+			case 5:
 				startIndex=0;
+			break;
+			case 4:
+				let max = this.getMaxnBelt();
+				if(max == 0)
+					startIndex =1;
+				else
+					startIndex =0;
+			break;
 			case 3:
 				startIndex = 2;
 				break;
@@ -368,6 +379,19 @@ class Board extends React.Component {
 		const min = currentBeltIndices.indexOf(Math.min(...currentBeltIndices));
 		return min;
 	}
+	getMaxnBelt() {
+		let currentBeltIndices = [0, 0, 0, 0, 0];
+		for (let i = 0; i < this.state.cellsInRow; i++)
+			for (let j = 21; j >= 0; j--) {
+				if (this.state.cells[j * 5 + i] != null) {
+					currentBeltIndices[i] = j + 1;
+					break;
+				}
+			}
+
+		const max = currentBeltIndices.indexOf(Math.max(...currentBeltIndices));
+		return max;
+	}	
 	updateBeltsStatus(cells = this.state.cells) {
 		let currentBeltIndices = [0,0,0,0,0];
 		let beltIndices = this.state.beltIndices;

@@ -149,7 +149,7 @@ export const allProducts = [
         dir: 'right',
         width: 18.5,
         depth: 5,
-        beltCount: 3,
+        beltCount: 4,
         cellsDepth: 2,
         unitNo: 4
     }, 
