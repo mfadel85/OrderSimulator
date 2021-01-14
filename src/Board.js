@@ -41,7 +41,7 @@ class Board extends React.Component {
 			twicy: 0,
 			lastUnitPos:1,
 			algorithm:1,
-			threeBeltsIndex:-1
+			threeBeltsIndex:-1,
 		};
 	}
 	sortProduct(a, b) {
@@ -292,10 +292,12 @@ class Board extends React.Component {
 			}, () => {
 			});
 		} else {
+			alert("no space for " + item.productName);
+
 			this.setState({
 				nextPatchProducts: [...this.state.nextPatchProducts, item],
 			});
-			console.log("no space for ", item);
+			console.log("no space for ", item,'Next Patch Products',this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
 		}
 		return startIndex;
@@ -323,18 +325,18 @@ class Board extends React.Component {
 			this.setState({
 				cells: this.state.cells,
 				index: startIndex,
-				fillingPercent:(filledCount * 1.0) /(this.state.cellsInBent * this.state.cellsInRow * 1.0),
+				fillingPercent: (filledCount * 1.0) /(this.state.cellsInBent * this.state.cellsInRow * 1.0),
 				history: [
 					...this.state.history,{cells: currentcells},{cells: this.state.cells}
 				],
-				lastPosition:item.unitNo,
-			},()=> {
+				lastPosition: item.unitNo,
 			});
 		} else {
+			alert("no space for " + item.productName);
 			this.setState({
 				nextPatchProducts: [...this.state.nextPatchProducts, item],
 			});
-			console.log("no space for ", item);
+			console.log("no space for ", item, 'Next Patch Products', this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
 		}
 
@@ -614,8 +616,10 @@ class Board extends React.Component {
 							<div>
 								<span>No Space For:</span>
 								<Table striped bordered hover>
+									<tbody>
 									<NextPatch order={this.state.nextPatchProducts}>
 									</NextPatch>
+									</tbody>
 								</Table>
 							</div>
 						</Card.Body>
