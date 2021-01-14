@@ -42,7 +42,9 @@ class Board extends React.Component {
 			lastUnitPos:1,
 			algorithm:1,
 			threeBeltsIndex:-1,
-			counter:0
+			counter:0,
+			orderCellsCount:0,
+			orderCoverage:0
 		};
 	}
 	sortProduct(a, b) {
@@ -134,6 +136,7 @@ class Board extends React.Component {
 				nextPatchProducts:[],
 				threeBeltsIndex:-1,
 				fillingGuide: [['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1]],
+				/*orderCellsCount:0*/
 			},
 			() => {
 				fillBoardFunction(this);/// changing algorithm
@@ -143,24 +146,29 @@ class Board extends React.Component {
 
 	initOrder(order) {
 		console.log("initOrder:");
-
+		let cellsCount = 0;
 		let orderStorted = [];
 		order.forEach(function (item) {
 			orderStorted.push([item.id - 1, item.quantity]);
 		});
 		let finalOrder = [];
 		orderStorted.forEach((product) => {
+			
 			let id = product[0];
 			let quantity = product[1];
 			let name = allProducts[id];
 			let productName = name.name;
 			let beltCount = name.beltCount;
 			let cellsDepth = name.cellsDepth;
+			cellsCount = cellsCount + beltCount*cellsDepth;
 			let symbol = name.symbol;
 			let unitNo = name.unitNo;
 			finalOrder.push({id,quantity,name,productName,symbol,beltCount,cellsDepth,unitNo});
 		});
-
+		this.setState({
+			orderCellsCount:cellsCount,
+			orderCoverage: cellsCount/110
+		});
 		return finalOrder;
 	}
 	clearMyOrder() {
@@ -194,8 +202,12 @@ class Board extends React.Component {
 		if (startIndex > 4 || startIndex + beltCount > this.state.cellsInRow)
 			startIndex = 0;
 		switch (beltCount) {
-			case 4, 5:
+			case 5:
 				startIndex = 0;
+			break;
+			case 4: // 0 or 1 
+				startIndex = 0;
+				
 			break;
 			case 3: // a bug in order 9
 				let result = this.detectThreeBeltIndex();
@@ -780,7 +792,9 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(-1)}> Pick Order </button>
 							<button onClick={this.saveJson()}>Export Orders</button>
 							<button onClick={() => this.generateRandom()}>Random Order </button>
-
+							<div>
+								<span>Order Cells: {this.state.orderCellsCount} / 110 - Order Cover: {this.state.orderCoverage }</span>
+							</div>
 						</Card.Body>
 						
 					</Card>
