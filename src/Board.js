@@ -563,6 +563,11 @@ class Board extends React.Component {
 		},
 			() => { console.log('chooseAlgorithm : algo', this.state.algorithm)});
 	}
+	saveJson(){
+		var myJson = JSON.stringify(allOrders);
+		console.log(this.state.allOrders,myJson);
+
+	}
 	render() {	
 		return (
 			<Row>
@@ -613,6 +618,7 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(13)}>Order S5 </button>
 							<button onClick={() => this.setOrder(14)}>Order S6 </button>
 							<button onClick={() => this.setOrder(15)}>Order S7 </button>
+							<button onClick={this.saveJson()}>Export Orders</button>  
 							<div>
 								<span>No Space For:</span>
 								<Table striped bordered hover>
