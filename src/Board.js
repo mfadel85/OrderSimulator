@@ -256,6 +256,72 @@ class Board extends React.Component {
 		
 		return startIndex;
 	}
+	decideStartIndex3(startIndex,beltCount,cellsDepth=1){
+		console.log('decideStartIndex3()0: StartIndex:', startIndex, 'Belt Count:', beltCount);
+		let index = this.updateBeltsStatus();
+		if (startIndex > 4 || startIndex + beltCount >= this.state.cellsInRow)
+			startIndex = 0;
+		switch(beltCount){
+			case 5:
+				startIndex =0;
+			break;
+			case 4:
+				let max = this.getMaxnBelt();
+				if (max == 0)
+					startIndex = 0;
+				else
+					startIndex = 0;
+			break;		
+			case 3:
+				startIndex = 2;
+			break;
+			case 1:
+				startIndex = this.getAlgo3ProductsWith1BeltIndex(startIndex,cellsDepth);
+			break;
+			case 2:
+				startIndex = this.getAlgo3ProductsWith2BeltIndex(startIndex,cellsDepth);
+			break;
+			default:
+			break;
+		}
+		return startIndex;
+
+	} 
+	getAlgo3ProductsWith1BeltIndex(startIndex,cellsDepth){
+		
+		const thirdBeltIndex = this.getBeltCurrentDepth(2);
+		const fourthBeltIndex = this.getBeltCurrentDepth(3);
+		const fifthBeltIndex = this.getBeltCurrentDepth(4);
+
+		const fourDepth = this.nBeltProductsDepth(4);
+		const threeDepth = this.nBeltProductsDepth(3);
+		if(startIndex> 2)
+			startIndex =2;
+		if (thirdBeltIndex + fourDepth + threeDepth + cellsDepth <= 22 )
+			startIndex =2;
+		else 
+			startIndex = Math.min(...[fourthBeltIndex,fifthBeltIndex]);
+
+		return startIndex;
+	}
+	getAlgo3ProductsWith2BeltIndex(startIndex,cellsDepth){
+		const firstBeltIndex = this.getBeltCurrentDepth(0);
+		const fourDepth = this.nBeltProductsDepth(4);
+
+		if (firstBeltIndex + fourDepth + cellsDepth <= 22 || startIndex < 2)
+			return 0;
+		else
+		   return 3;
+	}
+	nBeltProductsDepth(n){
+		let depth = 0;
+		this.state.order.forEach(item => {
+			if(item.beltCount == n)
+				depth= depth+item.cellsDepth;
+		});
+		return depth;
+	}
+
 	decideStartIndex(startIndex,beltCount){
 		console.log('decideStartIndex()0: StartIndex:',startIndex,'Belt Count:',beltCount);
 		let index = this.updateBeltsStatus();
@@ -295,7 +361,40 @@ class Board extends React.Component {
 	handleProduct3(item,startIndex){
 		let filledCount =0;
 		const originalStartIndex = startIndex;
-		let currentCells = [...currentCells];
+		let currentcells = [...this.state.cells];
+		console.log("handleProduct3 0: startIndex is ", startIndex, 'product is:', item);
+		startIndex = this.decideStartIndex3(startIndex, item.beltCount,item.cellsDepth);
+		console.log("handleProduct3 1: startIndex is ", startIndex);
+		let available = this.checkSpace(
+			startIndex,
+			item.beltCount,
+			item.cellsDepth
+		);		
+		if (available) {
+			startIndex = this.shiftCells(startIndex, item); // returns startIndexed changed, 
+			this.state.cells.forEach((cell) => {
+				if (cell != null) filledCount++;
+			});
+			this.setState({
+				cells: this.state.cells,
+				index: startIndex,
+				fillingPercent: (filledCount * 1.0) / (this.state.cellsInBent * this.state.cellsInRow * 1.0),
+				history: [
+					...this.state.history, { cells: currentcells }, { cells: this.state.cells }
+				],
+				lastPosition: item.unitNo			
+			}, () => {
+			});
+		} else {
+			//alert("no space for " + item.productName);
+
+			this.setState({
+				nextPatchProducts: [...this.state.nextPatchProducts, item],
+			});
+			console.log("no space for ", item, 'Next Patch Products', this.state.nextPatchProducts);
+			startIndex = originalStartIndex;
+		}
+		return startIndex;
 	}
 	handleNextProduct(item,startIndex){
 		let filledCount = 0;
@@ -392,6 +491,16 @@ class Board extends React.Component {
 		const min = currentBeltIndices.indexOf(Math.min(...currentBeltIndices));
 		return min;
 	}
+	getBeltCurrentDepth(n){
+		let currentBeltIndex = 0;
+		for (let j = 21; j >= 0; j--) {
+			if (this.state.cells[j * 5 + n] != null) {
+				currentBeltIndex = j + 1;
+				break;
+			}
+		}
+		return currentBeltIndex;
+	}
 	getMaxnBelt() {
 		let currentBeltIndices = [0, 0, 0, 0, 0];
 		for (let i = 0; i < this.state.cellsInRow; i++)
@@ -443,6 +552,7 @@ class Board extends React.Component {
 		});
 	}
 	fillBoard3(context){
+		console.log('4 belts depth: ', context.nBeltProductsDepth(4));
 		console.log('Fillboard algo 3');
 		let startIndex = 0;
 		let that = context;
@@ -535,10 +645,16 @@ class Board extends React.Component {
 		const cellsInRow = this.state.cellsInRow;
 		let count = 0;
 		const direction = item.name.dir;
+		let beltCount;
+		if(item.beltCount>3)
+		   beltCount = 5;
+		else 
+			beltCount = item.beltCount;
+		
 		if (direction === "left") {
 			for (let i = 0; i < item.cellsDepth; i++)
-				for (let j = this.state.cellsInBent ; j > 0; j--)
-					for (let k = 0; k < item.beltCount; k++) {
+				for (let j = this.state.cellsInBent-1 ; j > 0; j--)
+					for (let k = 0; k < beltCount; k++) {
 						let index = startIndex + (j) * cellsInRow + k;
 						count = count + 1;
 						currentCells[index] = currentCells[index - cellsInRow];//
@@ -553,9 +669,6 @@ class Board extends React.Component {
 								currentCells[index -1] = currentCells[index-1 - cellsInRow];//
 								currentCells[index - 1 - cellsInRow] = '';
 							}
-								
-						// in two cases also currentCells[index - cellsInRow +-1 ] has to be changed
-						//this.updateIndices(index);
 					}
 		} 
 		else if (direction === "right") {
