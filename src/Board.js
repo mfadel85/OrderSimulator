@@ -321,7 +321,7 @@ class Board extends React.Component {
 			fourDepth = 0;
 			threeDepth = 0;
 		}
-		if (firstBeltIndex + fourDepth + cellsDepth <= 22 || startIndex < 2)
+		if (firstBeltIndex + fourDepth + cellsDepth <= 22 )
 			return 0;
 		else
 		   return 3;
@@ -813,14 +813,22 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(6)}>Order 7 </button>
 							<button onClick={() => this.setOrder(7)}>Order 8 </button>
 							<button onClick={() => this.setOrder(8)}>Order 9 </button>
-							<button onClick={() => this.setOrder(9)}>Order S1 </button>
-							<button onClick={() => this.setOrder(10)}>Order S2 </button>
-							<button onClick={() => this.setOrder(11)}>Order S3 </button>
-							<button onClick={() => this.setOrder(12)}>Order S4 </button>
-							<button onClick={() => this.setOrder(13)}>Order S5 </button>
-							<button onClick={() => this.setOrder(14)}>Order S6 </button>
-							<button onClick={() => this.setOrder(15)}>Order S7 </button>
-						
+							<button onClick={() => this.setOrder(9)}>Order 10 </button>
+							<button onClick={() => this.setOrder(10)}>Order 11 </button>
+							<button onClick={() => this.setOrder(11)}>Order 12 </button>
+							<button onClick={() => this.setOrder(12)}>Order 13 </button>
+							<button onClick={() => this.setOrder(13)}>Order 14 </button>
+							<button onClick={() => this.setOrder(14)}>Order 15 </button>
+							<button onClick={() => this.setOrder(15)}>Order 16 </button>
+							<button onClick={() => this.setOrder(16)}>Order 17 </button>
+							<button onClick={() => this.setOrder(17)}>Order 18 </button>
+							<button onClick={() => this.setOrder(18)}>Order 19 </button>
+							<button onClick={() => this.setOrder(19)}>Order 20 </button>
+							<button onClick={() => this.setOrder(20)}>Order 21 </button>
+							<button onClick={() => this.setOrder(21)}>Order 22 </button>
+							<button onClick={() => this.setOrder(22)}>Order 23 </button>
+							<button onClick={() => this.setOrder(23)}>Order 24 </button>
+
 							<div>
 								<span>No Space For:</span>
 								<Table striped bordered hover>
