@@ -293,24 +293,34 @@ class Board extends React.Component {
 		const fourthBeltIndex = this.getBeltCurrentDepth(3);
 		const fifthBeltIndex = this.getBeltCurrentDepth(4);
 
+		let threeDepth = this.nBeltProductsDepth(3);
 		let fourDepth = this.nBeltProductsDepth(4);
-		if (this.state.orderCellsCount > 110)
+		if (this.state.orderCellsCount > 110){
 			fourDepth = 0;
-		const threeDepth = this.nBeltProductsDepth(3);
+			//threeDepth = 0;
+		}
 		if(startIndex> 2)
 			startIndex =2;
 		if (thirdBeltIndex + fourDepth + threeDepth + cellsDepth <= 22 )
 			startIndex =2;
-		else 
-			startIndex = Math.min(...[fourthBeltIndex,fifthBeltIndex]);
+		else{
+			if(fourthBeltIndex >= fifthBeltIndex)
+				startIndex = 3;
+			else 
+				startIndex = 4;
+		} 
+			
 
 		return startIndex;
 	}
 	getAlgo3ProductsWith2BeltIndex(startIndex,cellsDepth){
 		const firstBeltIndex = this.getBeltCurrentDepth(0);
+		let threeDepth = this.nBeltProductsDepth(3);
 		let fourDepth = this.nBeltProductsDepth(4);
-		if(this.state.orderCellsCount > 110)
-			fourDepth =0;
+		if (this.state.orderCellsCount > 110) {
+			fourDepth = 0;
+			threeDepth = 0;
+		}
 		if (firstBeltIndex + fourDepth + cellsDepth <= 22 || startIndex < 2)
 			return 0;
 		else
