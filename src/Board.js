@@ -61,10 +61,17 @@ class Board extends React.Component {
 			
 	}
 	sortProduct2(a,b){
-		if (a.beltCount < 3 && b.beltCount < 3 ||  a.beltCount == b.beltCount)
+		if (a.beltCount < 3 && b.beltCount < 3 ||  (a.beltCount == b.beltCount  == 4 ) )
 			return a.unitNo - b.unitNo;
-		else
-			return a.beltCount - b.beltCount;
+		else{
+			if (a.beltCount != b.beltCount)
+				return a.beltCount - b.beltCount;
+			else 
+				return b.unitNo - a.unitNo;	
+				
+
+		}
+
 	}
 	sortProduct3(a, b) {
 	}
