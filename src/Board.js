@@ -57,8 +57,6 @@ class Board extends React.Component {
 			else 
 				return a.unitNo - b.unitNo;
 		}
-
-			
 	}
 	sortProduct2(a,b){
 		if (a.beltCount < 3 && b.beltCount < 3 ||  (a.beltCount == b.beltCount  == 4 ) )
@@ -69,7 +67,6 @@ class Board extends React.Component {
 			else 
 				return b.unitNo - a.unitNo;	
 				
-
 		}
 
 	}
@@ -87,7 +84,7 @@ class Board extends React.Component {
 				sorterFunction = this.sortProduct2;
 				break;
 			case '3':
-				sorterFunction = this.sortProduct3;
+				sorterFunction = this.sortProduct2;
 				break;				
 			default:
 
@@ -105,7 +102,6 @@ class Board extends React.Component {
 				fillFunction = this.fillBoard;
 				break;
 			case '2':
-
 				fillFunction = this.fillBoard2;
 				break;
 			case '3':
@@ -296,6 +292,11 @@ class Board extends React.Component {
 		console.log('decideStartIndex()1: beltIndices', ...this.state.beltIndices, 'twicy is', this.state.twicy, 'current twicy', index,'startIndex',startIndex);
 		return startIndex;
 	}
+	handleProduct3(item,startIndex){
+		let filledCount =0;
+		const originalStartIndex = startIndex;
+		let currentCells = [...currentCells];
+	}
 	handleNextProduct(item,startIndex){
 		let filledCount = 0;
 
@@ -441,6 +442,17 @@ class Board extends React.Component {
 			}
 		});
 	}
+	fillBoard3(context){
+		console.log('Fillboard algo 3');
+		let startIndex = 0;
+		let that = context;
+		context.state.order.forEach(function(item){
+			for (let m = 0; m < item.quantity; m++) {
+				startIndex = that.handleProduct3(item, startIndex);
+				console.log("context : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
+			}
+		});
+	}
 	fillBoard2(context) {
 		console.log('fillBoard algo 2');
 		let startIndex = 0;
@@ -449,7 +461,6 @@ class Board extends React.Component {
 			for (let m = 0; m < item.quantity; m++) {
 				startIndex = that.handleNextProduct(item, startIndex);
 				console.log("context : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
-
 			}
 		});
 	}
