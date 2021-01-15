@@ -44,22 +44,27 @@ class Board extends React.Component {
 			threeBeltsIndex:-1,
 			counter:0,
 			orderCellsCount:0,
-			orderCoverage:0
+			orderCoverage:0,
+			axesLastPosition:1
 		};
 	}
 	sortProduct(a, b) {
 		if (a.beltCount != b.beltCount) 
 			return a.beltCount - b.beltCount;
-		else 
-			return a.unitNo - b.unitNo;
+		else {
+			if (a.beltCount == 2 || a.beltCount == 4) 
+				return b.unitNo - a.unitNo;	
+			else 
+				return a.unitNo - b.unitNo;
+		}
+
+			
 	}
 	sortProduct2(a,b){
 		if (a.beltCount < 3 && b.beltCount < 3 ||  a.beltCount == b.beltCount)
 			return a.unitNo - b.unitNo;
 		else
 			return a.beltCount - b.beltCount;
-
-		// if a has 1 belt count  or 2 belt couts then 
 	}
 	sortProduct3(a, b) {
 	}
