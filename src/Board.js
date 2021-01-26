@@ -42,7 +42,7 @@ class Board extends React.Component {
 			lastUnitPos:1,
 			algorithm:1,
 			threeBeltsIndex:-1,
-			counter:0,
+			counter:24,
 			orderCellsCount:0,
 			orderCoverage:0,
 			axesLastPosition:1
@@ -116,6 +116,9 @@ class Board extends React.Component {
 		return fillFunction;
 	}
 	setOrder(orderID) {
+		var t0 = performance.now()
+
+
 		
 		let orderReady = [];
 		if (orderID == -1) 
@@ -150,6 +153,8 @@ class Board extends React.Component {
 				fillBoardFunction(this);/// changing algorithm
 			}
 		);
+		var t1 = performance.now()
+		console.log("Execution Time for alog " + (t1 - t0) + " milliseconds.")
 	}
 
 	initOrder(order) {
@@ -399,8 +404,6 @@ class Board extends React.Component {
 			}, () => {
 			});
 		} else {
-			//alert("no space for " + item.productName);
-
 			this.setState({
 				nextPatchProducts: [...this.state.nextPatchProducts, item],
 			});
@@ -530,7 +533,6 @@ class Board extends React.Component {
 	updateBeltsStatus(cells = this.state.cells) {
 		let currentBeltIndices = [0,0,0,0,0];
 		let beltIndices = this.state.beltIndices;
-		console.log('updateBeltsStatus()0', beltIndices);
 		for (let i = 0; i < this.state.cellsInRow; i++)
 			for (let j = 21; j >= 0; j--) {
 				if (cells[j * 5 + i] != null) {
@@ -546,8 +548,7 @@ class Board extends React.Component {
 		this.setState({
 			beltIndices: currentBeltIndices,
 			twicy: twicy
-		}, 
-			() => console.log('updateBeltsStatus()1', currentBeltIndices)
+			}
 		);
 		return twicy;
 	}
@@ -559,10 +560,11 @@ class Board extends React.Component {
 		context.state.order.forEach(function (item) {
 			for (let m = 0; m < item.quantity; m++) {
 				startIndex = that.handleOneProduct(item, startIndex);
-				console.log("context : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
 
 			}
 		});
+		console.log("Exec State", context.state);
+
 	}
 	fillBoard3(context){
 		console.log('4 belts depth: ', context.nBeltProductsDepth(4));
@@ -575,6 +577,8 @@ class Board extends React.Component {
 				console.log("context : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
 			}
 		});
+		console.log("Exec State", context.state);
+
 	}
 	fillBoard2(context) {
 		console.log('fillBoard algo 2');
@@ -586,6 +590,8 @@ class Board extends React.Component {
 				console.log("context : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
 			}
 		});
+		console.log("Exec State", context.state);
+
 	}
 	updateIndices(index) {
 		let indices = this.state.beltIndices;
@@ -735,19 +741,47 @@ class Board extends React.Component {
 			randomOrder.push(newItem);
 		}
 		allOrders.push(randomOrder);
-		this.setOrder(allOrders.length-1);
-		console.log(randomOrder);
-		/*this.setState({
-			myOrder:randomOrder,
-			order:randomOrder
-		});*/
+		this.setState(
+			{ 
+				algorithm:1
+			},
+			() => { 
+				this.setOrder(allOrders.length - 1); 
+				console.log("Automated TEST",this.state.fillingPercent, this.state.time);
+			}
+		);
+		this.setState(
+			{
+				algorithm: 2
+			},
+			() => {
+				this.setOrder(allOrders.length - 1);
+				console.log("Automated TEST",this.state.fillingPercent, this.state.time);
+			}
+		);	
+		this.setState(
+			{
+				algorithm: 3
+			},
+			() => {
+				this.setOrder(allOrders.length - 1);
+				console.log("Automated TEST",this.state.fillingPercent, this.state.time);
+			}
+		);				
 	}
 	chooseAlgorithm(event){
 		console.log('key: ', event.target.attributes.getNamedItem('data-key').value);
-		this.setState({
-			algorithm: event.target.attributes.getNamedItem('data-key').value
-		},
-			() => { console.log('chooseAlgorithm : algo', this.state.algorithm)});
+		const key = event.target.attributes.getNamedItem('data-key').value;
+		if(key == 4){
+			// choose a random number between 1 and 50 and 
+			// this.setOrder(5) for the three algorithms and have the results
+		}
+		else
+			this.setState({
+				algorithm: key
+			},
+				() => { console.log('chooseAlgorithm : algo', this.state.algorithm) }
+			);
 	}
 	saveJson(){
 		var myJson = JSON.stringify(allOrders);
@@ -786,6 +820,8 @@ class Board extends React.Component {
 						<Button data-key='1' >Algorithm 1</Button>
 						<Button data-key='2'>Alogrithm 2</Button>
 						<Button data-key='3' >Alogrithm 3</Button>
+						<Button data-key='4' >Compare</Button>
+
 					</ButtonGroup>
 				</Col>
 				<Col xs={4} md={4}>
@@ -968,6 +1004,7 @@ class Board extends React.Component {
 									{product.name} - qn: {product.quantity}
 								</ListGroup.Item>
 							))}
+							
 							<button onClick={() => this.readOrders(this)}>Get Orders</button>  
 							<button onClick={() => this.clearMyOrder()}> Clear Order </button>
 							<button onClick={() => this.setOrder(-1)}> Pick Order </button>
