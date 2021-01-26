@@ -45,7 +45,8 @@ class Board extends React.Component {
 			counter:24,
 			orderCellsCount:0,
 			orderCoverage:0,
-			axesLastPosition:1
+			axesLastPosition:1,
+			results:[],
 		};
 	}
 	sortProduct(a, b) {
@@ -117,9 +118,6 @@ class Board extends React.Component {
 	}
 	setOrder(orderID) {
 		var t0 = performance.now()
-
-
-		
 		let orderReady = [];
 		if (orderID == -1) 
 			orderReady = this.initOrder(this.state.myOrder);
@@ -128,7 +126,7 @@ class Board extends React.Component {
 		console.log("setOrder:", orderReady);
 		const sorterFunction = this.getSortFunction();
 		orderReady.sort(sorterFunction); /// changing sorting function based on the algorithm
-
+		var t1 = performance.now()
 		let time = 0;
 		let position = 1;
 		orderReady.forEach(element => {
@@ -153,8 +151,21 @@ class Board extends React.Component {
 				fillBoardFunction(this);/// changing algorithm
 			}
 		);
-		var t1 = performance.now()
-		console.log("Execution Time for alog " + (t1 - t0) + " milliseconds.")
+		var t2 = performance.now();
+		
+		const newResult = [this.state.algorithm,this.state.order,this.state.orderID,this.state.fillingPercent,this.state.time,t2-t0];
+		setTimeout(() => {
+			this.setState({
+				results: [...this.state.results, newResult]
+			});
+		}, 3000);
+		
+
+		document.getElementById('log').innerHTML += 
+			"<br>Order"+orderID+
+			" alogorithm "+ this.state.algorithm+
+			" TIME:"+ this.state.time +
+			',Execution Time :' + (t2 - t0) + " milliseconds.";
 	}
 
 	initOrder(order) {
@@ -419,7 +430,7 @@ class Board extends React.Component {
 		let currentcells = [...this.state.cells];
 		console.log("handleNextProduct0: startIndex is ", startIndex, 'product is:', item);
 		startIndex = this.decideStartIndex2(startIndex,item.beltCount);
-		console.log("handleOneProduct1: startIndex is ", startIndex);
+		console.log("handleNextProduct: startIndex is ", startIndex);
 		let available = this.checkSpace(
 			startIndex,
 			item.beltCount,
@@ -769,6 +780,12 @@ class Board extends React.Component {
 			}
 		);				
 	}
+	exportResult(){
+		///prepare the data first
+		// orderID,algorithm, time,fillingPercentage, order cell count, order coverage
+		const result = [this.state.orderID, this.state.algorithm, this.state.time, this.state.fillingPercent, this.state.orderCellsCount, this.state.orderCoverage];
+		console.log(this.state.time,this.state.orderID,this.state.algorithm,this.state.fillingPercent);
+	}
 	chooseAlgorithm(event){
 		console.log('key: ', event.target.attributes.getNamedItem('data-key').value);
 		const key = event.target.attributes.getNamedItem('data-key').value;
@@ -1010,11 +1027,16 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(-1)}> Pick Order </button>
 							<button onClick={this.saveJson()}>Export Orders</button>
 							<button onClick={() => this.generateRandom()}>Random Order </button>
+							<button onClick={() => this.exportResult()}>Export Result </button>
+
 							<div>
 								<span>Order Cells: {this.state.orderCellsCount} / 110 - Order Cover: {this.state.orderCoverage }</span>
 							</div>
 						</Card.Body>
 						
+					</Card>
+					<Card id= "log">
+
 					</Card>
 				</Col>
 			</Row>

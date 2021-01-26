@@ -95,3 +95,7 @@ ul {
 .hidden {
     display: none;
 }
+
+#log {
+    font-size: 13px;
+}
