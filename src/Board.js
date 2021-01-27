@@ -482,7 +482,9 @@ class Board extends React.Component {
 			item.beltCount,
 			item.cellsDepth
 		);
+		let nextPatch;
 		if (available) {
+			nextPatch = false;
 			startIndex = this.shiftCells(startIndex, item); // returns startIndexed changed, 
 
 			this.state.cells.forEach((cell) => {
@@ -498,6 +500,7 @@ class Board extends React.Component {
 				lastPosition: item.unitNo,
 			});
 		} else {
+			nextPatch = true;
 			//alert("no space for " + item.productName);
 			this.setState({
 				nextPatchProducts: this.state.nextPatchProducts+1,
@@ -505,8 +508,8 @@ class Board extends React.Component {
 			console.log("no space for ", item, 'Next Patch Products', this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
 		}
-
-		return startIndex;
+		/// this could return nextPatchProducts also,the count of them and many other things
+		return [startIndex,nextPatch];
 	}
 	getMinBelt(){
 		let currentBeltIndices = [0, 0, 0, 0, 0];
@@ -568,16 +571,20 @@ class Board extends React.Component {
 	}
 
 	fillBoard(context) {// this is to refactored soon!!
+		let nextPatchCount = 0;
 		console.log('fillBoard algo 1');
 		let startIndex = 0;
 		let that = context;
 		context.state.order.forEach(function (item) {
 			for (let m = 0; m < item.quantity; m++) {
-				startIndex = that.handleOneProduct(item, startIndex);
-
+				let result = that.handleOneProduct(item, startIndex);
+				startIndex = result[0];
+				if(result[1])
+				  nextPatchCount++;
 			}
 		});
-		console.log("Exec State", context.state);
+		context.setState({ nextPatchProducts:nextPatchCount});
+		console.log("Exec State", context.state,"Next Patch",nextPatchCount);
 
 	}
 	fillBoard3(context){
@@ -914,7 +921,7 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(23)}>Order 24 </button>
 
 							<div>
-								<span>No Space For:</span>
+								<span>No Space For: {this.state.nextPatchProducts} Products.</span>
 								<Table striped bordered hover>
 									<tbody>
 										{/*<NextPatch order={this.state.nextPatchProducts}>
