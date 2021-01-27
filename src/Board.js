@@ -391,18 +391,19 @@ class Board extends React.Component {
 		return startIndex;
 	}
 	handleProduct3(item,startIndex){
+		let nextPatch;
 		let filledCount =0;
 		const originalStartIndex = startIndex;
 		let currentcells = [...this.state.cells];
-		console.log("handleProduct3 0: startIndex is ", startIndex, 'product is:', item);
 		startIndex = this.decideStartIndex3(startIndex, item.beltCount,item.cellsDepth);
-		console.log("handleProduct3 1: startIndex is ", startIndex);
 		let available = this.checkSpace(
 			startIndex,
 			item.beltCount,
 			item.cellsDepth
 		);		
 		if (available) {
+			nextPatch = false;
+
 			startIndex = this.shiftCells(startIndex, item); // returns startIndexed changed, 
 			this.state.cells.forEach((cell) => {
 				if (cell != null) filledCount++;
@@ -418,16 +419,19 @@ class Board extends React.Component {
 			}, () => {
 			});
 		} else {
+			nextPatch = true;
+
 			this.setState({
 				nextPatchProducts: this.state.nextPatchProducts+1,
 			});
 			console.log("no space for ", item, 'Next Patch Products', this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
 		}
-		return startIndex;
+		return [startIndex, nextPatch];
 	}
 	handleNextProduct(item,startIndex){
 		let filledCount = 0;
+		let nextPatch;
 
 		const originalStartIndex = startIndex;
 		let currentcells = [...this.state.cells];
@@ -440,6 +444,8 @@ class Board extends React.Component {
 			item.cellsDepth
 		);
 		if (available) {
+			nextPatch = false;
+
 			const threeBeltsIndex = startIndex;
 			startIndex = this.shiftCells(startIndex, item); // returns startIndexed changed, 
 			
@@ -458,6 +464,8 @@ class Board extends React.Component {
 			}, () => {
 			});
 		} else {
+			nextPatch = true;
+
 			//alert("no space for " + item.productName);
 
 			this.setState({
@@ -466,7 +474,7 @@ class Board extends React.Component {
 			console.log("no space for ", item,'Next Patch Products',this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
 		}
-		return startIndex;
+		return [startIndex,nextPatch];
 	}
 	handleOneProduct(item, startIndex) {
 		let filledCount = 0;
@@ -572,7 +580,6 @@ class Board extends React.Component {
 
 	fillBoard(context) {// this is to refactored soon!!
 		let nextPatchCount = 0;
-		console.log('fillBoard algo 1');
 		let startIndex = 0;
 		let that = context;
 		context.state.order.forEach(function (item) {
@@ -584,34 +591,37 @@ class Board extends React.Component {
 			}
 		});
 		context.setState({ nextPatchProducts:nextPatchCount});
-		console.log("Exec State", context.state,"Next Patch",nextPatchCount);
 
 	}
 	fillBoard3(context){
-		console.log('4 belts depth: ', context.nBeltProductsDepth(4));
-		console.log('Fillboard algo 3');
+		let nextPatchCount = 0;
 		let startIndex = 0;
 		let that = context;
 		context.state.order.forEach(function(item){
 			for (let m = 0; m < item.quantity; m++) {
-				startIndex = that.handleProduct3(item, startIndex);
-				console.log("context : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
+				let result = that.handleProduct3(item, startIndex);
+				startIndex = result[0];
+				if (result[1])
+					nextPatchCount++;
 			}
 		});
-		console.log("Exec State", context.state);
+		context.setState({ nextPatchProducts: nextPatchCount });
 
 	}
 	fillBoard2(context) {
+		let nextPatchCount = 0;
 		console.log('fillBoard algo 2');
 		let startIndex = 0;
 		let that = context;
 		context.state.order.forEach(function (item) {
 			for (let m = 0; m < item.quantity; m++) {
-				startIndex = that.handleNextProduct(item, startIndex);
-				console.log("context : startIndex is ", startIndex, 'beltIndices:', that.state.beltIndices);
+				let result = that.handleNextProduct(item, startIndex);
+				startIndex = result[0];
+				if (result[1])
+					nextPatchCount++;
 			}
 		});
-		console.log("Exec State", context.state);
+		context.setState({ nextPatchProducts: nextPatchCount });
 
 	}
 	updateIndices(index) {
