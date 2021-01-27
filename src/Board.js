@@ -29,7 +29,7 @@ class Board extends React.Component {
 					cells: initialCells,
 				},
 			],
-			nextPatchProducts: [],
+			nextPatchProducts: 0,
 			fillingGuide: [['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1]],
 			beltIndices: [0, 0, 0, 0, 0],
 			myOrder: [],
@@ -142,7 +142,7 @@ class Board extends React.Component {
 				time:time,
 				twicy: 0,
 				beltIndices: [0, 0, 0, 0, 0],
-				nextPatchProducts:[],
+				nextPatchProducts:0,
 				threeBeltsIndex:-1,
 				fillingGuide: [['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1]],
 				/*orderCellsCount:0*/
@@ -416,7 +416,7 @@ class Board extends React.Component {
 			});
 		} else {
 			this.setState({
-				nextPatchProducts: [...this.state.nextPatchProducts, item],
+				nextPatchProducts: this.state.nextPatchProducts+1,
 			});
 			console.log("no space for ", item, 'Next Patch Products', this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
@@ -458,7 +458,7 @@ class Board extends React.Component {
 			//alert("no space for " + item.productName);
 
 			this.setState({
-				nextPatchProducts: [...this.state.nextPatchProducts, item],
+				nextPatchProducts: this.state.nextPatchProducts+1,
 			});
 			console.log("no space for ", item,'Next Patch Products',this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
@@ -497,7 +497,7 @@ class Board extends React.Component {
 		} else {
 			//alert("no space for " + item.productName);
 			this.setState({
-				nextPatchProducts: [...this.state.nextPatchProducts, item],
+				nextPatchProducts: this.state.nextPatchProducts+1,
 			});
 			console.log("no space for ", item, 'Next Patch Products', this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
@@ -886,8 +886,8 @@ class Board extends React.Component {
 								<span>No Space For:</span>
 								<Table striped bordered hover>
 									<tbody>
-									<NextPatch order={this.state.nextPatchProducts}>
-									</NextPatch>
+										{/*<NextPatch order={this.state.nextPatchProducts}>
+									</NextPatch>*/}
 									</tbody>
 								</Table>
 							</div>
