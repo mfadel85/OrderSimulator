@@ -117,6 +117,7 @@ class Board extends React.Component {
 		return fillFunction;
 	}
 	setOrder(orderID) {
+		this.clearMyOrder();
 		var t0 = performance.now()
 		let orderReady = [];
 		if (orderID == -1) 
@@ -761,7 +762,7 @@ class Board extends React.Component {
 		// orderID,algorithm, time,fillingPercentage, order cell count, order coverage
 		const result = { 
 			orderID:this.state.orderID, 
-			alogirthm:this.state.algorithm, 
+			algorithm:this.state.algorithm, 
 			timing:this.state.time, 
 			filling:this.state.fillingPercent, 
 			orderSize:this.state.orderCellsCount, 

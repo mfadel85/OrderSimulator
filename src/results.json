@@ -1,0 +1,578 @@
+[
+    {
+        "orderID": 1,
+        "algorithm": "1",
+        "timing": 66,
+        "filling": 0.7181818181818181,
+        "orderSize": 113,
+        "coverage": 1.0272727272727273
+    },
+    {
+        "orderID": 2,
+        "algorithm": "1",
+        "timing": 60,
+        "filling": 0.6363636363636364,
+        "orderSize": 82,
+        "coverage": 0.7454545454545455
+    },
+    {
+        "orderID": 3,
+        "algorithm": "1",
+        "timing": 66,
+        "filling": 0.6818181818181818,
+        "orderSize": 95,
+        "coverage": 0.8636363636363636
+    },
+    {
+        "orderID": 4,
+        "algorithm": "1",
+        "timing": 66,
+        "filling": 0.6727272727272727,
+        "orderSize": 108,
+        "coverage": 0.9818181818181818
+    },
+    {
+        "orderID": 5,
+        "algorithm": "1",
+        "timing": 66,
+        "filling": 0.6818181818181818,
+        "orderSize": 111,
+        "coverage": 1.009090909090909
+    },
+    {
+        "orderID": 6,
+        "algorithm": "1",
+        "timing": 62,
+        "filling": 0.6454545454545455,
+        "orderSize": 79,
+        "coverage": 0.7181818181818181
+    },
+    {
+        "orderID": 7,
+        "algorithm": "1",
+        "timing": 62,
+        "filling": 0.7454545454545455,
+        "orderSize": 128,
+        "coverage": 1.1636363636363636
+    },
+    {
+        "orderID": 8,
+        "algorithm": "1",
+        "timing": 62,
+        "filling": 0.7454545454545455,
+        "orderSize": 128,
+        "coverage": 1.1636363636363636
+    },
+    {
+        "orderID": 9,
+        "algorithm": "1",
+        "timing": 62,
+        "filling": 0.7727272727272727,
+        "orderSize": 99,
+        "coverage": 0.9
+    },
+    {
+        "orderID": 10,
+        "algorithm": "1",
+        "timing": 50,
+        "filling": 0.6818181818181818,
+        "orderSize": 95,
+        "coverage": 0.8636363636363636
+    },
+    {
+        "orderID": 11,
+        "algorithm": "1",
+        "timing": 62,
+        "filling": 0.6909090909090909,
+        "orderSize": 98,
+        "coverage": 0.8909090909090909
+    },
+    {
+        "orderID": 12,
+        "algorithm": "1",
+        "timing": 66,
+        "filling": 0.7454545454545455,
+        "orderSize": 96,
+        "coverage": 0.8727272727272727
+    },
+    {
+        "orderID": 13,
+        "algorithm": "1",
+        "timing": 54,
+        "filling": 0.6818181818181818,
+        "orderSize": 95,
+        "coverage": 0.8636363636363636
+    },
+    {
+        "orderID": 14,
+        "algorithm": "1",
+        "timing": 60,
+        "filling": 0.7545454545454545,
+        "orderSize": 83,
+        "coverage": 0.7545454545454545
+    },
+    {
+        "orderID": 15,
+        "algorithm": "1",
+        "timing": 60,
+        "filling": 0.6545454545454545,
+        "orderSize": 84,
+        "coverage": 0.7636363636363637
+    },
+    {
+        "orderID": 16,
+        "algorithm": "1",
+        "timing": 60,
+        "filling": 0.6454545454545455,
+        "orderSize": 71,
+        "coverage": 0.6454545454545455
+    },
+    {
+        "orderID": 17,
+        "algorithm": "1",
+        "timing": 60,
+        "filling": 0.7363636363636363,
+        "orderSize": 109,
+        "coverage": 0.990909090909091
+    },
+    {
+        "orderID": 18,
+        "algorithm": "1",
+        "timing": 60,
+        "filling": 0.7636363636363637,
+        "orderSize": 102,
+        "coverage": 0.9272727272727272
+    },
+    {
+        "orderID": 19,
+        "algorithm": "1",
+        "timing": 54,
+        "filling": 0.7,
+        "orderSize": 97,
+        "coverage": 0.8818181818181818
+    },
+    {
+        "orderID": 20,
+        "algorithm": "1",
+        "timing": 66,
+        "filling": 0.6454545454545455,
+        "orderSize": 91,
+        "coverage": 0.8272727272727273
+    },
+    {
+        "orderID": 21,
+        "algorithm": "1",
+        "timing": 62,
+        "filling": 0.7272727272727273,
+        "orderSize": 118,
+        "coverage": 1.0727272727272728
+    },
+    {
+        "orderID": 22,
+        "algorithm": "1",
+        "timing": 60,
+        "filling": 0.6636363636363637,
+        "orderSize": 85,
+        "coverage": 0.7727272727272727
+    },
+    {
+        "orderID": 23,
+        "algorithm": "1",
+        "timing": 60,
+        "filling": 0.6454545454545455,
+        "orderSize": 71,
+        "coverage": 0.6454545454545455
+    },
+    {
+        "orderID": 24,
+        "algorithm": "1",
+        "timing": 54,
+        "filling": 0.7545454545454545,
+        "orderSize": 91,
+        "coverage": 0.8272727272727273
+    },
+    {
+        "orderID": 1,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.8454545454545455,
+        "orderSize": 113,
+        "coverage": 1.0272727272727273
+    },
+    {
+        "orderID": 2,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.7454545454545455,
+        "orderSize": 82,
+        "coverage": 0.7454545454545455
+    },
+    {
+        "orderID": 3,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.7909090909090909,
+        "orderSize": 95,
+        "coverage": 0.8636363636363636
+    },
+    {
+        "orderID": 4,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.8,
+        "orderSize": 108,
+        "coverage": 0.9818181818181818
+    },
+    {
+        "orderID": 5,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.8818181818181818,
+        "orderSize": 111,
+        "coverage": 1.009090909090909
+    },
+    {
+        "orderID": 6,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.7363636363636363,
+        "orderSize": 79,
+        "coverage": 0.7181818181818181
+    },
+    {
+        "orderID": 7,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.8,
+        "orderSize": 128,
+        "coverage": 1.1636363636363636
+    },
+    {
+        "orderID": 8,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.8,
+        "orderSize": 128,
+        "coverage": 1.1636363636363636
+    },
+    {
+        "orderID": 9,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.6636363636363637,
+        "orderSize": 99,
+        "coverage": 0.9
+    },
+    {
+        "orderID": 10,
+        "algorithm": "2",
+        "timing": 50,
+        "filling": 0.7909090909090909,
+        "orderSize": 95,
+        "coverage": 0.8636363636363636
+    },
+    {
+        "orderID": 11,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.9272727272727272,
+        "orderSize": 98,
+        "coverage": 0.8909090909090909
+    },
+    {
+        "orderID": 12,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.7454545454545455,
+        "orderSize": 96,
+        "coverage": 0.8727272727272727
+    },
+    {
+        "orderID": 13,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.6818181818181818,
+        "orderSize": 95,
+        "coverage": 0.8636363636363636
+    },
+    {
+        "orderID": 14,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.7545454545454545,
+        "orderSize": 83,
+        "coverage": 0.7545454545454545
+    },
+    {
+        "orderID": 15,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.6545454545454545,
+        "orderSize": 84,
+        "coverage": 0.7636363636363637
+    },
+    {
+        "orderID": 16,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.6454545454545455,
+        "orderSize": 71,
+        "coverage": 0.6454545454545455
+    },
+    {
+        "orderID": 17,
+        "algorithm": "2",
+        "timing": 50,
+        "filling": 0.8090909090909091,
+        "orderSize": 109,
+        "coverage": 0.990909090909091
+    },
+    {
+        "orderID": 18,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.8727272727272727,
+        "orderSize": 102,
+        "coverage": 0.9272727272727272
+    },
+    {
+        "orderID": 19,
+        "algorithm": "2",
+        "timing": 48,
+        "filling": 0.8090909090909091,
+        "orderSize": 97,
+        "coverage": 0.8818181818181818
+    },
+    {
+        "orderID": 20,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.8454545454545455,
+        "orderSize": 91,
+        "coverage": 0.8272727272727273
+    },
+    {
+        "orderID": 21,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.8727272727272727,
+        "orderSize": 118,
+        "coverage": 1.0727272727272728
+    },
+    {
+        "orderID": 22,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.7181818181818181,
+        "orderSize": 85,
+        "coverage": 0.7727272727272727
+    },
+    {
+        "orderID": 23,
+        "algorithm": "2",
+        "timing": 48,
+        "filling": 0.6454545454545455,
+        "orderSize": 71,
+        "coverage": 0.6454545454545455
+    },
+    {
+        "orderID": 24,
+        "algorithm": "2",
+        "timing": 54,
+        "filling": 0.8272727272727273,
+        "orderSize": 91,
+        "coverage": 0.8272727272727273
+    },
+    {
+        "orderID": 1,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.8454545454545455,
+        "orderSize": 113,
+        "coverage": 1.0272727272727273
+    },
+    {
+        "orderID": 2,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.7454545454545455,
+        "orderSize": 82,
+        "coverage": 0.7454545454545455
+    },
+    {
+        "orderID": 3,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.8818181818181818,
+        "orderSize": 95,
+        "coverage": 0.8636363636363636
+    },
+    {
+        "orderID": 4,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.9090909090909091,
+        "orderSize": 108,
+        "coverage": 0.9818181818181818
+    },
+    {
+        "orderID": 5,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.8272727272727273,
+        "orderSize": 111,
+        "coverage": 1.009090909090909
+    },
+    {
+        "orderID": 6,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.7363636363636363,
+        "orderSize": 79,
+        "coverage": 0.7181818181818181
+    },
+    {
+        "orderID": 7,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.8,
+        "orderSize": 128,
+        "coverage": 1.1636363636363636
+    },
+    {
+        "orderID": 8,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.9090909090909091,
+        "orderSize": 128,
+        "coverage": 1.1636363636363636
+    },
+    {
+        "orderID": 9,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.9181818181818182,
+        "orderSize": 99,
+        "coverage": 0.9
+    },
+    {
+        "orderID": 10,
+        "algorithm": "3",
+        "timing": 50,
+        "filling": 0.8818181818181818,
+        "orderSize": 95,
+        "coverage": 0.8636363636363636
+    },
+    {
+        "orderID": 11,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.8363636363636363,
+        "orderSize": 98,
+        "coverage": 0.8909090909090909
+    },
+    {
+        "orderID": 12,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.8909090909090909,
+        "orderSize": 96,
+        "coverage": 0.8727272727272727
+    },
+    {
+        "orderID": 13,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.8181818181818182,
+        "orderSize": 95,
+        "coverage": 0.8636363636363636
+    },
+    {
+        "orderID": 14,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.7545454545454545,
+        "orderSize": 83,
+        "coverage": 0.7545454545454545
+    },
+    {
+        "orderID": 15,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.7636363636363637,
+        "orderSize": 84,
+        "coverage": 0.7636363636363637
+    },
+    {
+        "orderID": 16,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.6454545454545455,
+        "orderSize": 71,
+        "coverage": 0.6454545454545455
+    },
+    {
+        "orderID": 17,
+        "algorithm": "3",
+        "timing": 50,
+        "filling": 0.8272727272727273,
+        "orderSize": 109,
+        "coverage": 0.990909090909091
+    },
+    {
+        "orderID": 18,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.8727272727272727,
+        "orderSize": 102,
+        "coverage": 0.9272727272727272
+    },
+    {
+        "orderID": 19,
+        "algorithm": "3",
+        "timing": 48,
+        "filling": 0.8818181818181818,
+        "orderSize": 97,
+        "coverage": 0.8818181818181818
+    },
+    {
+        "orderID": 20,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.8454545454545455,
+        "orderSize": 91,
+        "coverage": 0.8272727272727273
+    },
+    {
+        "orderID": 21,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.8727272727272727,
+        "orderSize": 118,
+        "coverage": 1.0727272727272728
+    },
+    {
+        "orderID": 22,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.7727272727272727,
+        "orderSize": 85,
+        "coverage": 0.7727272727272727
+    },
+    {
+        "orderID": 23,
+        "algorithm": "3",
+        "timing": 48,
+        "filling": 0.6454545454545455,
+        "orderSize": 71,
+        "coverage": 0.6454545454545455
+    },
+    {
+        "orderID": 24,
+        "algorithm": "3",
+        "timing": 54,
+        "filling": 0.8272727272727273,
+        "orderSize": 91,
+        "coverage": 0.8272727272727273
+    }
+]
