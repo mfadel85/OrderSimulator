@@ -153,12 +153,14 @@ class Board extends React.Component {
 		);
 		var t2 = performance.now();
 		
-		const newResult = [this.state.algorithm,this.state.order,this.state.orderID,this.state.fillingPercent,this.state.time,t2-t0];
-		setTimeout(() => {
-			this.setState({
-				results: [...this.state.results, newResult]
-			});
-		}, 3000);
+	/*	const newResult = [this.state.algorithm,this.state.order,this.state.orderID,this.state.fillingPercent,this.state.time,t2-t0];
+		const result = [this.state.orderID, this.state.algorithm, this.state.time, this.state.fillingPercent, this.state.orderCellsCount, this.state.orderCoverage];
+		var clonedArr1 = result.slice();
+
+		const immutableResult = JSON.stringify(clonedArr1);
+		this.setState({
+			results: [...this.state.results, immutableResult]
+		});*/
 		
 
 		document.getElementById('log').innerHTML += 
@@ -752,13 +754,38 @@ class Board extends React.Component {
 			randomOrder.push(newItem);
 		}
 		allOrders.push(randomOrder);
+			
+	}
+	exportResult(){
+		///prepare the data first
+		// orderID,algorithm, time,fillingPercentage, order cell count, order coverage
+		const result = { 
+			orderID:this.state.orderID, 
+			alogirthm:this.state.algorithm, 
+			timing:this.state.time, 
+			filling:this.state.fillingPercent, 
+			orderSize:this.state.orderCellsCount, 
+			coverage:this.state.orderCoverage
+		};
+		var clonedArr1 = Object.assign({}, result);
+
+		const immutableResult = JSON.stringify(clonedArr1);
+		this.setState({
+			results:[...this.state.results,immutableResult]
+		})
+		console.log(immutableResult);
+		this.clearMyOrder();
+	}
+	compare(){
 		this.setState(
-			{ 
-				algorithm:1
+			{
+				algorithm: 1
 			},
-			() => { 
-				this.setOrder(allOrders.length - 1); 
-				console.log("Automated TEST",this.state.fillingPercent, this.state.time);
+			() => {
+				this.setOrder(allOrders.length - 1);
+				console.log("Automated TEST", this.state.fillingPercent, this.state.time);
+				this.exportResult();
+
 			}
 		);
 		this.setState(
@@ -767,24 +794,22 @@ class Board extends React.Component {
 			},
 			() => {
 				this.setOrder(allOrders.length - 1);
-				console.log("Automated TEST",this.state.fillingPercent, this.state.time);
+				console.log("Automated TEST", this.state.fillingPercent, this.state.time);
+				this.exportResult();
+
 			}
-		);	
+		);
 		this.setState(
 			{
 				algorithm: 3
 			},
 			() => {
 				this.setOrder(allOrders.length - 1);
-				console.log("Automated TEST",this.state.fillingPercent, this.state.time);
+				console.log("Automated TEST", this.state.fillingPercent, this.state.time);
+				this.exportResult();
+
 			}
-		);				
-	}
-	exportResult(){
-		///prepare the data first
-		// orderID,algorithm, time,fillingPercentage, order cell count, order coverage
-		const result = [this.state.orderID, this.state.algorithm, this.state.time, this.state.fillingPercent, this.state.orderCellsCount, this.state.orderCoverage];
-		console.log(this.state.time,this.state.orderID,this.state.algorithm,this.state.fillingPercent);
+		);			
 	}
 	chooseAlgorithm(event){
 		console.log('key: ', event.target.attributes.getNamedItem('data-key').value);
@@ -837,13 +862,18 @@ class Board extends React.Component {
 						<Button data-key='1' >Algorithm 1</Button>
 						<Button data-key='2'>Alogrithm 2</Button>
 						<Button data-key='3' >Alogrithm 3</Button>
-						<Button data-key='4' >Compare</Button>
 
 					</ButtonGroup>
+					<Button onClick={() => this.compare()} >Compare</Button>
+
 				</Col>
 				<Col xs={4} md={4}>
 					<Card>
-						<Card.Title> Order  {this.state.orderID} Algorithm: {this.state.algorithm}</Card.Title>
+						<Card.Title> 
+							Order  {this.state.orderID} 
+							Algorithm: {this.state.algorithm} 							
+							<button onClick={() => this.exportResult()}>Export Result </button>
+						</Card.Title>
 						<Card.Body>
 							<Table striped bordered hover>
 								<tbody><tr><th> # </th><th> Name </th><th> Qn </th><th> Dir </th><th> BeltCo </th><th> Cells </th><th>Unit</th></tr>
@@ -1027,7 +1057,6 @@ class Board extends React.Component {
 							<button onClick={() => this.setOrder(-1)}> Pick Order </button>
 							<button onClick={this.saveJson()}>Export Orders</button>
 							<button onClick={() => this.generateRandom()}>Random Order </button>
-							<button onClick={() => this.exportResult()}>Export Result </button>
 
 							<div>
 								<span>Order Cells: {this.state.orderCellsCount} / 110 - Order Cover: {this.state.orderCoverage }</span>
