@@ -470,9 +470,8 @@ class Board extends React.Component {
 
 			//alert("no space for " + item.productName);
 
-			this.setState({
-				nextPatchProducts: this.state.nextPatchProducts+1,
-			});
+			this.setState({ nextPatchProducts: [this.state.nextPatchProducts[0] + 1, [...this.state.nextPatchProducts[1], item.productName]] });
+
 			console.log("no space for ", item,'Next Patch Products',this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
 		}
@@ -514,9 +513,8 @@ class Board extends React.Component {
 		} else {
 			nextPatch = true;
 			//alert("no space for " + item.productName);
-			this.setState({
-				nextPatchProducts: this.state.nextPatchProducts+1,
-			});
+			this.setState({ nextPatchProducts: [this.state.nextPatchProducts[0] + 1, [...this.state.nextPatchProducts[1], item.productName]] });
+
 			console.log("no space for ", item, 'Next Patch Products', this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
 		}
@@ -583,6 +581,8 @@ class Board extends React.Component {
 	}
 
 	fillBoard(context) {// this is to refactored soon!!
+		let unFilledProducts = [];
+
 		let nextPatchCount = 0;
 		let startIndex = 0;
 		let that = context;
@@ -590,13 +590,14 @@ class Board extends React.Component {
 			for (let m = 0; m < item.quantity; m++) {
 				let result = that.handleOneProduct(item, startIndex);
 				startIndex = result[0];
-				if(result[1])
-				  nextPatchCount++;
+				if (result[1]) {
+					unFilledProducts.push(result[2]);
+					nextPatchCount++;
+				}
 			}
 		});
-		context.setState(
-			{ nextPatchProducts:nextPatchCount}
-		);
+		context.setState({ nextPatchProducts: [nextPatchCount, unFilledProducts] });
+
 	}
 	fillBoard3(context){
 		let nextPatchCount = 0;
@@ -617,6 +618,8 @@ class Board extends React.Component {
 
 	}
 	fillBoard2(context) {
+		let unFilledProducts = [];
+
 		let nextPatchCount = 0;
 		console.log('fillBoard algo 2');
 		let startIndex = 0;
@@ -625,11 +628,14 @@ class Board extends React.Component {
 			for (let m = 0; m < item.quantity; m++) {
 				let result = that.handleNextProduct(item, startIndex);
 				startIndex = result[0];
-				if (result[1])
+				if (result[1]){
+					unFilledProducts.push(result[2]);
 					nextPatchCount++;
+				}
+					
 			}
 		});
-		context.setState({ nextPatchProducts: nextPatchCount });
+		context.setState({ nextPatchProducts: [nextPatchCount, unFilledProducts] });
 
 	}
 	updateIndices(index) {
