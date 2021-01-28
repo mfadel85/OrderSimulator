@@ -1,11 +1,9 @@
 import React from "react";
 import Products from "./products.js";
-import Grid from "./grid.js";
-import NextPatch from "./nextPatch";
 import Order from "./Order.js";
 import Cell from "./Cell.js";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Table, Card, Row, Col, ListGroup, ButtonToolbar,ButtonGroup,Button } from "react-bootstrap";
+import { Table, Card, Row, Col, ListGroup, ButtonGroup,Button } from "react-bootstrap";
 import { allProducts, allOrders, testingOrders } from "./data.js";
 class Board extends React.Component {
 	constructor(props) {
@@ -29,7 +27,7 @@ class Board extends React.Component {
 					cells: initialCells,
 				},
 			],
-			nextPatchProducts: 0,
+			nextPatchProducts: [0,['']],
 			fillingGuide: [['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1]],
 			beltIndices: [0, 0, 0, 0, 0],
 			myOrder: [],
@@ -40,7 +38,7 @@ class Board extends React.Component {
 			lastPosition:1,
 			twicy: 0,
 			lastUnitPos:1,
-			algorithm:1,
+			algorithm:3,
 			threeBeltsIndex:-1,
 			counter:24,
 			orderCellsCount:0,
@@ -50,20 +48,20 @@ class Board extends React.Component {
 		};
 	}
 	sortProduct(a, b) {
-		if (a.beltCount != b.beltCount) 
+		if (a.beltCount !== b.beltCount) 
 			return a.beltCount - b.beltCount;
 		else {
-			if (a.beltCount == 2 || a.beltCount == 4) 
+			if (a.beltCount === 2 || a.beltCount === 4) 
 				return b.unitNo - a.unitNo;	
 			else 
 				return a.unitNo - b.unitNo;
 		}
 	}
 	sortProduct2(a,b){
-		if (a.beltCount < 3 && b.beltCount < 3 ||  (a.beltCount == b.beltCount  == 4 ) )
+		if ((a.beltCount < 3 && b.beltCount < 3) ||  (a.beltCount === b.beltCount  === 4 ) )
 			return a.unitNo - b.unitNo;
 		else{
-			if (a.beltCount != b.beltCount)
+			if (a.beltCount !== b.beltCount)
 				return a.beltCount - b.beltCount;
 			else 
 				return b.unitNo - a.unitNo;	
@@ -131,7 +129,7 @@ class Board extends React.Component {
 		let time = 0;
 		let position = 1;
 		orderReady.forEach(element => {
-			time += 3 + Math.abs(element.name.unitNo -position)*2;
+			time += 3 + Math.abs(element.name.unitNo -position)*2;/// has to be only for picked up products
 			position = element.name.unitNo;
 		});
 		let fillBoardFunction = this.getFillFunction();
@@ -143,7 +141,7 @@ class Board extends React.Component {
 				time:time,
 				twicy: 0,
 				beltIndices: [0, 0, 0, 0, 0],
-				nextPatchProducts:0,
+				nextPatchProducts: [0, ['']],
 				threeBeltsIndex:-1,
 				fillingGuide: [['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1], ['SE', 1]],
 				/*orderCellsCount:0*/
@@ -391,6 +389,8 @@ class Board extends React.Component {
 		return startIndex;
 	}
 	handleProduct3(item,startIndex){
+
+		const productName = item.productName;
 		let nextPatch;
 		let filledCount =0;
 		const originalStartIndex = startIndex;
@@ -403,7 +403,6 @@ class Board extends React.Component {
 		);		
 		if (available) {
 			nextPatch = false;
-
 			startIndex = this.shiftCells(startIndex, item); // returns startIndexed changed, 
 			this.state.cells.forEach((cell) => {
 				if (cell != null) filledCount++;
@@ -420,16 +419,19 @@ class Board extends React.Component {
 			});
 		} else {
 			nextPatch = true;
+			this.setState({ nextPatchProducts: [this.state.nextPatchProducts[0] + 1, [...this.state.nextPatchProducts[1],item.productName]] });
 
-			this.setState({
+			/*this.setState({
 				nextPatchProducts: this.state.nextPatchProducts+1,
-			});
+			});*/
 			console.log("no space for ", item, 'Next Patch Products', this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
 		}
-		return [startIndex, nextPatch];
+		return [startIndex, nextPatch, productName];
 	}
 	handleNextProduct(item,startIndex){
+		const productName = item.productName;
+
 		let filledCount = 0;
 		let nextPatch;
 
@@ -474,9 +476,11 @@ class Board extends React.Component {
 			console.log("no space for ", item,'Next Patch Products',this.state.nextPatchProducts);
 			startIndex = originalStartIndex;
 		}
-		return [startIndex,nextPatch];
+		return [startIndex, nextPatch, productName];
 	}
 	handleOneProduct(item, startIndex) {
+		const productName = item.productName;
+
 		let filledCount = 0;
 		const originalStartIndex = startIndex;
 		let currentcells = [...this.state.cells];
@@ -517,7 +521,7 @@ class Board extends React.Component {
 			startIndex = originalStartIndex;
 		}
 		/// this could return nextPatchProducts also,the count of them and many other things
-		return [startIndex,nextPatch];
+		return [startIndex, nextPatch, productName];
 	}
 	getMinBelt(){
 		let currentBeltIndices = [0, 0, 0, 0, 0];
@@ -590,22 +594,26 @@ class Board extends React.Component {
 				  nextPatchCount++;
 			}
 		});
-		context.setState({ nextPatchProducts:nextPatchCount});
-
+		context.setState(
+			{ nextPatchProducts:nextPatchCount}
+		);
 	}
 	fillBoard3(context){
 		let nextPatchCount = 0;
 		let startIndex = 0;
 		let that = context;
+		let unFilledProducts = [];
 		context.state.order.forEach(function(item){
 			for (let m = 0; m < item.quantity; m++) {
 				let result = that.handleProduct3(item, startIndex);
 				startIndex = result[0];
-				if (result[1])
+				if (result[1]){
 					nextPatchCount++;
+					unFilledProducts.push(result[2]);
+				}
 			}
 		});
-		context.setState({ nextPatchProducts: nextPatchCount });
+		context.setState({ nextPatchProducts: [nextPatchCount,unFilledProducts] });
 
 	}
 	fillBoard2(context) {
@@ -801,9 +809,10 @@ class Board extends React.Component {
 			},
 			() => {
 				this.setOrder(allOrders.length - 1);
+				alert(this.state.fillingPercent + ' ' + this.state.time);
+
 				console.log("Automated TEST", this.state.fillingPercent, this.state.time);
 				this.exportResult();
-
 			}
 		);
 		this.setState(
@@ -812,6 +821,8 @@ class Board extends React.Component {
 			},
 			() => {
 				this.setOrder(allOrders.length - 1);
+				alert(this.state.fillingPercent + ' ' + this.state.time);
+
 				console.log("Automated TEST", this.state.fillingPercent, this.state.time);
 				this.exportResult();
 
@@ -823,6 +834,8 @@ class Board extends React.Component {
 			},
 			() => {
 				this.setOrder(allOrders.length - 1);
+				alert(this.state.fillingPercent + ' ' + this.state.time);
+
 				console.log("Automated TEST", this.state.fillingPercent, this.state.time);
 				this.exportResult();
 
@@ -866,6 +879,13 @@ class Board extends React.Component {
 		}
 	};
 	render() {	
+		const items = [];
+		this.state.nextPatchProducts[1].map(
+			(value,index) => {
+				console.log("hdhdasfdsafads", value);
+				items.push(<li key={index}>{value}</li>);
+			}
+		);
 		return (
 			<Row onKeyDown={this.onKeyDownHandler}>
 				<Col xs={2} md={2}>
@@ -888,9 +908,11 @@ class Board extends React.Component {
 				<Col xs={4} md={4}>
 					<Card>
 						<Card.Title> 
-							Order  {this.state.orderID} 
+							Order {this.state.orderID} 
 							Algorithm: {this.state.algorithm} 							
 							<button onClick={() => this.exportResult()}>Export Result </button>
+							<button onClick={() => this.clearMyOrder()}> Clear Order</button>
+
 						</Card.Title>
 						<Card.Body>
 							<Table striped bordered hover>
@@ -902,48 +924,46 @@ class Board extends React.Component {
 								</tbody>
 							</Table>
 							{/*{allButtons.map((value) => {
-								return <button onclick={() => this.setOrder({ value })}> Order {value+1} </button>
+								return <button onclick={() => this.setOrder({ value })}> Order{value+1} </button>
 							}) 
 							}*/}
-							<button onClick={() => this.setOrder(0)}>Order 1 </button>
-							<button onClick={() => this.setOrder(1)}>Order 2 </button>
-							<button onClick={() => this.setOrder(2)}>Order 3 </button>
-							<button onClick={() => this.setOrder(3)}>Order 4 </button>
-							<button onClick={() => this.setOrder(4)}>Order 5 </button>
-							<button onClick={() => this.setOrder(5)}>Order 6 </button>
-							<button onClick={() => this.setOrder(6)}>Order 7 </button>
-							<button onClick={() => this.setOrder(7)}>Order 8 </button>
-							<button onClick={() => this.setOrder(8)}>Order 9 </button>
-							<button onClick={() => this.setOrder(9)}>Order 10 </button>
-							<button onClick={() => this.setOrder(10)}>Order 11 </button>
-							<button onClick={() => this.setOrder(11)}>Order 12 </button>
-							<button onClick={() => this.setOrder(12)}>Order 13 </button>
-							<button onClick={() => this.setOrder(13)}>Order 14 </button>
-							<button onClick={() => this.setOrder(14)}>Order 15 </button>
-							<button onClick={() => this.setOrder(15)}>Order 16 </button>
-							<button onClick={() => this.setOrder(16)}>Order 17 </button>
-							<button onClick={() => this.setOrder(17)}>Order 18 </button>
-							<button onClick={() => this.setOrder(18)}>Order 19 </button>
-							<button onClick={() => this.setOrder(19)}>Order 20 </button>
-							<button onClick={() => this.setOrder(20)}>Order 21 </button>
-							<button onClick={() => this.setOrder(21)}>Order 22 </button>
-							<button onClick={() => this.setOrder(22)}>Order 23 </button>
-							<button onClick={() => this.setOrder(23)}>Order 24 </button>
+							<button onClick={() => this.setOrder(0)}>Order1 </button>
+							<button onClick={() => this.setOrder(1)}>Order2 </button>
+							<button onClick={() => this.setOrder(2)}>Order3 </button>
+							<button onClick={() => this.setOrder(3)}>Order4 </button>
+							<button onClick={() => this.setOrder(4)}>Order5 </button>
+							<button onClick={() => this.setOrder(5)}>Order6 </button>
+							<button onClick={() => this.setOrder(6)}>Order7 </button>
+							<button onClick={() => this.setOrder(7)}>Order8 </button>
+							<button onClick={() => this.setOrder(8)}>Order9 </button>
+							<button onClick={() => this.setOrder(9)}>Order10 </button>
+							<button onClick={() => this.setOrder(10)}>Order11 </button>
+							<button onClick={() => this.setOrder(11)}>Order12 </button>
+							<button onClick={() => this.setOrder(12)}>Order13 </button>
+							<button onClick={() => this.setOrder(13)}>Order14 </button>
+							<button onClick={() => this.setOrder(14)}>Order15 </button>
+							<button onClick={() => this.setOrder(15)}>Order16 </button>
+							<button onClick={() => this.setOrder(16)}>Order17 </button>
+							<button onClick={() => this.setOrder(17)}>Order18 </button>
+							<button onClick={() => this.setOrder(18)}>Order19 </button>
+							<button onClick={() => this.setOrder(19)}>Order20 </button>
+							<button onClick={() => this.setOrder(20)}>Order21 </button>
+							<button onClick={() => this.setOrder(21)}>Order22 </button>
+							<button onClick={() => this.setOrder(22)}>Order23 </button>
+							<button onClick={() => this.setOrder(23)}>Order24 </button>
 
 							<div>
-								<span>No Space For: {this.state.nextPatchProducts} Products.</span>
-								<Table striped bordered hover>
-									<tbody>
-										{/*<NextPatch order={this.state.nextPatchProducts}>
-									</NextPatch>*/}
-									</tbody>
-								</Table>
+								<span>
+									No Space For: {this.state.nextPatchProducts[0]} Products.
+								</span>
+								<ul>{items}</ul>
 							</div>
 						</Card.Body>
 					</Card>
 				</Col>
 
 				<Col xs={3} ms={4}>
+					<Row>
 					<Cell value={this.state.cells[0]} />
 					<Cell value={this.state.cells[1]} />
 					<Cell value={this.state.cells[2]} />
@@ -1054,14 +1074,17 @@ class Board extends React.Component {
 					<Cell value={this.state.cells[107]} />
 					<Cell value={this.state.cells[108]} />
 					<Cell value={this.state.cells[109]} />
-					<span> Percentage: {this.state.fillingPercent} </span>
-					<span> Time: {this.state.time} Seconds </span>
-					<span> Twicy: {this.state.twicy}</span>
+					</Row>
+					<Row>
+						<span> Percentage: {this.state.fillingPercent}. </span>
+						<span> Time: {this.state.time} Seconds. </span>
+					</Row>
+					
 
 				</Col>
 				<Col xs={2} md={2} >
 					<Card>
-						<Card.Title> My Order </Card.Title>
+						<Card.Title> My Order</Card.Title>
 						<Card.Body>
 							
 							{this.state.myOrderWithName.map((product) => (
@@ -1071,10 +1094,10 @@ class Board extends React.Component {
 							))}
 							
 							<button onClick={() => this.readOrders(this)}>Get Orders</button>  
-							<button onClick={() => this.clearMyOrder()}> Clear Order </button>
-							<button onClick={() => this.setOrder(-1)}> Pick Order </button>
+							<button onClick={() => this.clearMyOrder()}> Clear Order</button>
+							<button onClick={() => this.setOrder(-1)}> Pick Order</button>
 							<button onClick={this.saveJson()}>Export Orders</button>
-							<button onClick={() => this.generateRandom()}>Random Order </button>
+							<button onClick={() => this.generateRandom()}>Random Order</button>
 
 							<div>
 								<span>Order Cells: {this.state.orderCellsCount} / 110 - Order Cover: {this.state.orderCoverage }</span>
