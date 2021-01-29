@@ -1,5 +1,4 @@
 import React from "react";
-import Products from "./products.js";
 import Grid from "./grid.js";
 import NextPatch from "./nextPatch";
 import Order from "./Order.js";

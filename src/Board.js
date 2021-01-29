@@ -16,6 +16,7 @@ class Board extends React.Component {
 		const initialCells = JSON.parse(JSON.stringify(cells));
 
 		this.state = {
+			algorithm: "3",
 			cellsInRow: cellsInRow,
 			cellsInBent: cellsInBelt,
 			cells: cells,
@@ -38,7 +39,6 @@ class Board extends React.Component {
 			lastPosition:1,
 			twicy: 0,
 			lastUnitPos:1,
-			algorithm:3,
 			threeBeltsIndex:-1,
 			counter:24,
 			orderCellsCount:0,
@@ -64,12 +64,18 @@ class Board extends React.Component {
 			if (a.beltCount !== b.beltCount)
 				return a.beltCount - b.beltCount;
 			else 
-				return b.unitNo - a.unitNo;	
-				
+				return b.unitNo - a.unitNo;		
 		}
-
 	}
 	sortProduct3(a, b) {
+		if ((a.beltCount < 3 && b.beltCount < 3) || (a.beltCount === b.beltCount === 4))
+			return a.unitNo - b.unitNo;
+		else {
+			if (a.beltCount !== b.beltCount)
+				return a.beltCount - b.beltCount;
+			else
+				return b.unitNo - a.unitNo;
+		}		
 	}
 	getSortFunction(){
 		let sorterFunction;
@@ -83,7 +89,7 @@ class Board extends React.Component {
 				sorterFunction = this.sortProduct2;
 				break;
 			case '3':
-				sorterFunction = this.sortProduct2;
+				sorterFunction = this.sortProduct3;
 				break;				
 			default:
 
@@ -114,6 +120,14 @@ class Board extends React.Component {
 		//console.log('Filler Function: ', fillFunction);
 		return fillFunction;
 	}
+	findLastOneBeltProduct(order){
+		let lastOne = -1;
+		order.forEach((element, index) => {
+			if(element.beltCount == 1)
+				lastOne = index;
+		});
+		return lastOne;
+	}
 	setOrder(orderID) {
 		this.clearMyOrder();
 		var t0 = performance.now()
@@ -122,7 +136,9 @@ class Board extends React.Component {
 			orderReady = this.initOrder(this.state.myOrder);
 		else 
 			orderReady = this.initOrder(testingOrders[orderID]);
-		console.log("setOrder:", orderReady);
+		let id= this.findLastOneBeltProduct(orderReady);
+		console.log("setOrder:", orderReady,"last one belt product is",id);
+		//return;
 		const sorterFunction = this.getSortFunction();
 		orderReady.sort(sorterFunction); /// changing sorting function based on the algorithm
 		var t1 = performance.now()
@@ -150,23 +166,7 @@ class Board extends React.Component {
 				fillBoardFunction(this);/// changing algorithm
 			}
 		);
-		var t2 = performance.now();
-		
-	/*	const newResult = [this.state.algorithm,this.state.order,this.state.orderID,this.state.fillingPercent,this.state.time,t2-t0];
-		const result = [this.state.orderID, this.state.algorithm, this.state.time, this.state.fillingPercent, this.state.orderCellsCount, this.state.orderCoverage];
-		var clonedArr1 = result.slice();
 
-		const immutableResult = JSON.stringify(clonedArr1);
-		this.setState({
-			results: [...this.state.results, immutableResult]
-		});*/
-		
-
-		document.getElementById('log').innerHTML += 
-			"<br>Order"+orderID+
-			" alogorithm "+ this.state.algorithm+
-			" TIME:"+ this.state.time +
-			',Execution Time :' + (t2 - t0) + " milliseconds.";
 	}
 
 	initOrder(order) {
@@ -190,6 +190,7 @@ class Board extends React.Component {
 			let unitNo = name.unitNo;
 			finalOrder.push({id,quantity,name,productName,symbol,beltCount,cellsDepth,unitNo});
 		});
+		
 		this.setState({
 			orderCellsCount:cellsCount,
 			orderCoverage: cellsCount/110
@@ -243,15 +244,8 @@ class Board extends React.Component {
 					startIndex = this.state.threeBeltsIndex;
 				if(result != -1)
 					startIndex = result;
-
-				//startIndex = 2; 
-				//the cases to be handle  [1 2 2], [2 2 1],[131] ,[311],[113]
-				/*if (this.state.fillingGuide[0][1] == 2)
-					startIndex = 2; 
-				else if (this.state.fillingGuide[startIndex][0] == 'E')
-				   startIndex = startIndex -1;*/
 			break;
-			case 2:// check filling guide whether this startIndex is S or SE or E startIndex should not exceed 4
+			case 2:
 				if(this.state.fillingGuide[startIndex][0] == 'E' )
 					if(startIndex>2)
 						startIndex--;
@@ -263,7 +257,6 @@ class Board extends React.Component {
 			break;
 			case 1:
 				const min = this.getMinBelt();
-				//console.log('decideStartIndex2()0: beltIndices:', this.state.beltIndices, 'Min:', min);
 				startIndex = min;
 			break;
 			default:
