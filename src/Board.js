@@ -68,11 +68,8 @@ class Board extends React.Component {
 		}
 	}
 	sortProduct3(a, b) {
-		/*if ((a.beltCount === 3 && b.beltCount === 2) || (a.beltCount === 2 && b.beltCount === 3))
+		if ((a.beltCount < 3 && b.beltCount < 3) || (a.beltCount === b.beltCount === 4))
 			return a.unitNo - b.unitNo;
-		else */if ((a.beltCount < 3 && b.beltCount < 3) || (a.beltCount === b.beltCount === 4))
-			return a.unitNo - b.unitNo;
-
 		else {
 			if (a.beltCount !== b.beltCount)
 				return a.beltCount - b.beltCount;
@@ -80,9 +77,11 @@ class Board extends React.Component {
 				return b.unitNo - a.unitNo;
 		}
 	}
-	swapThreeOne(a, b) {
-		if (a.beltCount === 3 && b.beltCount === 1)
-			return 1;
+	initSort(a,b){
+		if(a.beltCount == b.beltCount == 1)
+			return a.unitNo - b.unitNo;
+		else if (a.beltCount == 1 || b.beltCount == 1)
+			return a.beltCount - b.beltCount;
 	}
 	getSortFunction() {
 		let sorterFunction;
@@ -143,16 +142,14 @@ class Board extends React.Component {
 			orderReady = this.initOrder(this.state.myOrder);
 		else
 			orderReady = this.initOrder(testingOrders[orderID]);
-		let tempOrder = this.initOrder(testingOrders[orderID]);
 		let id = this.findLastOneBeltProduct(orderReady);
-		console.log("setOrder:", orderReady, "last one belt product is", id, 'tempOrder', tempOrder);
+		//orderReady.sort(this.initSort); /// changing sorting function based on the algorithm
+		console.log("setOrder:", orderReady, "last one belt product is", id);
+
 		//return;
 		const sorterFunction = this.getSortFunction();
-		tempOrder = tempOrder.sort(this.swapThreeOne); /// changing sorting function based on the algorithm
-		console.log("setOrder:", orderReady, "last one belt product is", id, 'tempOrder', tempOrder);
-
 		orderReady.sort(sorterFunction); /// changing sorting function based on the algorithm
-		var t1 = performance.now();
+		var t1 = performance.now()
 		let time = 0;
 		let position = 1;
 		orderReady.forEach(element => {
@@ -289,12 +286,12 @@ class Board extends React.Component {
 			case 4:
 				let max = this.getMaxnBelt();
 				if (max == 0)
-					startIndex = 1;
+					startIndex = 0;
 				else
-					startIndex = 1;
+					startIndex = 0;
 				break;
 			case 3:
-				startIndex = 0;
+				startIndex = 2;
 				break;
 			case 1:
 				startIndex = this.getAlgo3ProductsWith1BeltIndex(startIndex, cellsDepth);
@@ -311,44 +308,41 @@ class Board extends React.Component {
 	getAlgo3ProductsWith1BeltIndex(startIndex, cellsDepth) {
 
 		const thirdBeltIndex = this.getBeltCurrentDepth(2);
-		const firstBeltIndex = this.getBeltCurrentDepth(0);
-		const secondBeltIndex = this.getBeltCurrentDepth(1);
+		const fourthBeltIndex = this.getBeltCurrentDepth(3);
+		const fifthBeltIndex = this.getBeltCurrentDepth(4);
 
 		let threeDepth = this.nBeltProductsDepth(3);
 		let fourDepth = this.nBeltProductsDepth(4);
-		if (this.state.orderCellsCount > 110) {
+		if (this.state.orderCellsCount > 105) {
 			fourDepth = 0;
-			//threeDepth = 0;
+			threeDepth = 0;
 		}
-		if (startIndex > 2)
-			startIndex = 0;
-		if (firstBeltIndex + /*fourDepth +*/ threeDepth + cellsDepth <= 22)
-			startIndex = 0;
+		if (startIndex > 4)
+			startIndex = 2;
+		if (thirdBeltIndex + fourDepth + threeDepth + cellsDepth <= 22)
+			startIndex = 2;
 		else {
-			if (secondBeltIndex >= thirdBeltIndex)
-				startIndex = 1;
+			if (fourthBeltIndex <= fifthBeltIndex)
+				startIndex = 3;
 			else
-				startIndex = 2;
+				startIndex = 4;
 		}
 
 
 		return startIndex;
 	}
 	getAlgo3ProductsWith2BeltIndex(startIndex, cellsDepth) {
-		const secondBeltIndex = this.getBeltCurrentDepth(2);
-		const fourthBeltIndex = this.getBeltCurrentDepth(3);
-
+		const firstBeltIndex = this.getBeltCurrentDepth(0);
 		let threeDepth = this.nBeltProductsDepth(3);
 		let fourDepth = this.nBeltProductsDepth(4);
-
 		if (this.state.orderCellsCount > 110) {
 			fourDepth = 0;
 			threeDepth = 0;
 		}
-		if (fourthBeltIndex + fourDepth + cellsDepth <= 22)
-			return 3;
+		if (firstBeltIndex + fourDepth + cellsDepth <= 22)
+			return 0;
 		else
-			return 1;
+			return 3;
 	}
 	nBeltProductsDepth(n) {
 		let depth = 0;
