@@ -619,7 +619,7 @@ export const allProducts = [
         depth: 5,
         beltCount: 1,
         cellsDepth: 2,
-        unitNo: 2
+        unitNo: 1
     },
     {
         id: 5,
@@ -630,7 +630,7 @@ export const allProducts = [
         depth: 25,
         beltCount: 2,
         cellsDepth: 10,
-        unitNo: 3
+        unitNo: 2
     },
     {
         id: 6,
@@ -652,7 +652,7 @@ export const allProducts = [
         depth: 10.5,
         beltCount: 1,
         cellsDepth: 5,
-        unitNo: 4
+        unitNo: 1
     },
     {
         id: 8,
@@ -663,7 +663,7 @@ export const allProducts = [
         depth: 3.5,
         beltCount: 3,
         cellsDepth: 2,
-        unitNo: 1
+        unitNo: 4
     },
     {
         id: 9,
@@ -674,7 +674,7 @@ export const allProducts = [
         depth: 9.2,
         beltCount: 2,
         cellsDepth: 4,
-        unitNo: 3
+        unitNo: 2
     },
     {
         id: 10,
@@ -685,7 +685,7 @@ export const allProducts = [
         depth: 10,
         beltCount: 2,
         cellsDepth: 4,
-        unitNo: 4
+        unitNo: 1
     },
     {
         id: 11,
@@ -696,7 +696,7 @@ export const allProducts = [
         depth: 2.6,
         beltCount: 4,
         cellsDepth: 2,
-        unitNo: 1
+        unitNo: 4
     },
     {
         id: 12,
@@ -729,7 +729,7 @@ export const allProducts = [
         depth: 5,
         beltCount: 3,
         cellsDepth: 2,
-        unitNo: 4
+        unitNo: 3
     }, 
     {
         id: 15,
@@ -740,7 +740,7 @@ export const allProducts = [
         depth: 9,
         beltCount: 1,
         cellsDepth: 4,
-        unitNo: 2
+        unitNo: 1
     }, 
     {
         id: 16,

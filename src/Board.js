@@ -83,16 +83,7 @@ class Board extends React.Component {
 		else if (a.beltCount == 1 || b.beltCount == 1)
 			return a.beltCount - b.beltCount;
 	}
-	sortPart2(a,b){
-		if (a.beltCount < 4 && b.beltCount < 4)
-			return a.unitNo - b.unitNo;
-		else {
-			if (a.beltCount !== b.beltCount)
-				return a.beltCount - b.beltCount;
-			else
-				return b.unitNo - a.unitNo;
-		}
-	}
+
 	// yasf yet another sorting function
 	yasf(a,b){
 		if (a.beltCount < 4 && b.beltCount < 4)
@@ -246,7 +237,7 @@ class Board extends React.Component {
 			case '3':
 				fillFunction = this.fillBoard3;
 				break;
-			case '3':
+			case '4':
 				fillFunction = this.fillBoardOptimized;
 				break;				
 			default:
