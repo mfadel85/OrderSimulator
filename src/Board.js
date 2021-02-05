@@ -83,6 +83,27 @@ class Board extends React.Component {
 		else if (a.beltCount == 1 || b.beltCount == 1)
 			return a.beltCount - b.beltCount;
 	}
+	sortPart2(a,b){
+		if (a.beltCount < 4 && b.beltCount < 4)
+			return a.unitNo - b.unitNo;
+		else {
+			if (a.beltCount !== b.beltCount)
+				return a.beltCount - b.beltCount;
+			else
+				return b.unitNo - a.unitNo;
+		}
+	}
+	// yasf yet another sorting function
+	yasf(a,b){
+		if (a.beltCount < 4 && b.beltCount < 4)
+			return a.unitNo - b.unitNo;
+		else {
+			if (a.beltCount !== b.beltCount)
+				return a.beltCount - b.beltCount;
+			else
+				return b.unitNo - a.unitNo;
+		}
+	}
 	getSortFunction() {
 		let sorterFunction;
 		console.log('Algorithm: ', this.state.algorithm);
@@ -97,14 +118,121 @@ class Board extends React.Component {
 			case '3':
 				sorterFunction = this.sortProduct3;
 				break;
-			default:
+			case '4':
+				sorterFunction = this.yasf;
 
+			break;
+			default:
 				sorterFunction = this.sortProduct;
 				break;
 		}
 		console.log('Sorter Function: ', sorterFunction);
 		return sorterFunction;
 	}
+	fillBoardOptimized(context) {
+		let unFilledProducts = [];
+		let nextPatchCount = 0;
+		let startIndex = 0;
+		context.state.order.forEach(function (item) {
+			for (let i = 0; i < item.quantity; i++) {
+				let result = context.handleProductOptimized(item, startIndex);
+				startIndex = result[0];
+				if (result[1]) {
+					unFilledProducts.push(result[2]);
+					nextPatchCount++;
+				}
+			}
+		});
+	}	
+	handleProductOptimized(item, startIndex) {
+		let filledCount = 0;
+		const originalStartIndex = startIndex;
+		let currentcells = [...this.state.cells];
+		startIndex = this.getStartIndex(startIndex, item.beltCount, item.cellsDepth);
+		let available = this.checkSpace(
+			startIndex,
+			item.beltCount,
+			item.cellsDepth
+		);
+		let nextPatch;
+		if (available) {
+			nextPatch = false;
+			startIndex = this.shiftCells(startIndex, item);
+			this.state.cells.forEach((cell) => {
+				if (cell != null) filledCount++;
+			});
+			this.setState({
+				cells: this.state.cells,
+				index: startIndex,
+				fillingPercent: (filledCount * 1.0) / (this.state.cellsInBent * this.state.cellsInRow * 1.0),
+				history: [
+					...this.state.history, { cells: currentcells }, { cells: this.state.cells }
+				],
+				lastPosition: item.unitNo
+
+			});
+
+		} else {
+			nextPatch = true;
+			this.setState({ nextPatchProducts: [this.state.nextPatchProducts[0] + 1, [...this.state.nextPatchProducts[1], item.productName]] });
+			startIndex = originalStartIndex;
+		}
+		/// this could return nextPatchProducts also,the count of them and many other things
+		//return [startIndex, nextPatch, productName];
+		return [startIndex, nextPatch, item.productName];
+
+	}	
+	getStartIndex(startIndex, beltCount, cellsDepth = 1) {
+		let index = this.updateBeltsStatus();
+
+		switch (beltCount) {
+			case 4:
+			case 5:
+				startIndex = 0;
+				break;
+			case 3:
+				startIndex = 2;
+				break;
+			case 1:
+				startIndex = this.oneBeltIndex(startIndex, cellsDepth);
+				break;
+			case 2:
+				startIndex = this.twoBeltIndex(startIndex, cellsDepth);
+				break;
+			default:
+				break;
+		}
+		return startIndex;
+	}
+	oneBeltIndex(startIndex, cellsDepth) {
+		const firstBeltIndex = this.getBeltCurrentDepth(0);
+		const secondBeltIndex = this.getBeltCurrentDepth(1);
+		let threeDepth = this.nBeltProductsDepth(3);
+		let fourDepth = this.nBeltProductsDepth(4);
+
+		const fifthBeltIndex = this.getBeltCurrentDepth(4);
+		var values = [firstBeltIndex, secondBeltIndex, 1000, 1000, fifthBeltIndex];
+		const indexOfMaxValue = values.indexOf(Math.min(...values));
+		if (fifthBeltIndex + fourDepth + threeDepth + cellsDepth <= 22)
+			return 4;
+		return indexOfMaxValue;
+	}
+	twoBeltIndex(startIndex, cellsDepth) {
+		let fourDepth = this.nBeltProductsDepth(4);
+		let threeDepth = this.nBeltProductsDepth(3);
+		const thirdBeltIndex = this.getBeltCurrentDepth(2);
+		const firstBeltIndex = this.getBeltCurrentDepth(0);
+
+		if (this.state.orderCellsCount > 110) {
+			fourDepth = 0;
+			threeDepth = 0;
+		}
+		/*if (thirdBeltIndex + fourDepth + threeDepth + cellsDepth > 22)
+			return 0;*/
+		return (firstBeltIndex > thirdBeltIndex + threeDepth ? 2 : 0);
+
+		//return (thirdBeltIndex + threeDepth + fourDepth + cellsDepth <= 22 ? 2 : 0);
+	}	
 	getFillFunction() {
 		let fillFunction;
 		console.log('Algorithm: ', this.state.algorithm);
@@ -118,8 +246,10 @@ class Board extends React.Component {
 			case '3':
 				fillFunction = this.fillBoard3;
 				break;
+			case '3':
+				fillFunction = this.fillBoardOptimized;
+				break;				
 			default:
-
 				fillFunction = this.fillBoard;
 				break;
 		}
@@ -134,6 +264,7 @@ class Board extends React.Component {
 		});
 		return lastOne;
 	}
+
 	setOrder(orderID) {
 		this.clearMyOrder();
 		var t0 = performance.now()
@@ -144,12 +275,18 @@ class Board extends React.Component {
 			orderReady = this.initOrder(testingOrders[orderID]);
 		let id = this.findLastOneBeltProduct(orderReady);
 		//orderReady.sort(this.initSort); /// changing sorting function based on the algorithm
-		console.log("setOrder:", orderReady, "last one belt product is", id);
+		//console.log("setOrder:", orderReady, "last one belt product is", id);
 
 		//return;
 		const sorterFunction = this.getSortFunction();
+		//orderReady.sort(this.yasf); /// changing sorting function based on the algorithm
+		console.log("setOrder:", orderReady, "last one belt product is", id);
 		orderReady.sort(sorterFunction); /// changing sorting function based on the algorithm
+
+
+		//return;
 		var t1 = performance.now()
+
 		let time = 0;
 		let position = 1;
 		orderReady.forEach(element => {
@@ -206,7 +343,6 @@ class Board extends React.Component {
 		return finalOrder;
 	}
 	clearMyOrder() {
-		//alert('order cleared');
 		this.setState({
 			myOrder: [],
 			myOrderWithName: [],
@@ -332,6 +468,7 @@ class Board extends React.Component {
 		return startIndex;
 	}
 	getAlgo3ProductsWith2BeltIndex(startIndex, cellsDepth) {
+		
 		const firstBeltIndex = this.getBeltCurrentDepth(0);
 		let threeDepth = this.nBeltProductsDepth(3);
 		let fourDepth = this.nBeltProductsDepth(4);
@@ -850,16 +987,11 @@ class Board extends React.Component {
 	chooseAlgorithm(event) {
 		console.log('key: ', event.target.attributes.getNamedItem('data-key').value);
 		const key = event.target.attributes.getNamedItem('data-key').value;
-		if (key == 4) {
-			// choose a random number between 1 and 50 and 
-			// this.setOrder(5) for the three algorithms and have the results
-		}
-		else
-			this.setState({
-				algorithm: key
-			},
-				() => { console.log('chooseAlgorithm : algo', this.state.algorithm) }
-			);
+		this.setState({
+			algorithm: key
+		},
+			() => { console.log('chooseAlgorithm : algo', this.state.algorithm) }
+		);
 	}
 	saveJson() {
 		var myJson = JSON.stringify(allOrders);
@@ -904,7 +1036,9 @@ class Board extends React.Component {
 					<ButtonGroup aria-label="Basic example" onClick={this.chooseAlgorithm.bind(this)}>
 						<Button data-key='1' >Algorithm 1</Button>
 						<Button data-key='2'>Alogrithm 2</Button>
+						<br />
 						<Button data-key='3' >Alogrithm 3</Button>
+						<Button data-key='4' >Alogrithm 4</Button>
 
 					</ButtonGroup>
 					<Button onClick={() => this.compare()} >Compare</Button>
