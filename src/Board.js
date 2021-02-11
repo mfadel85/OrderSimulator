@@ -123,11 +123,11 @@ class Board extends React.Component {
 	fillBoardOptimized(context) {
 		let unFilledProducts = [];
 		let nextPatchCount = 0;
-		let startIndex = 0;
+		let index = 0;
 		context.state.order.forEach(function (item) {
 			for (let i = 0; i < item.quantity; i++) {
-				let result = context.handleProductOptimized(item, startIndex);
-				startIndex = result[0];
+				let result = context.handleProductOptimized(item, index);
+				index = result[0];
 				if (result[1]) {
 					unFilledProducts.push(result[2]);
 					nextPatchCount++;
@@ -302,6 +302,7 @@ class Board extends React.Component {
 				fillBoardFunction(this);/// changing algorithm
 			}
 		);
+		return [this.state.time,this.state.fillingPercent];
 
 	}
 
@@ -935,45 +936,22 @@ class Board extends React.Component {
 		console.log(immutableResult);
 		this.clearMyOrder();
 	}
+	testAlgorithm(algo){
+		const testAlgo3 = async (this) => {
+			this.setState({
+				algorithm: algo
+			},
+			() => {
+					const result = await this.setOrder(1);
+					console.log('result is ', result);
+			});
+		}
+		testAlgo3(algo);
+	}
+
 	compare() {
-		this.setState(
-			{
-				algorithm: 1
-			},
-			() => {
-				this.setOrder(allOrders.length - 1);
-				alert(this.state.fillingPercent + ' ' + this.state.time);
+		testAlgo3(3);
 
-				console.log("Automated TEST", this.state.fillingPercent, this.state.time);
-				this.exportResult();
-			}
-		);
-		this.setState(
-			{
-				algorithm: 2
-			},
-			() => {
-				this.setOrder(allOrders.length - 1);
-				alert(this.state.fillingPercent + ' ' + this.state.time);
-
-				console.log("Automated TEST", this.state.fillingPercent, this.state.time);
-				this.exportResult();
-
-			}
-		);
-		this.setState(
-			{
-				algorithm: 3
-			},
-			() => {
-				this.setOrder(allOrders.length - 1);
-				alert(this.state.fillingPercent + ' ' + this.state.time);
-
-				console.log("Automated TEST", this.state.fillingPercent, this.state.time);
-				this.exportResult();
-
-			}
-		);
 	}
 	chooseAlgorithm(event) {
 		console.log('key: ', event.target.attributes.getNamedItem('data-key').value);
