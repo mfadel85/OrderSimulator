@@ -174,8 +174,6 @@ class Board extends React.Component {
 
 	}	
 	getStartIndex(startIndex, beltCount, cellsDepth = 1) {
-		let index = this.updateBeltsStatus();
-
 		switch (beltCount) {
 			case 4:
 			case 5:
